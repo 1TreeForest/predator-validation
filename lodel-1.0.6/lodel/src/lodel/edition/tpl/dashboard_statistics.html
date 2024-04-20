@@ -1,0 +1,84 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html" />
+<USE MACROFILE="macros_interface.html" />
+<MACRO NAME="HEADER_HEAD_OPEN" />
+<IF COND="[#ID]">
+<title>[@COMMON.EDITION]<LOOP NAME="nompourtitre" TABLE="entities" WHERE="id='[#ID]'">[#IDENTIFIER] [(#G_TITLE|textebrut)]</LOOP></title>
+<ELSE/>
+<title>[(#SITE|strtoupper)].[@COMMON.STATISTICS]</title>
+</IF>
+<MACRO NAME="JS_FONCTIONS_ARBORESCENCE" />
+<MACRO NAME="JS_AFFICHE_IMAGE" />
+<MACRO NAME="HEADER_HEAD_CLOSE" />
+<MACRO NAME="HEADER_LOGO" />
+
+	<ul class="entitiesPath">
+		<li><strong>[@COMMON.STATISTICS] :</strong> [@COMMON.STATISTICS_DESCRIPTION]</li>
+	</ul>
+	<br />
+	<LOOP NAME="classe" TABLE="classes" WHERE="classtype='entities' AND status gt 0" ORDER="rank">
+	<DO>	
+		<LOOP NAME="type" TABLE="types" WHERE="status gt 0" WHERE="class='[#CLASS]'" ORDER="rank">
+		<BEFORE>
+			<table class="statistics">
+				<caption><MACRO NAME="DISPLAY_ALTERTITLE"></caption>
+			<tr>
+				<td class="empty">&nbsp;</td>
+				<th class="status"><img src="[#SHAREURL]/images/draft.gif" alt="[@COMMON.DRAFT]" title="[@COMMON.DRAFT]" /></th>
+				<th class="status"><img src="[#SHAREURL]/images/unpublished.gif" alt="[@COMMON.READY_FOR_PUBLICATION]" title="[@COMMON.READY_FOR_PUBLICATION]" /></th>
+				<th class="status"><img src="[#SHAREURL]/images/published.gif" alt="[@COMMON.PUBLISHED]" title="[@COMMON.PUBLISHED]"/></th>
+				<th class="status"><img src="[#SHAREURL]/images/locked.gif" alt="[@COMMON.PROTECTED]" title="[@COMMON.PROTECTED]" /></th>
+			</tr>
+		</BEFORE>
+		<DO>
+		<LET VAR="curtotal"></LET>
+		<tr>
+			<th class="type"><MACRO NAME="DISPLAY_ALTERTITLE"></th>
+			<LOOP NAME="docbrouillon" TABLE="entities" WHERE="status = -8" WHERE="idtype='[#ID]'" ORDER="rank">
+			<BEFORE>
+			
+			<td>[#NBRESULTS]</td></BEFORE>
+			<ALTERNATIVE>
+				<td>0</td>
+			</ALTERNATIVE>
+			</LOOP>
+			<LOOP NAME="docnonpub" TABLE="entities" WHERE="status = -1" WHERE="idtype='[#ID]'" ORDER="rank">
+			<BEFORE>
+				
+				<td>[#NBRESULTS]</td></BEFORE>
+			<ALTERNATIVE>
+				<td>0</td>
+			</ALTERNATIVE>
+			</LOOP>
+			<LOOP NAME="docpub" TABLE="entities" WHERE="status =1" WHERE="idtype='[#ID]'" ORDER="rank">
+			<BEFORE>
+				<td>[#NBRESULTS]</td>
+			</BEFORE>
+			<ALTERNATIVE>
+				<td>0</td>
+			</ALTERNATIVE>
+			</LOOP>
+			<LOOP NAME="docprotege" TABLE="entities" WHERE="status = 8" WHERE="idtype='[#ID]'" ORDER="rank">
+			<BEFORE>
+			
+				<td>[#NBRESULTS]</td></BEFORE>
+			<ALTERNATIVE>
+				<td>0</td>
+			</ALTERNATIVE>
+			</LOOP>
+			
+		</tr>		
+		</DO>
+		<AFTER>
+			</table>
+		</AFTER>
+		</LOOP>
+	</DO>			
+	</LOOP>
+<MACRO NAME="CLOSE_HTML">

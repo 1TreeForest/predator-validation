@@ -1,0 +1,38 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+<?php
+	header("Content-type: application/xml");
+	echo "<?xml version=\"1.0\" encoding=\"".$context['charset']."\"?>";
+	setlocale (LC_ALL, 'en_US');
+?>
+<rss version="0.92">
+<channel>
+	<title>[#SITE|strtoupper|htmlspecialchars].[@COMMON.HISTORY]</title>
+	<link>[#CURRENTURL|dirname]</link>
+	<description>[@LODELADMIN.SITE] [#SITE] : [@COMMON.DASHBOARD|strtolower], [@COMMON.HISTORY|strtolower] ([@COMMON.HISTORY_DESCRIPTION])</description>
+	<language>fr</language>
+	
+	<LOOP NAME="dashboard_history" TABLE="entities" ORDER="modificationdate DESC" LIMIT="0,30" WHERE="status LT 64 AND status GT -64"> 
+		<DO>
+		<item>
+			<title>[#G_TITLE|textebrut|htmlspecialchars]</title>
+			<link>[#CURRENTURL|dirname]/index.php?do=view&amp;id=[#ID]</link>
+			<pubDate>[#MODIFICATIONDATE|formateddate('%a, %d %b %Y %T %z')]</pubDate>
+			<description>
+				<IF COND="[#ID|get_dc_fields('description')]">[#ID|get_dc_fields('description')|textebrut|htmlspecialchars]</IF>
+			</description>
+			<author>
+				<LOOP NAME="get_author" TABLE="persons" WHERE="identity='[#ID]'" ORDER="degree">
+					[#G_FIRSTNAME|textebrut|htmlspecialchars] [#G_FAMILYNAME|textebrut|htmlspecialchars]
+					
+				</LOOP>
+			</author>
+		</item>
+		</DO>
+	</LOOP>
+</channel>
+</rss>

@@ -1,0 +1,67 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<meta name="ROBOTS" content="nofollow, noindex">
+<style type="text/css">
+body{
+	background: #175D91 url("[#SHAREURL]/images/bg_top.png") top left repeat-x;
+}
+</style>
+<TITLE>[@LODELADMIN.TITLE_LOGIN_LODELADMIN]</TITLE>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO">
+<div id="loginscreen">
+	<h1 id="lodel"><img src="[#SHAREURL]/images/lodel.png" alt="Lodel, logiciel d'édition électronique"/>[@LODELADMIN.TITLE_LOGIN_LODELADMIN]</h1>
+	<form action="login.php" method="POST">
+		<fieldset>
+			<input type="hidden" name="url_retour" value="[#URL_RETOUR]" />
+			<legend id="titre_formulaire">[@COMMON.DEMAND_IDENTIFICATION]
+				<LOOP NAME="nom_site" TABLE="sites" WHERE="name='[#SITE]'">
+				</LOOP>
+			</legend>
+			<IF COND="![#SUSPENDED]">
+				<div class="error">
+					<IF COND="[#ERROR_LOGIN]">
+						[@COMMON.INVALID_LOGIN_PASSWORD]
+					</IF>
+					<IF COND="[#ERROR_OPENSESSION]">
+						[@COMMON.ERROR_OPENSESSION]
+					</IF>
+					<IF COND="[#ERROR_SETCOOKIE]">
+						[@LODELADMIN.ERROR_SETCOOKIE]
+					</IF>
+					<IF COND="[#ERROR_TIMEOUT]">
+						[@COMMON.SESSION_TIMEOUT]
+					</IF>
+					<IF COND="[#ERROR_PRIVILEGE]">
+						[@COMMON.ERROR_RIGHTS]
+					</IF>
+				</div>
+				<label for="login">[@COMMON.LOGIN]</label>
+				<input type="text" class="input_formulaire" id="login" name="login" value="[#LOGIN]" />
+				<label for="passwd">[@COMMON.PASSWD]</label>
+				<input type="password" class="input_formulaire" id="passwd" name="passwd" />
+			<ELSE />
+				<span class="error">[@COMMON.SUSPENDED]</span>
+				<input type="hidden" id="login" name="login" value="[#LOGIN]" />
+				<input type="hidden" id="datab" name="datab" value="[#DATAB]" />
+				<label for="passwd">[@COMMON.OLDPASSWD]</label>
+				<input type="password" class="input_formulaire" id="old_passwd" name="old_passwd" />
+				<label for="passwd">[@COMMON.NEWPASSWD]</label>
+				<input type="password" class="input_formulaire" id="passwd" name="passwd" />
+				<label for="passwd">[@COMMON.RETYPEPASSWD]</label>
+				<input type="password" class="input_formulaire" id="passwd2" name="passwd2" />
+			</IF>
+			<p class="login">
+				<input type="submit" value="Valider" alt="Valider" class="button" />
+			</p>
+		</fieldset>
+	</form>
+</div>
+<MACRO NAME="CLOSE_HTML">

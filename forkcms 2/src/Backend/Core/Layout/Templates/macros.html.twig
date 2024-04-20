@@ -1,0 +1,53 @@
+{% macro buttonIcon(url, icon, label, buttonType, extra, iconRight = false) %}
+  {% import _self as macro %}
+  {# When url is an empty string, use a button, otherwise use a hyperlink/anchor #}
+  {% if url %}
+    <a href="{{ url }}" class="btn {{ buttonType|default('btn-default') }}" title="{{ label }}" {% if extra is iterable %}{% for attr, value in extra %} {{ attr }}="{{ value }}"{% endfor %}{% else %}{{ extra }}{% endif %}>
+      {% if not iconRight %}{{ macro.icon(icon) }}{% endif %}
+      <span class="btn-text">{{ label }}</span>
+      {% if iconRight %}{{ macro.icon(icon) }}{% endif %}
+    </a>
+  {% else %}
+    {% if extra['data-toggle'] is defined and extra['type'] is not defined %}
+      {% set extra = extra|merge({'type' : 'button'}) %}
+    {% endif %}
+    <button class="btn {{ buttonType|default('btn-default') }}" title="{{ label }}" {% if extra is iterable %}{% for attr, value in extra %} {{ attr }}="{{ value }}"{% endfor %}{% else %}{{ extra }}{% endif %}>
+      {% if not iconRight %}{{ macro.icon(icon) }}{% endif %}
+      <span class="btn-text">{{ label }}</span>
+      {% if iconRight %}{{ macro.icon(icon) }}{% endif %}
+    </button>
+  {% endif %}
+{% endmacro %}
+
+{%- macro required() -%}
+  <abbr data-toggle="tooltip" aria-label="{{ 'lbl.RequiredField'|trans|ucfirst }}" title="{{ 'lbl.RequiredField'|trans|ucfirst }}">*</abbr>
+{%- endmacro -%}
+
+{% macro icon(icon) %}
+  <span class="fa fa-{{ icon }}" aria-hidden="true"></span>
+{% endmacro %}
+
+{% macro infoTooltip(title) %}
+  {% import _self as macro %}
+  <abbr tabindex="0" data-toggle="tooltip" aria-label="{{ title }}" title="{{ title }}">{{ macro.icon('info-circle') }}</abbr>
+{% endmacro %}
+
+{% macro dataGrid(dataGrid, noItemsMessage) %}
+  <div class="row">
+    <div class="col-md-12">
+      {% if dataGrid %}
+        <div class="table-responsive">
+          {{ dataGrid|raw }}
+        </div>
+      {% else %}
+        <p>
+          {% if noItemsMessage %}
+            {{ noItemsMessage|raw }}
+          {% else %}
+            {{ 'msg.NoItems'|trans|raw }}
+          {% endif %}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+{% endmacro %}

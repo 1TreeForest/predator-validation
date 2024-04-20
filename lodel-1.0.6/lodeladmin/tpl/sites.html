@@ -1,0 +1,93 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@LODELADMIN.TITLE_MANAGE_SITE] [#SITE]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@ADMIN.TITLE_MANAGE_SITE]</span></li>
+	<ul class="actions">
+		<li class="isolated">
+			<a href="site.php?new=1">[@LODELADMIN.ADD_WEBSITE]</a> | 
+<LOOP NAME="maintenance" TABLE="sites" SELECT="status" WHERE="status NE -64 AND status NE -65 AND status NE -1" LIMIT="0,1">
+	<a href="site.php?id=0&amp;maintenance=2">[@COMMON.GOALLMAINTENANCE]</a>
+	<ALTERNATIVE>
+		<a href="site.php?id=0&amp;maintenance=1">[@COMMON.GOALLONLINE]</a>
+	</ALTERNATIVE>		
+</LOOP>
+
+
+		</li>
+	</ul>
+</ul>
+
+
+<br /><br />
+
+
+<table class="statistics users">
+	<caption>[@LODELADMIN.WEBSITE_ENABLED]</caption>
+	<tr>
+		<th class="status">[@COMMON.NAME]</th>
+		<td class="empty">&nbsp;</td>
+	</tr>
+<LOOP NAME="sites" TABLE="sites" ORDER="title" WHERE="status gt 0">
+<MACRO NAME="TR_LIST">
+
+<th><a href="[#URL]">[(#TITLE|nbsp)]</a></th>
+<td class="actions">
+<a href="site.php?id=[#ID]">[@COMMON.MODIFY]</a>&nbsp;|&nbsp;
+<a href="site.php?id=[#ID]&amp;delete=1">[@COMMON.DELETE]</a>&nbsp;|&nbsp;
+<IF COND="[#STATUS] ge 32">
+	<!--[<a href="locksite.php?id=[#ID]&amp;unlock=1">[@LODELADMIN.UNLOCK]</a>]-->
+	<a href="index.php?lo=sites&amp;do=unlock&amp;id=[#ID]">[@LODELADMIN.UNLOCK]</a>&nbsp;|&nbsp;
+<ELSE/>
+	<!--[<a href="locksite.php?id=[#ID]&amp;lock=1">[@LODELADMIN.LOCK]</a>]-->
+	<a href="index.php?lo=sites&amp;do=lock&amp;id=[#ID]">[@LODELADMIN.LOCK]</a>&nbsp;|&nbsp;
+</IF>
+
+<IF COND="[#STATUS] EQ -64 OR [#STATUS] EQ -65">
+	<a href="site.php?maintenance=0&amp;id=[#ID]">[@COMMON.GOONLINE]</a>
+<ELSE/>
+	<a href="site.php?maintenance=1&amp;id=[#ID]">[@COMMON.GOMAINTENANCE]</a>
+</IF>
+</td>
+</tr>
+</LOOP>
+</table>
+
+
+<LOOP NAME="sites_ol" TABLE="sites" ORDER="title" WHERE="status lt 0">
+<BEFORE>
+<br />
+
+<table class="statistics users">
+	<caption>[@LODELADMIN.WEBSITE_DELETED]</caption>
+	<tr>
+		<th class="status">[@COMMON.NAME]</th>
+		<td class="empty">&nbsp;</td>
+	</tr>
+</BEFORE>
+<MACRO NAME="TR_LIST">
+<th><a href="[#URL]">[(#TITLE|nbsp)]</a></th>
+<td class="actions">
+<IF COND="[#STATUS] EQ -64 OR [#STATUS] EQ -65">
+	<a href="site.php?id=[#ID]&amp;maintenance=1">[@COMMON.GOONLINE]</a>
+<ELSE/>
+	<a href="site.php?id=[#ID]&amp;restore=1">[@COMMON.RECOVER]</a> |
+	<a href="site.php?id=[#ID]&amp;delete=1" onclick="return alert('[@COMMON.CONFIRMATION]');">[@COMMON.DELETE]</a>	
+</IF>
+
+</td>
+</tr>
+<AFTER></table></AFTER>
+</LOOP>
+<MACRO NAME="CLOSE_HTML">

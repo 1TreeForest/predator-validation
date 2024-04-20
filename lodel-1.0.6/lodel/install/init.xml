@@ -1,0 +1,575 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="no"?>
+<!--
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+-->
+
+<database name="lodel" defaultIdMethod="native">
+<table name="sites"
+        description="Table des sites"
+        uniqueid="yes"
+	writeright="adminlodel"
+	protectright="adminlodel">
+<column name="id"
+        type="INTEGER"
+        required="true"
+        primaryKey="true"
+        autoIncrement="true" />
+<column name="name"
+        type="VARCHAR"
+        size="64"
+        required="true" />
+<column name="title"
+        type="VARCHAR"
+        size="255"
+        required="true"
+        description="title for the interface" 
+        label="[@COMMON.TITLE]"
+        edittype="text"/>
+<column name="subtitle"
+        type="VARCHAR"
+        size="255"
+        required="true"
+        description="soustitle for the interface"
+        label="[@COMMON.SUBTITLE]"
+        edittype="text"/>
+<column name="path"
+        type="VARCHAR"
+        size="255"
+        required="true"
+        description="chemin d'acces"
+        label="[@LODELADMIN.PATH]"
+        edittype="text"/>
+<column name="url"
+        type="VARCHAR"
+        size="255"
+        required="true"
+        description="full url of the site"
+        label="[@LODELADMIN.SITE_URL]"
+        edittype="text"/>
+<column name="langdef"
+	type="CHAR"
+        size="5"
+        description="language per default"
+        label="[@LODELADMIN.DEFAULT_LANGUAGE]"
+        edittype="select"/>
+<column name="status"
+        type="TINYINT"
+        default="-1"
+        required="true" />
+<column name="upd"
+        type="TIMESTAMP" />
+<column name="creationdate"
+        type="DATETIME" />
+</table>
+
+
+<table name="session"
+        description="Table des sessions">
+<column name="id"
+        type="INTEGER"
+        required="true"
+        primaryKey="true"
+        autoIncrement="true" />
+<column name="name"
+        type="VARCHAR"
+        size="64"
+        required="true"/>
+<column name="iduser"
+        type="INTEGER"
+        required="true"/>
+<column name="site"
+        type="VARCHAR"
+        size="64"
+        required="true"/>
+<column name="currenturl"
+        type="VARCHAR"
+        size="4096"
+        required="true"/>
+<column name="userrights"
+	type="INTEGER"
+        required="true"/>
+<column name="context"
+        type="LONGVARCHAR"
+        required="true"/>
+<column name="expire"
+        type="INTEGER"
+        required="true"/>
+<column name="expire2"
+        type="INTEGER"
+        required="true"/>
+<index name="index_name">
+<index-column name="name" />
+</index>
+</table>
+
+
+<table name="urlstack"
+        description="record of the urls">
+<column name="id"
+        type="INTEGER"
+        required="true"
+        primaryKey="true"
+        autoIncrement="true" />
+<column name="idsession"
+        type="INTEGER"
+        required="true"/>
+<column name="currenturl"
+        type="VARCHAR"
+        size="4096"
+        required="true"/>
+<column name="site"
+	type="VARCHAR"
+	size="64"
+        required="true"/>
+<index name="index_idsession">
+<index-column name="idsession" />
+</index>
+</table>
+
+
+<table name="users"
+			 description="[@ADMIN.USER_INFORMATIONS]"
+			 writeright="admin"
+			 protectright="adminlodel">
+	<vgroup name="general"
+					label="[@ADMIN.USER_GENERAL_INFORMATIONS]"
+					>
+		<column name="id"
+						type="INTEGER"
+						required="true"
+						primaryKey="true"
+						autoIncrement="true" />
+		<column name="username"
+						type="VARCHAR"
+						size="64"
+						required="true"
+						label="[@COMMON.LOGIN]"
+						edittype="username" />
+		<column name="passwd"
+						type="VARCHAR"
+						size="64"
+						label="[@COMMON.PASSWD]"
+						edittype="passwd" />
+		<vcolumn name="confirmpasswd"
+						 label="[@ADMIN.CONFIRM_PASSWORD]"
+						 edittype="passwd"
+						 />
+		<!--column name="name"
+							 type="VARCHAR"
+							 size="64"
+							 label="[@ADMIN.LASTNAME_AND_FIRSTNAME]"
+							 edittype="text" /-->
+		<column name="lastname"
+						type="VARCHAR"
+						size="255"
+						label="[@ADMIN.LASTNAME]"
+						edittype="text" />
+		<column name="firstname"
+						type="VARCHAR"
+						size="255"
+						label="[@ADMIN.FIRSTNAME]"
+						edittype="text" />
+		<column name="email"
+						type="VARCHAR"
+						size="255"
+						label="[@ADMIN.EMAIL]"
+						edittype="email"
+						required="true" />
+	</vgroup>
+	<vgroup name="lodel_informations"
+					label="[@ADMIN.USER_LODEL_INFORMATIONS]">
+		<column name="lang"
+						type="CHAR"
+						size="5"
+						required="true"
+						description="user lang"
+						label="[@ADMIN.USER_LANG]"
+						edittype="lang" />
+		<column name="userrights"
+						type="TINYINT"
+						default="0"
+						required="true"
+						label="[@ADMIN.USER_RIGHTS]"
+						edittype="select" />
+		<column name="gui_user_complexity"
+						type="TINYINT"
+						default="64"
+						required="true"
+						description="Complexité de l'interface graphique de l'utilisateur"
+						label="[@ADMIN.GUI_USER_COMPLEXITY]"
+				edittype="select" />
+		<vcolumn name="protected"
+						 label="[@ADMIN.PROTECTED_USER]"
+						 edittype="boolean" />
+	</vgroup>
+	<vgroup name="user_optional"
+					label="[@ADMIN.USER_OPTIONAL_INFORMATION]"
+					>
+		<column name="nickname"
+						label="[@ADMIN.NICKNAME]"
+						type="VARCHAR"
+						size="64"
+						edittype="text"
+						/>
+		<columns name="function"
+						 label="[@ADMIN.FUNCTION]"
+						 type="VARCHAR"
+						 size="255"
+						 edittype="text"
+						 />
+		<column name="biography"
+						label="[@ADMIN.BIOGRAPHY"
+						type="MEDIUMTEXT"
+						edittype="longtext"
+						/>
+		<column name="photo"
+						label="[@ADMIN.PHOTO]"
+						type="VARCHAR"
+						size="255"
+						edittype="image"
+				/>
+		<column name="professional_website"
+						label="[@ADMIN.PROFESSIONAL_WEBSITE_TITLE"
+						type="VARCHAR"
+						size="255"
+						edittype="text"
+						/>
+		<column name="url_professional_website"
+						label="[@ADMIN.PROFESSIONAL_WEBSITE_URL"
+						type="VARCHAR"
+						size="255"
+						edittype="url"
+						/>
+		<column name="rss_professional_website"
+						label="[@ADMIN.RSS_PROFESSIONAL_WEBSITE"
+						type="VARCHAR"
+						size="255"
+						edittype="url"
+						/>
+		<column name="personal_website"
+						label="[@ADMIN.PERSONNAL_WEBSITE]"
+						type="VARCHAR"
+						size="255"
+						edittype="text"
+						/>
+		<column name="url_personal_website"
+						label="[@ADMIN.PERSONNAL_WEBSITE_URL]"
+						type="VARCHAR"
+						size="255"
+						edittype="url"
+						/>
+		<column name="rss_personal_website"
+						label="[@ADMIN.RSS_PERSONNAL_WEBSITE"
+						type="VARCHAR"
+						size="255"
+						edittype="url"
+						/>
+		<column name="pgp_key"
+						label="[@ADMIN.PGP_KEY]"
+						type="MEDIUMTEXT"
+						edittype="longtext"
+						/>
+		<column name="alternate_email"
+						label="[@ADMIN.ALTERNATIVE_EMAIL]"
+						type="VARCHAR"
+						size="255"
+						edittype="email"
+						/>
+		<column name="phonenumber"
+						label="[@ADMIN.PHONE_NUMBER]"
+						type="VARCHAR"
+						size="15"
+						edittype="text"
+						/>
+		<column name="im_identifier"
+						label="[@ADMIN.INSTANT_MESSAGING_IDENTIFIER]"
+						type="VARCHAR"
+						size="100"
+						edittype="text"
+						/>
+		<column name="im_name"
+						label="[@ADMIN.INSTANT_MESSAGING_NAME]"
+						type="VARCHAR"
+						size="64"
+						edittype="text"
+						/>
+	</vgroup>
+	<column name="status"
+					type="TINYINT"
+					default="1"
+					required="true" />
+	<column name="rank"
+					type="INTEGER"
+					default="0"
+					required="true" />
+	<vcolumn name="usergroups"
+					 label="[@ADMIN.USERGROUPS]"
+					 editcondition="[#SITE] and ![#LODELUSER.ADMIN]"
+					 edittype="multipleselect" />
+	<column name="upd"
+					type="TIMESTAMP" />
+	<index name="index_username">
+		<index-column name="username" />
+	</index>
+	<unique name="unique_username">
+		<unique-column name="username" />
+	</unique>
+</table>
+
+
+
+<table name="texts"
+        description="Table des minitextes"
+	writeright="admin"
+	protectright="adminlodel">
+<column name="id"
+        type="INTEGER"
+        default="0"
+        required="true"
+        primaryKey="true"
+        autoIncrement="true" />
+<column name="name"
+        type="VARCHAR"
+        size="255"
+        required="true"
+        description="name"
+        label="[@COMMON.NAME]" />
+<column name="contents"
+        type="LONGVARCHAR"
+        description="texte"
+        label="[@ADMIN.TEXT]"
+        edittype="longtext" />
+<column name="lang"
+        type="CHAR"
+        size="5"
+        required="true"
+        description="text lang"
+        label="[@COMMON.LANG]"
+	visibility="hidden" 
+	edittype="lang"	/>
+<column name="textgroup"
+        type="VARCHAR"
+        size="255"
+        required="true"
+        description="text group" 
+	visibility="hidden" 
+	edittype="text"	/>
+<column name="status"
+        type="TINYINT"
+        default="1"
+        required="true" />
+<vcolumn name="protected"
+        label="[@ADMIN.PROTECTED_OPTION]"
+        edittype="boolean" />
+<column name="upd"
+        type="TIMESTAMP" />
+<index name="index_name">
+<index-column name="name" />
+</index>
+<index name="index_lang">
+<index-column name="lang" />
+</index>
+<index name="index_textgroup">
+<index-column name="textgroup" />
+</index>
+<unique name="unique_lang">
+<unique-column name="name" />
+<unique-column name="lang" />
+<unique-column name="textgroup" />
+</unique>
+</table>
+
+
+
+
+
+<table name="translations"
+        description=""
+	writeright="admin"
+	protectright="adminlodel">
+<column name="id"
+        type="INTEGER"
+        default="0"
+        required="true"
+        primaryKey="true"
+        autoIncrement="true" />
+<column name="lang"
+        type="CHAR"
+        size="5"
+        required="true"
+        description="code of the lang"
+        label="[@ADMIN.LANG_CODE]"
+        edittype="text" />
+<column name="title"
+        type="VARCHAR"
+        size="255"
+        label="[@COMMON.LANG]"
+        edittype="text" />
+<column name="textgroups"
+        type="VARCHAR"
+        size="255"
+	visibility="hidden"
+	edittype="text"  />
+<column name="translators"
+        type="VARCHAR"
+        label="[@ADMIN.TRANSLATORS]"
+        edittype="text" />
+<column name="modificationdate"
+        type="DATE" />
+<column name="creationdate"
+        type="DATE"
+	visibility="hidden"
+	edittype="date" />
+<column name="rank"
+        type="INTEGER"
+        default="0"
+        required="true" />
+<column name="status"
+        type="TINYINT"
+        default="1"
+        required="true" />
+<vcolumn name="protected"
+        label="[@COMMON.PROTECTED]"
+        edittype="boolean" />
+<column name="upd"
+        type="TIMESTAMP" />
+<index name="index_lang">
+<index-column name="lang" />
+</index>
+<unique name="unique_lang">
+<unique-column name="lang" />
+<unique-column name="textgroups" />
+</unique>
+</table>
+<table name="internal_messaging"
+       description="Table gérant la messagerie interne"
+       uniqueid="yes"
+       writeright="redactor"
+       protectright="redactor">
+	
+	<column name="id"
+		type="INTEGER"
+		size="10"
+		required="true"
+		primaryKey="true"
+		autoIncrement="true" />
+	<column name="idparent"
+		type="INTEGER"
+		size="10"
+		default="0"
+		visibility="hidden"
+		required="true" />
+	<column name="iduser"
+		type="VARCHAR"
+		size="255"
+		default="[#LODELUSER.ID]"
+		visibility="hidden"
+		required="true" />
+	<column name="addressee"
+		type="LONGVARCHAR"
+		default="0"
+		required="true" 
+		label="[@ADMIN.INTERNAL_MESSAGING_TO]"
+		visibility="hidden"
+		edittype="text"/>
+	<column name="addressees"
+		type="LONGVARCHAR"
+		default="0"
+		required="true" 
+		label="[@ADMIN.INTERNAL_MESSAGING_TO]"
+		edittype="multipleselect"/>
+	<column name="subject"
+		type="VARCHAR"
+		size="255"
+		default=""
+		required="false"
+		label="[@ADMIN.INTERNAL_MESSAGING_SUBJECT]"
+		edittype="text"/>
+	<column name="body"
+		type="LONGVARCHAR"
+		required="true" 
+		default=""
+		label="[@ADMIN.INTERNAL_MESSAGING_BODY]"
+		edittype="longtext"/>
+	<column name="incom_date"
+		type="DATETIME"/>
+	<column name="cond"
+		type="TINYINT"
+		size="1"
+		default="0"
+		required="true"
+		label="[@ADMIN.FORCE_LOOKING]"
+		edittype="boolean" />
+	<column name="upd"
+		type="TIMESTAMP" />
+	<column name="status"
+		type="TINYINT"
+		default="1"
+        required="true" />
+</table>
+
+<table name="mainplugins"
+       writeright="adminlodel">
+	
+	<column name="id"
+		type="INTEGER"
+		size="10"
+		required="true"
+		primaryKey="true"
+		autoIncrement="true" />
+	<column name="name"
+		type="VARCHAR(64)"
+		required="true" />
+	<column name="status"
+		type="TINYINT"
+		default="1"
+        	required="true" />
+	<column name="upd"
+		type="TIMESTAMP" />
+	<column name="config"
+		type="LONGVARCHAR"
+		required="true"/>
+	<column name="hooktype"
+		type="VARCHAR(5)"
+		required="true"/>
+	<column name="title"
+		type="text"/>
+	<column name="description"
+		type="LONGVARCHAR"/>
+	<column name="trigger_preedit"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_postedit"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_prelogin"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_postlogin"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_preview"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_postview"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_preauth"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+	<column name="trigger_postauth"
+		type="TINYINT"
+		default="0"
+        	required="true" />
+</table>
+</database>
+

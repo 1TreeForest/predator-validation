@@ -1,0 +1,101 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<!--[ Ce fichier n'est PAS généré automatiquement ]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_ENTRY_INDEX]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul class="entitiesPath">
+	<li>[@ADMIN.TITLE_ENTRY_INDEX] :  <strong>[#TYPE.TITLE]</strong></li>
+</ul>
+
+
+<form method="post" enctype="multipart/form-data" action="<?php echo basename($_SERVER['PHP_SELF']); ?>" class="entry">
+
+<fieldset>
+	<legend>[#TYPE.TITLE]</legend>
+	<input type="hidden" name="id" value="[#ID]" />
+	<input type="hidden" name="idtype" value="[#IDTYPE]" />
+	<input type="hidden" name="do" value="edit" />
+	<input type="hidden" name="lo" value="entries" />
+
+   <MACRO NAME="AFFICHER_CHAMPS_DU_GROUPE_EDITION">
+  <IF COND="![#TYPE.FLAT]">
+    <label for="idparent">[@COMMON.PARENT_ENTRY] ([@COMMON.PARENT_ENTRY_MUST_BE_PERMANENT])
+        : 
+      </label>
+    <br class="nobr" />
+    <select name="idparent" id="idparent">
+      <?php 
+                      makeSelect($context,"idparent","entries","select");
+                  ?>
+    </select>
+    <br />
+    <LOOP NAME="fielderror" FIELD="idparent">
+      <p class="error">
+        <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="idparent"></FUNC>
+      </p>
+    </LOOP>
+  </IF>
+  <IF COND="abs([#STATUS]) ne 21"> <!--[ 21 = indépubliable ]-->
+    <br />
+    <label for="protected" class="boolean">[@ADMIN.PERMANENT_ENTRY] : </label>
+    <IF COND="abs([#STATUS]) ge 32">
+      <input type="checkbox" name="protected" id="protected" checked="checked" />
+      <ELSE/>
+      <input type="checkbox" name="protected" id="protected" />
+    </IF>
+    <br />
+    <LOOP NAME="fielderror" FIELD="protected">
+      <p class="error">
+        <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="protected" />
+      </p>
+    </LOOP>
+  </IF>
+</fieldset>
+
+
+	<IF COND="[#ID]">
+		<LOOP NAME="adesfils" TABLE="entries" WHERE="idparent='[#ID]' AND status gt -64" LIMIT="0,1">
+	        <DO>
+			<MACRO NAME="EDIT_SUBMIT_BAR" DELETEDISBALE="true">
+                 </DO>
+	        <ALTERNATIVE>
+			<FUNC NAME="EDIT_SUBMIT_BAR">
+	        </ALTERNATIVE>
+	        </LOOP>
+	<ELSE/>
+	<FUNC NAME="EDIT_SUBMIT_BAR">
+	</IF>
+	</form>
+
+
+
+<FUNC NAME="LISTE_ENTITES_LIEES" ID="[#ID]" NATURE="E" />
+
+<hr />
+<IF COND="[#TYPE.EXTERNALALLOWED]">
+[@ADMIN.LIST_SITE_SHARED_ENTRY]
+<LOOP NAME="getNumberBySite" TABLE="relations_ext, entries" WHERE="entries.idtype='[#TYPE.ID]' AND relations_ext.id1=entries.id AND nature='EE' AND entries.id=[#ID]" SELECT="COUNT(relations_ext.idrelation) AS nb, relations_ext.site" GROUPBY="relations_ext.site">
+	<BEFORE><ul></BEFORE>
+	<DO>
+		<li>
+			[#SITE] ([#NB])
+		</li>
+	</DO>
+	<AFTER></ul></AFTER>
+</LOOP>
+</IF>
+
+
+<MACRO NAME="CLOSE_HTML">

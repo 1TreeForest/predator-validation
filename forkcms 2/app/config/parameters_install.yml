@@ -1,0 +1,24 @@
+parameters:
+    database.driver:        mysql
+    database.host:          ~
+    database.port:          ~
+    database.name:          ~
+    database.user:          ~
+    database.password:      ~
+
+    kernel.secret:          installation
+
+    fork.debug_email:       noreply@fork.com
+    fork.debug_message:     'Internal error.'
+    fork.version:           '5.12.0'
+
+    session.cookie_secure:  false
+    site.protocol:          <site-protocol>
+    site.domain:            <site-domain>
+    site.default_title:     Fork CMS
+    site.multilanguage:     false
+    site.default_language:  en
+    site.path_www:          "%kernel.project_dir%"
+
+    action.group_tag:       '\@actiongroup'
+    action.rights_level:    7

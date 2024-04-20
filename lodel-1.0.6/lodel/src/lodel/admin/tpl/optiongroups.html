@@ -1,0 +1,67 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_OPTIONS]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@ADMIN.DEFINITION_OPTIONS]</span></li>
+	<li>
+		<ul class="actions">
+			<li class="isolated">
+			<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+				<a href="index.php?do=view&amp;lo=optiongroups">[@ADMIN.ADD_OPTION_GROUP] [#TITLE]</a>
+			<ELSE />
+				<span class="inactif">[@ADMIN.ADD_OPTION_GROUP] [#TITLE]</span>
+			</IF>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+
+<br />&nbsp;<br />
+
+
+<LOOP NAME="listoptiongroups" TABLE="optiongroups" ORDER="rank" WHERE="idparent='[#ID]'" WHERE="status gt -64">
+	<DO>
+	<table class="statistics fields">
+		<tr>
+			<th class="status group">[#REP][(#TITLE|nbsp)]</th>
+			<td class="actions" colspan="3">
+				<FUNC NAME="CHANGE_RANK_BUTTON" LO="[#LO]">
+				<FUNC NAME="MODIFY_DELETE_BUTTON" LO="[#LO]">
+			</td>
+
+		</tr>
+		<tr>	
+        	<td colspan="4" class="actions">
+			<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+			<a href="index.php?do=view&amp;lo=options&amp;idgroup=[#ID]">[@ADMIN.ADD_OPTION_TO_THE_GROUP]</a>
+			<ELSE />
+			<span class="inactif">[@ADMIN.ADD_OPTION_TO_THE_GROUP]</span>
+			</IF>
+               </td>
+		</tr>
+        <?php $context['margin']= isset($context['margin']) ? $context['margin']+10 : 10; ?> <!--[ incrément de la marge ]-->
+        <LET VAR="BARRE">[#BARRE]|</LET>
+      <MACRO NAME="AFFICHER_OPTIONS_DU_GROUPE"> 
+      
+		<LOOP NAME="listoptiongroups"></LOOP>
+	</table>
+	</DO>
+</LOOP>
+
+
+<MACRO NAME="OK_TOINDEX_ADMIN">
+
+<MACRO NAME="CLOSE_HTML">

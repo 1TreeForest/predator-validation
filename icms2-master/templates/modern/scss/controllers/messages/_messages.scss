@@ -1,0 +1,109 @@
+.icms-messages {
+    &.modal-messages {
+        margin: -$modal-inner-padding !important;
+        background-color: $white;
+    }
+    height: calc(100vh - #{$modal-dialog-margin * 2} - #{$modal-header-padding-y * 2} - #{$modal-title-line-height * $h4-font-size});
+    .contact_nickname {
+        line-height: 1.4;
+    }
+    .icms-messages-chat {
+        height: calc(100% - 206px);
+        overflow-y: auto;
+    }
+    .markItUp .markItUpEditor {
+        height: auto;
+    }
+    .content {
+        &:before {
+            position: absolute;
+            top: 8px;
+            left: -8px;
+            display: inline-block;
+            background: inherit;
+            width: 16px;
+            height: 16px;
+            border-color: inherit;
+            content: '';
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            -o-transform: rotate(-45deg);
+        }
+    }
+    .message-my {
+        .content {
+            &:before {
+                right: -8px;
+                left: auto;
+            }
+        }
+        .selected {
+            background-color: lighten($primary, 30) !important;
+        }
+    }
+    .pannel-toolbar {
+        height: 54px;
+    }
+    .layout, .layout > *, .layout &__contacts-block {
+        height: inherit;
+    }
+    .icms-messages__contacts-list {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        border-radius: 0;
+        height: calc(100% - 54px);
+        overflow-y: auto;
+    }
+}
+
+@include media-breakpoint-up(sm) {
+    .icms-messages {
+        &.modal-messages {
+
+        }
+        height: calc(100vh - #{$modal-dialog-margin-y-sm-up * 2} - #{$modal-header-padding-y * 2} - #{$modal-title-line-height * $h4-font-size});
+    }
+}
+@include media-breakpoint-down(sm) {
+    .icms-messages {
+        &.modal-messages {
+            height: 100vh;
+        }
+    }
+    .modal-dialog-icms-messages {
+        .modal-header {
+            display: none;
+        }
+        .modal-content {
+            border: none;
+            border-radius: 0;
+        }
+        margin: 0;
+        width: 100%;
+    }
+}
+.bg-gray {
+    background-color: $gray-200;
+}
+.bg-success_light {
+    background-color: lighten($success, 40);
+}
+#pm_contact {
+    height: inherit;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    .smilepanel {
+        position: absolute;
+        top: -51px;
+        padding: 0 $spacer*0.25;
+        background-color: $white;
+        right: 0px;
+        border: 1px solid $gray-400;
+        box-shadow: $box-shadow;
+    }
+}

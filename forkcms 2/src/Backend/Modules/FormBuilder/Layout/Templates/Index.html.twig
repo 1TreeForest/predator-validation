@@ -1,0 +1,17 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+  <div class="btn-toolbar pull-right">
+    <div class="btn-group" role="group">
+      {% if isAllowedAction('Add') %}
+        {{ macro.buttonIcon( geturl('add'), 'plus-square', 'lbl.Add'|trans|ucfirst) }}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {{ macro.dataGrid(dataGrid) }}
+{% endblock %}
+

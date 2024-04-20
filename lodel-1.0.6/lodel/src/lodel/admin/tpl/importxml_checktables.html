@@ -1,0 +1,44 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_IMPORTXML_CHECKTABLES]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+	<IF COND="[#ERROR]">
+		<p class="error">[#ERROR]</p>
+	</IF>
+<form method="POST">
+<div class="importMEContainer">
+<LOOP NAME="foreach" ARRAY="[#MODIFIEDTABLES]">
+	<div class="importME_<IF COND="'added' == [#KEY]">right<ELSE />left</IF>">
+		<LET VAR="action">[#KEY]</LET>
+		<strong><IF COND="[#ACTION] EQ 'dropped'">[@ADMIN.IMPORTXML_DROPPEDTABLE]<ELSE/>[@ADMIN.IMPORTXML_ADDEDTABLE]</IF></strong>
+		<ul class="importXML_<IF COND="'added' == [#KEY]">right<ELSE />left</IF>">
+		<LOOP NAME="foreach" ARRAY="[#VALUE]">
+			<li><input class="input_formulaire" type="text" value="<IF COND="[#ACTION] EQ 'dropped'">[#KEY]</IF>" name="data[[#ACTION]][[#VALUE]]" size="3" /> - [#VALUE]</li>
+		</LOOP>
+		</ul>
+	</div>
+</LOOP>
+</div>
+<div class="importMEXML_action">
+<input type="hidden" name="do" value="[#DO]" />
+<input type="hidden" name="lo" value="[#LO]" />
+<input type="hidden" name="file" value="[#FILE]" />
+<input type="hidden" name="checktables" value="1" />
+<fieldset>
+<input class="button" type="submit"/>&nbsp;&nbsp;
+<input class="button" type="button" value="[@COMMON.CANCEL]" onclick="javascript:window.location='index.php';" />
+</fieldset>
+</div>
+</form>
+
+<MACRO NAME="CLOSE_HTML">

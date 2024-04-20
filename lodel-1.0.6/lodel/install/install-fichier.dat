@@ -1,0 +1,250 @@
+# les droits doivent etre tres larges, ils sont ensuite reduits par le filemask
+
+
+mkdir upload 0777
+mkdir tpl 0755
+mkdir css 0755
+mkdir images 0755
+mkdir docannexe 0777
+mkdir docannexe/file 0777
+mkdir docannexe/image 0777
+mkdir lodel 0755
+mkdir lodel/edition 0755
+mkdir lodel/admin 0755
+
+htaccess tpl
+
+# evite que l'internaute puisse lister ces repertoires
+touch docannexe/index.html
+touch docannexe/image/index.html
+htaccess docannexe/file
+
+###############################################################
+######### repertoire site
+
+dirdestination .
+dirsource $homelodel
+
+dirsource $homesite
+
+# lie tous les fichiers du repertoire
+ln backend.php
+ln index.php
+ln signaler.php
+ln search.php
+#gestion du module OAI
+ln oai.php
+
+### desuet. cp tpl
+
+dirsource $homesite/lodel/admin
+ln tpl/login.html
+ln login.php
+ln logout.php
+
+dirsource $homesite/lodel/edition
+
+#
+
+mkdir lodel 0755
+
+mkdir lodel/sources 0777
+htaccess lodel/sources
+
+### repertoire des icones associees aus types et aux classes (dans l'interface Lodel) ###
+mkdir lodel/icons 0777
+touch lodel/icons/index.html
+
+dirsource $homesite/lodel
+dirdestination lodel
+
+ln index.php
+
+############
+### ajout du formulaire
+dirdestination . 
+dirsource $homesite/lodel/edition
+ln tpl/edit_entities_edition.html
+
+###############################################################
+########### edition
+
+mkdir lodel/edition 0755
+mkdir lodel/edition/tpl 0755
+
+dirdestination lodel/edition
+
+htaccess tpl
+
+dirsource . # repertoire du site
+#ln styles_lodel.css
+
+# les logins
+dirsource $homesite/lodel/admin
+ln tpl/login.html
+ln login.php
+ln logout.php
+
+# tous les fichier de src/lodel/edition
+dirsource $homesite/lodel/edition
+ln siteconfig.php
+ln images
+ln css
+
+
+# templates rss dans src/lodel/edition/tpl
+ln tpl/backend_dashboard_history.html
+ln tpl/backend_dashboard_queue.html
+ln tpl/backend_dashboard_public_history.html
+
+# chaine d'importation
+ln oochargement.php
+ln tpl/oochargement.html
+
+ln checkimport.php
+ln tpl/checkimport.html
+
+ln tpl/move.html
+
+ln tpl/filebrowser.html
+ln entitybrowser.php
+ln tpl/entitybrowser.html
+
+# navigation dans la site
+
+ln index.php
+ln tpl/edition.html
+
+# le dashboard
+ln tpl/dashboard_queue.html
+ln tpl/dashboard_statistics.html
+ln tpl/dashboard_history.html
+ln tpl/dashboard_public_history.html
+ln tpl/dashboard_information.html
+ln tpl/dashboard_me.html
+
+
+# suppression et fonctions avancees des documents et publications
+ln tpl/delete_confirm.html
+ln tpl/unpublish_confirm.html
+
+#ln tpl/edit_entities_advanced.html
+ln tpl/edit_entities_edition.html
+
+# xml
+ln tpl/xml-classe.html
+ln tpl/xml-valid.html
+ln tpl/edit_xml.html
+
+#search_engine
+ln search.php
+ln tpl/search.html
+
+# sitemap
+ln tpl/sitemap.html
+
+###############################################################
+############# admin
+
+mkdir lodel/admin 0755
+mkdir lodel/admin/tpl 0755
+
+dirdestination lodel/admin
+
+htaccess tpl
+
+dirsource . # repertoire du site
+#ln styles_lodel.css
+
+dirsource $homesite/lodel/edition
+ln tpl/filebrowser.html
+
+# les logins
+dirsource $homesite/lodel/admin
+ln siteconfig.php
+ln tpl/login.html
+ln login.php
+ln logout.php
+ln loginHTTP.php
+#
+
+ln css
+
+ln index.php
+ln tpl/index.html
+
+ln tpl/optiongroups.html
+ln tpl/edit_options.html
+ln tpl/edit_optiongroups.html
+ln tpl/edit_useroptiongroups.html
+ln tpl/edit_otxconf.html
+
+ln tpl/edit_restricted_users.html
+ln tpl/restricted_users.html
+
+ln tpl/edit_texts.html
+ln tpl/texts.html
+ln tpl/translations.html
+ln tpl/edit_translations.html
+ln tpl/import_translations.html
+
+ln tpl/edit_types.html
+ln tpl/types.html
+ln tpl/edit_classes.html
+ln tpl/classes.html
+
+ln tpl/edit_internalstyles.html
+ln tpl/internalstyles.html
+ln tpl/edit_characterstyles.html
+ln tpl/characterstyles.html
+
+ln tpl/edit_entrytypes.html
+ln tpl/entrytypes.html
+ln tpl/edit_entries.html
+ln tpl/entries.html
+
+ln tpl/edit_persontypes.html
+ln tpl/persontypes.html
+ln tpl/edit_persons.html
+ln tpl/persons.html
+
+
+ln tpl/edit_tablefieldgroups.html
+ln tpl/tablefieldgroups.html
+ln tpl/edit_tablefields.html
+ln tpl/edit_indextablefields.html
+
+
+ln tpl/backup.html
+ln tpl/import.html
+
+ln tpl/edit_users.html
+ln tpl/users.html
+ln tpl/users_mail.html
+
+ln tpl/plugins.html
+ln tpl/edit_plugins.html
+
+ln tpl/importmodel.html
+ln tpl/backupmodel.html
+
+# xml schema
+ln tpl/schema-xsd.html
+
+#messagerie interne
+ln tpl/edit_internal_messaging.html
+ln tpl/internal_messaging.html
+
+#association massive
+ln tpl/entries_massassoc.html
+ln tpl/entrytypesbrowser.html
+
+#import xml du ME
+ln tpl/importxml_checkcontent.html
+ln tpl/importxml_checkfields.html
+ln tpl/importxml_checktables.html
+ln tpl/importxml_checktypes.html
+ln tpl/importxml_checktypes_class.html
+ln tpl/importxmlmodel.html
+# DTD
+ln tpl/dtd.html

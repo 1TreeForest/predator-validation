@@ -1,0 +1,42 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<TITLE>[@LODELADMIN.TITLE_INSTALLATION_WEBSITE]</TITLE>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<table width="800" cellpadding="5" cellspacing="1" border="0" align="CENTER">
+<tr><td><div align="center">
+<br /><br /><b>[@LODELADMIN.WEBSITE_CREATION]</b></div></td></tr>
+</table>
+
+<div align="center"><table width="800" cellpadding="5" cellspacing="0" border="1" align="CENTER"><tr><td>
+
+<b>[@LODELADMIN.FAIL_FOR_TABLE_CREATION].</b>
+<p>[@LODELADMIN.CHECK_DATABASE_USER_RIGHTS_WHO_MUST_BE_ABLE_TO_CREATE_TABLES]. </p>
+<p>
+[@LODELADMIN.COMMAND_LIST_MAKING_ERRORS_AND_DATABASE_SERVER_ERRORS] :</p>
+<ul>
+<LOOP NAME="errors_createtables">
+<li>[#COMMAND]: <font color="red">[#ERROR]</font></li>
+</LOOP>
+</ul>
+
+
+</td></tr></table><br/>
+
+<form method="post" action="site.php">
+<input type="hidden" name="id" value="[#ID]">
+<input type="hidden" name="task" value="createtables">
+<input type="hidden" name="versiondir" value="[#VERSIONDIR]">
+<input type="submit" value="[@LODELADMIN.CONTINUE]">
+</form>
+
+
+<MACRO NAME="CLOSE_HTML">

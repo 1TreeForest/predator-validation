@@ -1,0 +1,35 @@
+# Configuration
+/app/config/parameters.yml
+
+# Libraries
+/vendor/*
+/node_modules/*
+
+# Generated files
+.project
+.cache
+.sass-cache
+.buildpath
+.settings
+.*.swp
+.DS_Store
+/var/cache/*
+/var/logs/*
+/app/sessions/*
+/bin/*
+!bin/console
+/bundles/*
+/css/*.css
+/js/*.js
+.vscode
+.idea
+
+# Docker
+var/docker/db/data/*
+docker-compose.override.yml
+
+# Symfony's dotenv
+/.env.local
+
+# phpunit cache
+/.phpunit.result.cache

@@ -1,0 +1,198 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<IF COND="[#ID]">
+<title>[@COMMON.EDITION]<LOOP NAME="nompourtitre" TABLE="entities" WHERE="id='[#ID]'">[#IDENTIFIER] [(#G_TITLE|textebrut)]</LOOP></title>
+<ELSE/>
+<title>[(#SITE|strtoupper)].[@COMMON.ME_DESCRIPTOR]</title>
+</IF>
+<MACRO NAME="JS_FONCTIONS_ARBORESCENCE">
+<MACRO NAME="JS_AFFICHE_IMAGE">
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+	<ul class="entitiesPath">
+	
+		<li><strong>[@COMMON.ME_DESCRIPTOR] :</strong> [@COMMON.ME_DESCRIPTOR_DESCRIPTION]</li>
+
+	</ul>
+
+<br />&nbsp;<br />
+
+<div id="meDescriptor">
+<LOOP NAME="getClasses" TABLE="classes" ORDER="rank">
+	<h3>[#TITLE]</h3>
+	<h4>[@COMMON.CLASS]</h4>
+	<table class="statistics">
+		<tr>
+			<th class="status">[@COMMON.NAME]</th>
+			<th class="status">[@COMMON.TYPE]</th>
+			<th class="status">[@COMMON.ALTERTITLE]</th>
+			<th class="status">[@ADMIN.ICON]</th>
+		</tr>
+		<tr>
+			<td>[#CLASS]</td>
+			<td>[#CLASSTYPE]</td>
+			<td>
+				<LET ARRAY="output" GLOBAL="1"></LET>
+				<LET VAR="value">[#ALTERTITLE]</LET>
+				<LOOP NAME="mltext">
+					<LET ARRAY="output[]" GLOBAL="1">[#VALUE]:[#LANG]</LET>
+				</LOOP>
+				<IF COND="[%OUTPUT]">
+     					[%OUTPUT|join('<br/>')]
+				</IF>
+			</td>
+			<td>
+				<IF COND="[#ICON]"><img src="../../[#ICON]" alt="[#CLASS]"/></IF>
+			</td>
+		</tr>
+	</table>
+	<IF COND="[#CLASSTYPE] EQ 'entities'">
+		<LOOP NAME="getTYPES" TABLE="types" WHERE="class = '[#CLASS]'" ORDER="rank">
+			<BEFORE>
+				<h4>[@COMMON.TYPES]</h4>
+				<table class="statistics">
+					<tr>
+						<th class="status">[@COMMON.TITLE]</th>
+						<th class="status">[@COMMON.NAME]</th>
+						<th class="status">[@COMMON.ALTERTITLE]</th>
+					</tr>
+			</BEFORE>
+			<DO>
+				<tr>
+					<td>[#TITLE]</td>
+					<td>[#TYPE]</td>
+					<td>
+						<LET ARRAY="output" GLOBAL="1"></LET>
+						<LET VAR="value">[#ALTERTITLE]</LET>
+						<LOOP NAME="mltext">
+							<LET ARRAY="output[]" GLOBAL="1">[#VALUE]:[#LANG]</LET>
+						</LOOP>
+						<IF COND="[%OUTPUT]">
+       							[%OUTPUT|join('<br/>')]
+						</IF>
+					</td>
+				</tr>
+			</DO>
+			<AFTER>
+				</table>
+			</AFTER>
+		</LOOP>
+		<LOOP NAME="getFieldsGroups" TABLE="tablefieldgroups" WHERE="class = '[#CLASS]'" ORDER="rank">
+			<BEFORE>
+				<h4>[@COMMON.FIELDS]</h4>
+			</BEFORE>
+			<table class="statistics">
+				<caption>[#TITLE]</caption>
+				<tr>
+					<th class="status">[@COMMON.TITLE]</th>
+					<th class="status">[@COMMON.NAME]</th>
+					<th class="status">[@COMMON.ALTERTITLE]</th>
+					<th class="status">[@COMMON.TYPE]</th>
+					<th class="status">[@COMMON.STYLE]</th>
+					<th class="status">[@ADMIN.ASSOCIATED_GUI_USER_COMPLEXITY]</th>
+					<th class="status">[@COMMON.LS_VARIABLE]</th>
+				</tr>
+				<LOOP NAME="getFields" TABLE="tablefields" WHERE="idgroup = '[#ID]'" ORDER="rank">
+					<tr>
+					<th class="type">[#TITLE]</th>
+					<td>[#NAME]</td>
+					<td>
+						<LET ARRAY="output" GLOBAL="1"></LET>
+						<LET VAR="value">[#ALTERTITLE]</LET>
+						<LOOP NAME="mltext">
+							<LET ARRAY="output[]" GLOBAL="1">[#VALUE]:[#LANG]</LET>
+						</LOOP>
+						<IF COND="[%OUTPUT]">
+							[%OUTPUT|join('<br/>')]
+						</IF>
+					</td>
+					<td>[#TYPE]</td>
+					<td>[#STYLE|lexplode(',')|join('<br/>')]</td>
+					<td>[#GUI_USER_COMPLEXITY]</td>
+					<td>[#[#NAME|strtoupper]]</td>
+					</tr>
+				</LOOP>
+			</table>
+		</LOOP>
+	<ELSE/>
+		<LET VAR="table">#_TP_<IF COND="[#CLASSTYPE] EQ 'entries'">entrytypes<ELSE/>persontypes</IF></LET>
+		<LOOP NAME="getOtherTYPES" TABLE="[#TABLE]" WHERE="class = '[#CLASS]'" ORDER="rank">
+			<BEFORE>
+				<h4>[@COMMON.TYPES]</h4>
+				<table class="statistics">
+					<tr>
+						<th class="status">[@COMMON.TITLE]</th>
+						<th class="status">[@COMMON.NAME]</th>
+						<th class="status">[@COMMON.ALTERTITLE]</th>
+						<th class="status">[@COMMON.STYLE]</th>
+					</tr>
+			</BEFORE>
+			<DO>
+				<tr>
+					<td>[#TITLE]</td>
+					<td>[#TYPE]</td>
+					<td>
+						<LET ARRAY="output" GLOBAL="1"></LET>
+						<LET VAR="value">[#ALTERTITLE]</LET>
+						<LOOP NAME="mltext">
+							<LET ARRAY="output[]" GLOBAL="1">[#VALUE]:[#LANG]</LET>
+						</LOOP>
+						<IF COND="[%OUTPUT]">
+       							[%OUTPUT|join('<br/>')]
+						</IF>
+					</td>
+					<td>
+						[#STYLE|lexplode(',')|join('<br/>')]
+					</td>
+				</tr>
+			</DO>
+			<AFTER>
+				</table>
+			</AFTER>
+		</LOOP>
+		<h4>[@COMMON.FIELDS]</h4>
+		<table class="statistics">
+			<caption>[#TITLE]</caption>
+			<tr>
+				<th class="status">[@COMMON.TITLE]</th>
+				<th class="status">[@COMMON.NAME]</th>
+				<th class="status">[@COMMON.ALTERTITLE]</th>
+				<th class="status">[@COMMON.TYPE]</th>
+				<th class="status">[@COMMON.STYLE]</th>
+				<th class="status">[@ADMIN.ASSOCIATED_GUI_USER_COMPLEXITY]</th>
+				<th class="status">[@COMMON.LS_VARIABLE]</th>
+			</tr>
+			<LOOP NAME="getRelatedFields" TABLE="tablefields" WHERE="class='[#CLASS]' OR class = 'entities_[#CLASS]'" ORDER="rank">
+				<tr>
+				<th class="type">[#TITLE]</th>
+				<td>[#NAME]</td>
+				<td>
+					<LET ARRAY="output" GLOBAL="1"></LET>
+					<LET VAR="value">[#ALTERTITLE]</LET>
+					<LOOP NAME="mltext">
+						<LET ARRAY="output[]" GLOBAL="1">[#VALUE]:[#LANG]</LET>
+					</LOOP>
+					<IF COND="[%OUTPUT]">
+						[%OUTPUT|join('<br/>')]
+					</IF>
+				</td>
+				<td>[#TYPE]</td>
+				<td>[#STYLE|lexplode(',')|join('<br/>')]</td>
+				<td>[#GUI_USER_COMPLEXITY]</td>
+				<td>[#[#NAME|strtoupper]]</td>
+				</tr>
+			</LOOP>
+		</table>
+	</IF>
+</LOOP>
+</div>
+<MACRO NAME="CLOSE_HTML">

@@ -1,0 +1,77 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@LODELADMIN.TITLE_INSTALLATION_WEBSITE]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@LODELADMIN.CREATION_WEBSITE]</span></li>
+</ul>
+<br />&nbsp;<br />
+<form method="post" action="site.php">
+	<fieldset>
+	<input type="hidden" name="id" value="[#ID]" />
+	<input type="hidden" name="task" value="createdb" />
+	<input type="hidden" name="versiondir" value="[#VERSIONDIR]" />
+	
+	<IF COND="[#INSTALLOPTION]=='1'"> <!--[ OPTION1 ]-->
+		<IF COND="[#ERROR]">
+			<p class="error">
+				[@LODELADMIN.LODEL_DONT_SUCCESS_CREATE_DATABASE_AND_GIVE_RIGHTS_MYSQL_USER|sprintf([#DBNAME])] [#DBUSERNAME]@[#DBHOST]
+			</p>
+			<p class="error">
+				[@LODELADMIN.ERROR_MYSQL] : [#ERROR].
+			</p>
+		</IF>
+		
+		<ul>
+		<li>[@LODELADMIN.HOWTO_PARAMETERS_MYSQL_CREATE_DATABASE|sprintf([#DBUSERNAME])].</li>
+		<li>[@LODELADMIN.CREATE_DATABASE_YOURSELF_OR_GIVE_ALL_RIGHTS_TO_USER] "[#DBUSERNAME]@[#DBHOST]":
+		<p>
+		<textarea cols="60" rows="3" readonly="readonly">[#COMMAND1];
+		[#COMMAND2];</textarea>
+		</p>
+		</li>
+		</ul>
+	<ELSE/> <!--[ OPTION2 ]-->
+	
+		<legend>[@LODELADMIN.TWO_POSSIBILITIES] :</legend>
+		<IF COND="[#ERROR]">
+			<p class="error">
+				[@LODELADMIN.LODEL_DONT_SUCCESS_CREATE_DATABASE_AND_GIVE_RIGHTS_MYSQL_USER|sprintf([#DBNAME])] [#DBUSERNAME]@[#DBHOST]
+			</p>
+			<p class="error">
+				[@LODELADMIN.ERROR_MYSQL] : [#ERROR].
+			</p>
+		</IF>
+
+		<ul>
+		<li>
+		<label for="SQL">[@LODELADMIN.CREATE_DATABASE_GIVE_ALL_RIGHTS_MYSQL_USER|sprintf([#DBNAME])] "[#DBUSERNAME]@[#DBHOST]":</label>
+		<textarea cols="60" rows="3" readonly="readonly" id="SQL">[#COMMAND1];
+		[#COMMAND2];</textarea>
+		</li>
+		<li>
+		<label>[@LODELADMIN.LET_LODEL_TRY_CREATE_IF_MYSQL_USER_HAS_RIGHTS]</label>
+		<input class="button" type="submit" name="lodeldo" id="lodeldo" value="[@LODELADMIN.TRY_CREATE_DATABASE]" />
+		</li>
+		</ul>
+	</IF>
+	</fieldset>
+	<fieldset>
+	<legend>[@COMMON.VALIDATION]</legend>
+	<input type="submit" class="button" value="[@COMMON.CONTINUE]" />
+	</fieldset>
+	
+</form>
+
+
+
+<MACRO NAME="CLOSE_HTML">

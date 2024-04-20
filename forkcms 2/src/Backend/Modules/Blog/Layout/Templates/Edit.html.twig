@@ -1,0 +1,283 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+  <div class="btn-toolbar pull-right">
+    <div class="btn-group" role="group">
+      {% if detailURL %}
+        {% set url = (detailURL ~ '/' ~ item.url) %}
+        {% if item.revision_id %}
+          {% set url = (url ~ '?revision=' ~ item.revision_id) %}
+        {% endif %}
+
+        {{ macro.buttonIcon(url, 'eye', 'lbl.View'|trans|ucfirst) }}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  {% form edit %}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="title" class="control-label">{{ 'lbl.Title'|trans|ucfirst }} {{ macro.required }}</label>
+        {% form_field title %} {% form_field_error title %}
+        {% if detailURL %}
+          <a class="site-url" href="{{ detailURL }}/{{ item.url }}">{{ detailURL }}/<span id="generatedUrl">{{ item.url }}</span></a>
+        {% endif %}
+        {% if not detailURL %}
+          <p class="alert alert-warning alert-xs">
+            {{ macro.icon('exclamation-triangle') }}{{ 'err.NoModuleLinked'|trans|ucfirst }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div>
+        <ul class="nav nav-tabs nav-tabs-flex" role="tablist">
+          <li role="presentation" class="active mr-auto">
+            <a href="#tabContent" aria-controls="tabContent" role="tab" data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabVersions" aria-controls="tabVersions" role="tab" data-toggle="tab">{{ 'lbl.Versions'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabComments" aria-controls="tabComments" role="tab" data-toggle="tab">{{ 'lbl.Comments'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabSEO" aria-controls="tabSEO" role="tab" data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabContent">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="panel panel-default panel-editor">
+                  <div class="panel-heading">
+                    <h2>
+                      <label for="introduction">
+                        {{ 'lbl.Summary'|trans|ucfirst }}
+                        {{ macro.infoTooltip('msg.HelpSummary'|trans|ucfirst) }}
+                      </label>
+                    </h2>
+                  </div>
+                  <div class="panel-body">
+                    {% form_field introduction %}
+                  </div>
+                  {% if txtIntroductionError %}
+                    <div class="panel-footer">
+                      {% form_field_error introduction %}
+                    </div>
+                  {% endif %}
+                </div>
+                {% if imageIsAllowed %}
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h2><label for="image">{{ 'lbl.Image'|trans|ucfirst }}</label></h2>
+                    </div>
+                    <div class="panel-body">
+                      <div class="row">
+                        {% if item.image %}
+                        <div class="col-lg-3">
+                          <img src="{{ FRONTEND_FILES_URL }}/Blog/images/128x128/{{ item.image }}" class="img-thumbnail" width="200" height="200" alt="{{ 'lbl.Image'|trans|ucfirst }}" />
+                        </div>
+                        <div class="col-lg-9">
+                          {% endif %}
+                          {% form_field image %} {% form_field_error image %}
+                          {% if item.image %}
+                          <ul class="list-unstyled">
+                            <li class="checkbox">
+                              <label for="deleteImage" class="control-label">{% form_field delete_image %} {{ 'lbl.Delete'|trans|ucfirst }}</label>
+                              {% form_field_error delete_image %}
+                            </li>
+                          </ul>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                {% endif %}
+                <div class="panel panel-default panel-editor last">
+                  <div class="panel-heading">
+                    <h2>
+                      <label for="text">
+                        {{ 'lbl.MainContent'|trans|ucfirst }}
+                        {{ macro.required }}
+                      </label>
+                    </h2>
+                  </div>
+                  <div class="panel-body">
+                    {% form_field text %}
+                  </div>
+                  {% if txtTextError %}
+                    <div class="panel-footer">
+                      {% form_field_error text %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h2>{{ 'lbl.Status'|trans|ucfirst }}</h2>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <ul class="list-unstyled">
+                        {% for rbtn in hidden %}
+                          <li class="radio">
+                            <label for="{{ rbtn.id }}">{{ rbtn.rbtHidden|raw }} {{ rbtn.label }}</label>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                    <div class="form-group last">
+                      <label for="publishOnDate" class="control-label">{{ 'lbl.PublishOn'|trans|ucfirst }}</label>
+                      {% form_field publish_on_date %} {% form_field_error publish_on_date %}
+                      <label for="publishOnTime" class="control-label">{{ 'lbl.At'|trans }}</label>
+                      {% form_field publish_on_time %} {% form_field_error publish_on_time %}
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h2>{{ 'lbl.MetaData'|trans|ucfirst }}</h2>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label for="categoryId" class="control-label">{{ 'lbl.Category'|trans|ucfirst }}</label>
+                      {% form_field category_id %} {% form_field_error category_id %}
+                    </div>
+                    <div class="form-group">
+                      <label for="userId" class="control-label">{{ 'lbl.Author'|trans|ucfirst }}</label>
+                      {% form_field user_id %} {% form_field_error user_id %}
+                    </div>
+                    {% if isAllowedAction('Index', 'Tags') %}
+                      <div class="form-group last">
+                        <label for="tags" class="control-label">{{ 'lbl.Tags'|trans|ucfirst }}</label>
+                        {% form_field tags %} {% form_field_error tags %}
+                        <div class="help-block" id="tags-info">{{ 'msg.HelpTextTags'|trans }}</div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabVersions">
+            <div class="row">
+              <div class="col-md-12">
+                {% if drafts %}
+                  <div class="content-block">
+                    <div class="content-title">
+                      <h2>{{ 'lbl.Drafts'|trans|ucfirst }}
+                        {{ macro.infoTooltip('msg.HelpDrafts'|trans|ucfirst) }}
+                      </h2>
+                    </div>
+                    {{ drafts|raw }}
+                  </div>
+                {% endif %}
+                <div class="content-block">
+                  <div class="content-title">
+                    <h2>
+                      {{ 'lbl.PreviousVersions'|trans|ucfirst }}
+                      {{ macro.infoTooltip('msg.HelpRevisions'|trans|ucfirst) }}
+                    </h2>
+                  </div>
+                  {% if revisions %}
+                    {{ revisions|raw }}
+                  {% endif %}
+                  {% if not revisions %}
+                    <p>{{ 'msg.NoRevisions'|trans|ucfirst }}</p>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabComments">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group last">
+                  <ul class="list-unstyled">
+                    <li class="checkbox">
+                      <label for="allowComments" class="control-label">{% form_field allow_comments %} {{ 'lbl.AllowComments'|trans|ucfirst }}</label>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabSEO">
+            {% seo %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-left" role="group">
+          {% if isAllowedAction('Delete') %}
+            {{ macro.buttonIcon('', 'trash-o', 'lbl.Delete'|trans|ucfirst, 'btn-danger', {"id":"blog-delete", "data-toggle":"modal", "data-target":"#confirmDelete", "type":"button"} ) }}
+          {% endif %}
+          {{ macro.buttonIcon(geturl('Index'), 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default') }}
+        </div>
+        <div class="btn-group pull-right" role="group">
+          {{ macro.buttonIcon('', 'file-o', 'lbl.SaveDraft'|trans|ucfirst, 'btn-default', {"type":"submit", "name":"saveAsDraft"}) }}
+          {{ macro.buttonIcon('', 'check', 'lbl.Publish'|trans|ucfirst, 'btn-primary', {"type":"submit", "name":"publish"}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="addCategoryDialog" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="addCategoryDialogTitle">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="addCategoryDialogTitle">{{ 'lbl.AddCategory'|trans|ucfirst }}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="categoryTitle" class="control-label">
+              {{ 'lbl.Title'|trans|ucfirst }}
+              {{ macro.required }}
+            </label>
+            <input type="text" name="categoryTitle" id="categoryTitle" class="form-control" maxlength="255" />
+            <p class="text-danger" id="categoryTitleError" style="display: none;">{{ 'err.FieldIsRequired'|trans|ucfirst }}</p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          {{ macro.buttonIcon('', 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default', {"data-dismiss":"modal" }) }}
+          {{ macro.buttonIcon('', 'plus-square', 'lbl.AddCategory'|trans|ucfirst, 'btn-primary', {"id":"addCategorySubmit", "type":"button"}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endform %}
+
+  {% if isAllowedAction('Delete') %}
+    {{ form_start(deleteForm) }}
+    {{ form_row(deleteForm._token) }}
+    {{ form_row(deleteForm.id) }}
+    {{ form_row(deleteForm.categoryId) }}
+    <div class="modal fade" id="confirmDelete" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="confirmDeleteTitle">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="confirmDeleteTitle">{{ 'lbl.Delete'|trans|ucfirst }}</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{ 'msg.ConfirmDelete'|trans|format(item.title|e)|raw }}</p>
+          </div>
+          <div class="modal-footer">
+            {{ macro.buttonIcon('', 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default', {"data-dismiss":"modal"}) }}
+            {{ macro.buttonIcon('', 'trash', 'lbl.Delete'|trans|ucfirst, 'btn-danger', {"type":"submit"}) }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(deleteForm) }}
+  {% endif %}
+{% endblock %}

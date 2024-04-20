@@ -1,0 +1,291 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@EDITION.TITLE_CHECK_STYLING]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO">
+
+<ul id="actionsOnEntitiesPath">
+	<li>[@EDITION.TITLE_CHECK_STYLING]</li>
+</ul>
+
+<div class="actions_top">
+    <input class="styled assoc_blue" type="button" value="[@COMMON.IMPORT_AND_VIEW]" onclick="javascript:window.location='index.php?do=import&amp;idtask=[#IDTASK]&amp;finish=oui&amp;visualiserdocument=oui&amp;reload=[#RELOAD]'">&nbsp;
+    <input class="styled assoc_blue" type="button" value="[@COMMON.IMPORT]" onclick="javascript:window.location='index.php?do=import&amp;idtask=[#IDTASK]&amp;finish=oui&amp;reload=[#RELOAD]'">&nbsp;
+    <input type="button" class="styled assoc_blue" value="[@COMMON.CONTINUE]" onclick="javascript:window.location='index.php?do=import&amp;idtask=[#IDTASK]&amp;reload=[#RELOAD]';"/>&nbsp;
+    <input class="styled assoc_grey" type="button" value="[@EDITION.REDO_IMPORT]" onclick="javascript:window.location='oochargement.php?identity=[#IDENTITY]&amp;idparent=[#IDPARENT]&amp;idtype=[#IDTYPE]&amp;reload=[#RELOAD]';">&nbsp;
+    <input class="styled assoc_grey" type="button" value="[@COMMON.CANCEL]" onclick="javascript:window.location='index.php?do=delete&amp;lo=tasks&amp;id=[#IDTASK]&amp;fromdoc=[#IDENTITY]&amp;reload=[#RELOAD]'"/>
+</div>
+
+<div id="headerContainer">
+	<ul id="headerMenu">
+		<li class="left selected topleftrounded" id="select_results" onclick="chk.toggleTab('results', this);">[@EDITION.RESULTS|mb_strtoupper('utf-8')]</li>
+		<li class="left topleftrounded" id="select_informations" onclick="chk.toggleTab('informations', this);">[@COMMON.INFORMATIONS|mb_strtoupper('utf-8')]</li>
+	</ul>
+</div>
+
+<div id="checkimport" class="toprightrounded">
+	<div id="results">
+		<div id="status">
+			<IF COND="[#PARSERREPORT] OR [#ERROR]">
+				<img src="[#SHAREURL]/images/alerte_rouge.png" alt="[@INSTALL.WARNING]"/> <span class="error">[@INSTALL.WARNING|mb_strtoupper('utf-8')]</span>
+				<ul>
+				<LOOP NAME="foreach" ARRAY="[#PARSERREPORT]">
+					<li>[#VALUE]</li>
+				</LOOP>
+				<LOOP NAME="foreach" ARRAY="[#ERROR]">
+					<LET VAR="error">[#VALUE]</LET>
+					<li>[#KEY] : <a href="#[#KEY]"><FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[#KEY]" /></a></li>
+				</LOOP>
+				</ul>
+			<ELSE/>
+				<img src="[#SHAREURL]/images/alerte_vert.png" alt="[@EDITION.IMPORT_SUCCESSFULL]"/> <span class="success">[@EDITION.IMPORT_SUCCESSFULL|mb_strtoupper('utf-8')]</span>
+				<p class="otxcitation">Bravo !</p>
+			</IF>
+		</div>
+		<LET VAR="paranumber" GLOBAL="1">0</LET>
+		<LOOP NAME="getFieldByRank" TABLE="tablefields AS t,tablefieldgroups AS tg" SELECT="t.name,t.type,t.title,t.otx,t.idgroup,tg.title AS tgtitle,t.style" WHERE="t.class='[#CLASS]' AND t.idgroup=tg.id" ORDER="tg.rank,t.rank">
+			<IF COND="[#TYPE] NE 'persons'">
+				<IF COND="![%CURIDGROUP]">
+					<LET VAR="curidgroup" GLOBAL="1">[#IDGROUP]</LET>
+					<table class="chkbalisage">
+						<tr class="noborder"><td class="blocktitle">[#TGTITLE]</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<LET VAR="firstclass" GLOBAL="1">first</LET>
+				<ELSEIF COND="[%CURIDGROUP] NE [#IDGROUP]">
+					</table>
+					<table class="chkbalisage">
+						<tr class="noborder"><td class="blocktitle">[#TGTITLE]</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+					<LET VAR="curidgroup" GLOBAL="1">[#IDGROUP]</LET>
+					<LET VAR="firstclass" GLOBAL="1">first</LET>
+				</IF>
+			<ELSE/>
+				<IF COND="![%CURIDGROUP]">
+					<LET VAR="curidgroup" GLOBAL="1">[#IDGROUP]</LET>
+					<LET VAR="firstclass" GLOBAL="1">first</LET>
+				<ELSEIF COND="[%CURIDGROUP] NE [#IDGROUP]">
+					</table>
+					<LET VAR="curidgroup" GLOBAL="1">[#IDGROUP]</LET>
+					<LET VAR="firstclass" GLOBAL="1">first</LET>
+				</IF>
+			</IF>
+
+			<SWITCH TEST="[#TYPE]">
+				<DO CASE="entries">
+					<LOOP NAME="getIdEntrytype" SELECT="id,title,class,type" TABLE="entrytypes" WHERE="type='[#NAME]'">
+						<IF COND="[#ENTRIES.#ID]">
+							<tr<IF COND="[%FIRSTCLASS]"> class="[%FIRSTCLASS]"<LET VAR="firstclass" GLOBAL="1"></LET></IF>>
+								<td class="title <IF COND="[#ERROR.#TYPE]">error</IF>">[#TITLE]</td>
+								<td class="contents">
+									<div class="overflowed">[#ENTRIES.#ID]</div>
+								</td>
+								<td class="noborder">&nbsp;</td>
+							</tr>
+						</IF>
+					</LOOP>
+				</DO>
+
+				<DO CASE="persons">
+					<LOOP NAME="getIdPersontype" SELECT="id,title,class" TABLE="persontypes" WHERE="type='[#NAME]'">
+						<IF COND="[#PERSONS.#ID]">
+							<LOOP NAME="foreach" ARRAY="[#PERSONS.#ID]">
+								<LET VAR="firstclass" GLOBAL="1">first</LET>
+								<table class="chkbalisage">
+								<IF COND="![%CURRENTTITLE] OR [%CURRENTTITLE] NE [#TITLE]">
+									<tr class="noborder"><td class="blocktitle">[#TITLE]</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+									<LET VAR="currenttitle" GLOBAL="1">[#TITLE]</LET>
+								</IF>
+								<LOOP NAME="foreach" ARRAY="[#VALUE.DATA]">
+									<IF COND="![%FIELDS.#KEY]">
+										<LOOP NAME="getFieldTitle" TABLE="tablefields" SELECT="title" WHERE="name='[#KEY]' AND (class='entities_[#CLASS]' OR class='[#CLASS]')">
+											<LET ARRAY="fields.#KEY" GLOBAL="1">[#TITLE]</LET>
+										</LOOP>
+									</IF>
+									<tr<IF COND="[%FIRSTCLASS]"> class="[%FIRSTCLASS]"<LET VAR="firstclass" GLOBAL="1"></LET></IF>><td class="title">[%FIELDS.#KEY]</td><td class="contents"><div class="overflowed">[#VALUE]</div></td><td class="noborder">&nbsp;</td></tr>
+								</LOOP>
+								</table>
+							</LOOP>
+						</IF>
+					</LOOP>
+				</DO>
+
+				<DO CASE="default">
+					<IF COND="[#CONTENTS.#NAME]">
+						<IF COND="[#TYPE] EQ 'mltext' OR [#TYPE] eq 'mllongtext'">
+							<LOOP NAME="foreach" ARRAY="[#CONTENTS.#NAME]">
+								<tr<IF COND="[%FIRSTCLASS]"> class="[%FIRSTCLASS]"<LET VAR="firstclass" GLOBAL="1"></LET></IF>>
+									<td class="title<IF COND="[#VALUE.ERROR] OR [#ERROR.#NAME]"> error</IF>"><IF COND="[#VALUE.ERROR]">[@EDITION.UNKNOWN_STYLE]</IF> [#TITLE] ([#KEY])</td>
+									<td class="contents"><div class="overflowed">
+										<LOOP NAME="foreach" ARRAY="[#VALUE]">
+											[#VALUE.TEXT]
+										</LOOP>
+									</div></td>
+									<td class="informations">
+										<ul>
+										<LOOP NAME="foreach" ARRAY="[#VALUE]">
+											<LOOP NAME="foreach" ARRAY="[#VALUE.STYLE]">
+												<li>[#VALUE|lexplode(':')|join(':&#8203;')|lexplode(';')|join(';&#8203;')]</li>
+											</LOOP>
+										</LOOP>
+										</ul>
+									</td>
+								</tr>
+							</LOOP>
+						<ELSE/>
+							<LOOP NAME="foreach" ARRAY="[#CONTENTS.#NAME]">
+								<tr<IF COND="[%FIRSTCLASS]"> class="[%FIRSTCLASS]"<LET VAR="firstclass" GLOBAL="1"></LET></IF>>
+									<td class="title<IF COND="[#VALUE.ERROR] OR [#ERROR.#NAME]"> error</IF> [#NAME]"><IF COND="[#VALUE.ERROR]">[@EDITION.UNKNOWN_STYLE]</IF> [#TITLE]<IF COND="[#VALUE.CLASS] NE [#NAME]"><br/>[#VALUE.CLASS]</IF></td>
+									<td class="contents">
+										<div class="overflowed">
+											<IF COND="[#TYPE] EQ 'date'">
+												[#VALUE.TEXT|humandate]
+											<ELSE/>
+												<IF COND="[#STYLE|strpos('standard')] NE false AND [#VALUE.CLASS] EQ [#NAME] AND false SEQ [#VALUE.TEXT|strpos('<table')] AND false SEQ [#VALUE.TEXT|strpos('<img')] AND false SEQ [#VALUE.TEXT|strpos('<h')]">
+													<LET VAR="paranumber" GLOBAL="1">[%PARANUMBER|lmath('+', 1)]</LET>
+													<span class="paranumber">[%PARANUMBER]</span>
+												</IF>
+												[#VALUE.TEXT]
+											</IF>
+										</div>
+									</td>
+									<td class="informations">
+										<ul>
+										<LOOP NAME="foreach" ARRAY="[#VALUE.STYLE]">
+											<IF COND="[#VALUE|is_array]">
+												<li>
+												<LOOP NAME="foreach" ARRAY="[#VALUE]">
+													<IF COND="[#KEY] EQ 'imagename'">
+														<p>
+															<span style="color:#aaaaaa;">[@EDITION.IMAGE_NAME]</span><br/>
+															[#VALUE]
+														</p>
+													<ELSEIF COND="[#KEY] EQ 'imagewidth'">
+														<p>
+															<span style="color:#aaaaaa;">[@EDITION.IMAGE_ORIGINAL_WIDTH]</span><br/>
+															[#VALUE] px
+														</p>
+													<ELSEIF COND="[#KEY] EQ 'imageheight'">
+														<p>
+															<span style="color:#aaaaaa;">[@EDITION.IMAGE_ORIGINAL_HEIGHT]</span><br/>
+															[#VALUE] px
+														</p>
+													<ELSEIF COND="[#KEY] EQ 'imagemime'">
+														<p>
+															<span style="color:#aaaaaa;">[@EDITION.MIME_TYPE]</span><br/>
+															[#VALUE]
+														</p>
+													<ELSEIF COND="[#KEY] EQ 'imagesize'">
+														<p>
+															<span style="color:#aaaaaa;">[@EDITION.FILESIZE]</span><br/>
+															[#VALUE|niceFileSize]
+														</p>
+													<ELSE/>
+														[#VALUE|lexplode(':')|join(':&#8203;')|lexplode(';')|join(';&#8203;')]<br/>
+													</IF>
+												</LOOP>
+												</li>
+											<ELSE/>
+												<li>[#VALUE|replace(array(';', ':', '-'), array('&#8203;;&#8203;', '&#8203;:&#8203;', '&#8203;-&#8203;'))]</li>
+											</IF>
+										</LOOP>
+										</ul>
+									</td>
+								</tr>
+							</LOOP>
+						</IF>
+					</IF>
+				</DO>
+			</SWITCH>
+			<AFTER></table></AFTER>
+		</LOOP>
+	</div>
+
+	<div id="informations" class="hidden">
+		<ul id="otxstats">
+			<IF COND="[#OTXWARNINGS]">
+				<li class="title"><p class="error">[@EDITION.OTX_WARNINGS]</p></li>
+				<LOOP NAME="foreach" ARRAY="[#OTXWARNINGS]">
+					<li>[#VALUE]</li>
+				</LOOP>
+			</IF>
+			<li class="title">[@EDITION.STATISTICS_INFORMATIONS]</li>
+			<li>
+				<LOOP NAME="foreach" ARRAY="[#STATISTICS.DOCSTATS]">
+					<p>[#KEY|getlodeltextcontents('edition')] : [#VALUE]</p>
+				</LOOP>
+			</li>
+			<LET ARRAY="langs"><IF COND="[#STATISTICS.LANG|is_array]">[#STATISTICS.LANG|array_unique]</IF></LET>
+			<li class="title">[@EDITION.USED_LANGUAGES] <span style="color:grey">([#LANGS|count])</span></li>
+			<li>[#LANGS|join(', ')]</li>
+			<li class="title">[@COMMON.IMAGES] <span style="color:grey">([#STATISTICS.IMAGES|count])</span></li>
+			<li>
+				<LOOP NAME="foreach" ARRAY="[#STATISTICS.IMAGES]">
+					<p>[#KEY|basename] : [#VALUE.IMAGEWIDTH]x[#VALUE.IMAGEHEIGHT]px, [#VALUE.IMAGEMIME], [#VALUE.IMAGESIZE|niceFileSize]</p>
+				</LOOP>
+			</li>
+			<li class="title">[@EDITION.DOCUMENT_PLAN] <span style="color:grey">([#TITLES|count])</span></li>
+			<li>
+				[#TITLES|join('')]
+			</li>
+		</ul>
+	</div>
+</div>
+
+<div class="actions_bottom">
+    <input class="styled assoc_blue" type="button" value="[@COMMON.IMPORT_AND_VIEW]" onclick="javascript:window.location='index.php?do=import&amp;idtask=[#IDTASK]&amp;finish=oui&amp;visualiserdocument=oui&amp;reload=[#RELOAD]'">&nbsp;
+    <input class="styled assoc_blue" type="button" value="[@COMMON.IMPORT]" onclick="javascript:window.location='index.php?do=import&amp;idtask=[#IDTASK]&amp;finish=oui&amp;reload=[#RELOAD]'">&nbsp;
+    <input type="button" class="styled assoc_blue" value="[@COMMON.CONTINUE]" onclick="javascript:window.location='index.php?do=import&amp;idtask=[#IDTASK]&amp;reload=[#RELOAD]';"/>&nbsp;
+    <input class="styled assoc_grey" type="button" value="[@EDITION.REDO_IMPORT]" onclick="javascript:window.location='oochargement.php?identity=[#IDENTITY]&amp;idparent=[#IDPARENT]&amp;idtype=[#IDTYPE]&amp;reload=[#RELOAD]';">&nbsp;
+    <input class="styled assoc_grey" type="button" value="[@COMMON.CANCEL]" onclick="javascript:window.location='index.php?do=delete&amp;lo=tasks&amp;id=[#IDTASK]&amp;reload=[#RELOAD]'"/>
+</div>
+
+<MACRO NAME="MOOTOOLS"/>
+
+<script type="text/javascript">
+var checkBalisage = {};
+checkBalisage = function() {
+	this.init();
+};
+
+checkBalisage.prototype = {
+
+	init:function() {
+		$$('table.chkbalisage').each(function(item) {
+			if(item.getFirst().getChildren('tr').length < 2) {
+				item.addClass('hidden');
+			}
+		});
+		this.resizeOverflowed();
+	},
+	toggleTab:function(id) {
+		$('results').addClass('hidden');
+		$('select_results').removeClass('selected');
+		$('informations').addClass('hidden');
+		$('select_informations').removeClass('selected');
+		$(id).removeClass('hidden');
+		$('select_'+id).addClass('selected');
+	},
+	resizeOverflowed:function() {
+		var maxWidth = window.getSize().x / 2;
+		$$('div.overflowed').each(function(item) {
+			item.setStyle('width', maxWidth);
+		});
+	}
+};
+
+var chk = {};
+window.addEvent('domready', function() {
+	chk = new checkBalisage();
+	window.addEvent('resize', function() {
+		this.resizeOverflowed();
+	}.bind(chk));
+});
+</script>
+
+<MACRO NAME="CLOSE_HTML">

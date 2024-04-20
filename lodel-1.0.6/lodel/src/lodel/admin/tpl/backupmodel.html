@@ -1,0 +1,64 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_BACKUP_EDITORIAL_MODEL]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO">
+
+<ul id="actionsOnEntitiesPath">
+	<li>
+	<span class="intit">[@ADMIN.TITLE_BACKUP_EDITORIAL_MODEL]</span>
+	</li>
+</ul>
+<br />&nbsp;<br />
+
+<form method="POST" action="index.php">
+	<input type="hidden" name="do" value="[#DO]" />
+	<input type="hidden" name="lo" value="data"  />
+
+
+<fieldset>
+	<legend>[@ADMIN.INCLUDE_THE_FILES_IN_THE_FOLLOWING_DIRECTORIES]</legend>
+	<input type="checkbox" name="tpl" id="tpl" checked="checked" /><label for="tpl" class="boolean">tpl</label>
+	<input type="checkbox" name="css" id="css" checked="checked" /><label for="css" class="boolean">css</label>
+	<input type="checkbox" name="images" id="images" checked="checked" /><label for="images" class="boolean">images</label>
+	<input type="checkbox" name="js" id="js" checked="checked" /><label for="js" class="boolean">js</label>
+	<input type="checkbox" name="lodel/icons" id="lodel/icons" checked="checked" /><label for="lode/icons" class="boolean">icons</label>
+	<input type="hidden" name="backup" value="1" />
+</fieldset>
+
+<fieldset>
+	<legend>[@ADMIN.HOWTO_ME]</legend>
+	<label for="title">[@COMMON.TITLE]</label>
+	<IF COND="[#ERROR.TITLE]"><span class="error">[@ADMIN.THE_TITLE_IS_REQUIRED]</span></IF>
+	<input type="text" size="40" name="title" id="title" value="[#TITLE]" />
+
+	<label for="description">[@COMMON.DESCRIPTION]</label>
+	<IF COND="[#ERROR.DESCRIPTION]"><span class="error">[@ADMIN.THE_DESCRIPTION_IS_REQUIRED]</span></IF>
+	<textarea cols="50" rows="6" name="description" id="description">[#DESCRIPTION]</textarea>
+	
+	<label for="author">[@COMMON.AUTHOR]</label>
+	<IF COND="[#ERROR.AUTHOR]"><span class="error">[@ADMIN.THE_AUTHOR_IS_REQUIRED]</span></IF>
+	<input type="text" size="30" name="author" id="author" value="[#AUTHOR]" />
+
+	<label for="modelversion">[@ADMIN.MODELVERSION]</label>
+	<IF COND="[#ERROR.MODELVERSION]"><span class="error">[@ADMIN.THE_MODELVERSION_IS_REQUIRED]</span></IF>
+	<input type="text" size="30" name="modelversion" id="modelversion" value="[#MODELVERSION]" />
+</fieldset>
+
+<fieldset>
+	<legend>[@COMMON.VALIDATION]</legend>
+	<input class="button" type="submit" value="[@COMMON.SAVE]" />
+	<input class="button" type="button" value="[@COMMON.BACK]" onclick="javascript:window.location='index.php'" />
+</fieldset>
+
+</form>
+
+<MACRO NAME="CLOSE_HTML">

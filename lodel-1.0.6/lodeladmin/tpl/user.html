@@ -1,0 +1,57 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros_old.html"><MACRO NAME="HEADER_HEAD_OPEN">
+<TITLE>[@ADMIN.TITLE_USER_EDITION]</TITLE>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<div align="center"><br /><br /><b>[@ADMIN.TITLE_USER_EDITION]</b></div>
+<table width="800" cellpadding="5" cellspacing="0" border="1" align="CENTER">
+
+<form method="POST" action="user.php">
+<input type="hidden" name="edit" value="1">
+<input type="hidden" name="id" value="[#ID]">
+<input type="hidden" name="groupes[0]" value="1">
+<tr><td><b>Nom:</b></td>
+<td><input size="30" type="text" name="nom" value="[#NAME]"></td>
+<IF COND="[#ERROR_NAME]">
+	<td class="erreur"><font color="Red">[@ADMIN.ERROR_NAME] !</font></td>
+</IF>
+</tr>
+<tr><td><b>[@COMMON.EMAIL]</b></td>
+<td><input size="30" type="text" name="courriel" value="[#COURRIEL]"></td>
+<IF COND="[#ERROR_COURRIEL]">
+	<td class="erreur"><font color="Red">[@ADMIN.ERROR_MAIL]</font></td>
+</IF>
+</tr>
+<tr><td><b>[@COMMON.LOGIN] :</b></td>
+<td><input size="30" type="text" name="usernamems" value="[#LODELUSER.AMEMS]"></td>
+<IF COND="[#ERROR_USERNAME]">
+	<td class="erreur">[@ADMIN.ERROR_USERNAME]</td>
+</IF>
+<IF COND="[#ERROR_DUPUSERNAME]">
+	<td class="erreur">[@ADMIN.ERROR_USERNAME].</td>
+</IF>
+</tr>
+<tr><td><b>[@COMMON.PASSWORD] :</b></td>
+<td><input size="30" type="password" name="passwdms" value=""></td>
+<IF COND="[#ERROR_PASSWD]">
+	<td class="erreur">[@ADMIN.ERROR_PASSWORD]</td>
+</IF>
+</tr>
+<tr>
+	<td><b>[@COMMON.LANG] :</b></td>
+	<td><select name="lang"><?php  makeselectlangs_nevernil(); ?></select></td>
+<tr>
+</table>
+<IF COND="[#ID]"><input class="form" type="submit" value="[@COMMON.MODIFY]" /><ELSE/><input class="form" type="submit" value="[@COMMON.ADD]" /></IF>
+</form>
+
+[<a href="user.php?delete=1&id=(#ID)">[@COMMON.DELETE]</a>]
+
+<MACRO NAME="CLOSE_HTML">

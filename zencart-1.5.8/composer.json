@@ -1,0 +1,64 @@
+{
+    "name": "zencart/zencart",
+    "description": "Open Source E-commerce Application",
+    "homepage": "https://www.zen-cart.com",
+    "license": "GPL-2.0",
+    "authors": [
+        {
+            "name": "The Zen-Cart Team",
+            "homepage": "https://github.com/zencart/zencart/graphs/contributors"
+        }
+    ],
+    "funding": [
+        {
+            "type": "other",
+            "url": "https://zen-cart.com/donate"
+        }
+    ],
+    "support": {
+        "forum": "https://zen-cart.com/forum",
+        "source": "https://zen-cart.com/getit",
+        "docs": "https://docs.zen-cart.com"
+    },
+    "_comment": "compatible with PHP 7.3-8.0",
+    "require": {
+        "ext-curl": "*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "php": "^7.3|^7.4|^8.0|^8.1",
+        "illuminate/database": "^8.83",
+        "illuminate/events": "^8.83",
+        "mikey179/vfsstream": "^1.6",
+        "phpunit/phpunit": "^9.5",
+        "sempro/phpunit-pretty-print": "^1.4"
+    },
+    "autoload": {
+        "classmap": ["includes/classes", "includes/modules"]
+    },
+    "include-path": ["includes/"],
+    "autoload-dev": {
+        "classmap": ["not_for_release/testFramework"],
+        "psr-4": {
+            "Tests\\": "not_for_release/testFramework/",
+            "App\\": "laravel/app/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.5.x-dev"
+        }
+    },
+    "config": {
+        "bin-dir": "vendor/bin",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "scripts": {
+        "db-tests": "phpunit --verbose --testsuite Dbunit --printer 'Sempro\\PHPUnitPrettyPrinter\\PrettyPrinterForPhpUnit9'",
+        "tests": "phpunit --verbose  --process-isolation --testsuite Unit --printer 'Sempro\\PHPUnitPrettyPrinter\\PrettyPrinterForPhpUnit9'",
+        "dusk": "phpunit --verbose --testsuite Browser --debug --printer 'Sempro\\PHPUnitPrettyPrinter\\PrettyPrinterForPhpUnit9'"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

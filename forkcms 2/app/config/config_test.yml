@@ -1,0 +1,44 @@
+imports:
+    - { resource: config_dev.yml }
+
+parameters:
+    site.multilanguage: true
+    site.default_language: en
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    profiler:
+        collect: false
+    router:
+        resource: "%kernel.project_dir%/app/config/routing.yml"
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+doctrine:
+    dbal:
+        connections:
+            default:
+                dbname: "%database.name%_test"
+
+services:
+    database:
+        class: SpoonDatabase
+        public: true
+        arguments:
+            - "%database.driver%"
+            - "%database.host%"
+            - "%database.user%"
+            - "%database.password%"
+            - "%database.name%_test"
+            - "%database.port%"
+        calls:
+            - [ setDebug, [ "%kernel.debug%" ]]
+
+monolog:
+    handlers:
+        main:
+            type: 'null'

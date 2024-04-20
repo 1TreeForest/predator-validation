@@ -1,0 +1,82 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_IMPORTXML_CHECKCONTENT]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<form method="POST">
+
+<IF COND="[#ERROR]">
+	<p class="error">[#ERROR]</p>
+</IF>
+<LOOP NAME="foreach" ARRAY="[#CHANGEDCONTENT.OLDCONTENT]">
+	<div class="importME_left">
+	<LET VAR="table">[#KEY]</LET>
+	<LET VAR="nbrows">[#VALUE.0|count|lmath('+', 1)]</LET>
+	<table class="importXML">
+		<tr><td colspan="[#NBROWS]"><strong>[@ADMIN.IMPORTXML_OLD_TABLECONTENT] - table [#TABLE]</strong></td></tr>
+		<tr>
+		<td>&nbsp;</td>
+		<LOOP NAME="foreach" ARRAY="[#VALUE|array_pop]">
+			<td>[#VALUE]</td>
+		</LOOP>
+		</tr>
+		<LOOP NAME="foreach" ARRAY="[#VALUE]">
+			<tr>
+				<td>
+				<input type="text" size="3" value="[#KEY]" name="changedcontent[[#TABLE]][oldcontent][[#KEY]]" class="input_formulaire"/>
+				</td>
+				<LOOP NAME="foreach" ARRAY="[#VALUE]">
+					<td>[#VALUE|htmlentities(ENT_NOQUOTES, [#CHARSET])]</td>
+				</LOOP>
+			</tr>
+		</LOOP>
+	</table>
+	</div>
+	<div class="importME_right">
+	<LET ARRAY="newcontent">[#CHANGEDCONTENT.NEWCONTENT.#TABLE]</LET>
+	<LET VAR="nbrows">[#NEWCONTENT.0|count|lmath('+', 1)]</LET>
+	<table class="importXML">
+		<tr><td colspan="[#NBROWS]"><strong>[@ADMIN.IMPORTXML_NEW_TABLECONTENT] - table [#TABLE]</strong></td></tr>
+		<tr>
+		<td>&nbsp;</td>
+		<LOOP NAME="foreach" ARRAY="[#NEWCONTENT|array_pop]">
+			<td>[#VALUE]</td>
+		</LOOP>
+		</tr>
+		<LOOP NAME="foreach" ARRAY="[#NEWCONTENT]">
+			<tr>
+				<td>
+				<input type="text" size="3" value="[#CHANGEDCONTENT.#TABLE.NEWCONTENT.#KEY]" name="changedcontent[[#TABLE]][newcontent][[#KEY]]" class="input_formulaire"/>
+				</td>
+				<LOOP NAME="foreach" ARRAY="[#VALUE]">
+					<td>[#VALUE|htmlentities(ENT_NOQUOTES, [#CHARSET])]</td>
+				</LOOP>
+			</tr>
+		</LOOP>
+	</table>
+	</div>
+	<div class="spacer"></div>	
+</LOOP>
+<div class="importMEXML_action">
+<input type="hidden" name="do" value="[#DO]" />
+<input type="hidden" name="lo" value="[#LO]" />
+<input type="hidden" name="file" value="[#FILE]" />
+<input type="hidden" name="checkcontent" value="1" />
+<fieldset>
+	<input class="button" type="submit"/>&nbsp;&nbsp;
+	<input class="button" type="button" value="[@COMMON.CANCEL]" onclick="javascript:window.location='index.php';" />
+</fieldset>
+</div>
+</form>
+
+<MACRO NAME="CLOSE_HTML">

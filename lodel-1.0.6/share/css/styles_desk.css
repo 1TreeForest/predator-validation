@@ -1,0 +1,395 @@
+/*
+ * LODEL - Logiciel d'Édition ÉLectronique.
+ * @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ * @authors See COPYRIGHT file
+ */
+
+/* Ces styles ne sont pas dans styles_lodel.css qui n'est pas chargé en mode visualisation */
+
+/****************DESK*************************/
+
+body{
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+#lodel-desk{
+	/*background-image: url("[#SHAREURL]/images/bandeau.jpg");
+	background-repeat: no-repeat;*/
+	background-color: #d4d7cc;
+	height: 167px;
+	font: 11px verdana, sans-serif !important;
+	text-align: left !important;
+	color: #333;
+}
+
+#lodel-desk h1{
+	margin: 0;
+	padding: 0;
+}
+
+
+#lodel-desk a{
+	text-decoration: none;
+	color: #0e2d7c;
+}
+
+/* Groupe des boutons du desk */
+
+
+#lodel-desk ul, #lodel-desk li{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+#lodel-desk ul.group1, #lodel-desk ul.group2{
+	position: absolute;
+	top: 109px;
+}
+
+#lodel-desk ul.group1{
+	left: 0;
+	padding: 0 .5em;
+}
+
+#lodel-desk ul.group2{
+	top: 60px;
+	right: .5em;
+}
+
+#lodel-desk ul li{
+	float: left;
+	width: auto;
+	display: block;
+	margin: 0 .3em 0 0;
+	height: 20px;
+}
+
+#lodel-desk ul li a{
+	display: block;
+	float: left;
+	text-align: center;
+	color: #98e8f4;
+	font-weight: bold;
+	padding: 1ex 1em 1ex 1em;
+	height: 17px;
+}
+
+#lodel-desk ul li a.actif, #lodel-desk ul li a:hover, #lodel-desk #deskContext li a:hover{
+	color: #ffff00;
+}
+
+#lodel-desk ul.group2 a#logout, #lodel-desk ul.group2 a#clearcache{
+	height: 16px;
+	padding: 0 0 0 20px;
+	font-weight: normal;
+	color: #37b8e3;
+	margin-right: 1em;
+}
+
+#lodel-desk ul.group2 a#logout:hover, #lodel-desk ul.group2 a#clearcache:hover{
+	color: black;
+	border: 0;
+}
+
+#lodel-desk #deskContext{
+	position: absolute;
+	top: 141px;
+	left: 0;
+	background: #e18600;
+	width: 100%;
+	height: auto;
+}
+
+#lodel-desk #deskContext li{
+	height: auto;
+	margin: 0;
+}
+
+#lodel-desk #deskContext li a{
+	background: transparent;
+	background-image: none;
+	font-weight: normal;
+	color: #fff;
+	padding: 5px 10px 4px 10px;
+	margin: 0;
+}
+
+#lodel-desk #deskContext li strong{
+	display: block;
+	color:  #ffff00;
+	padding: 5px 10px 4px 10px;
+}
+
+/* Fin boutons du desk */
+
+
+
+/* liste sites pour desk lodeladmin */
+
+#lodel-desk div.sites{
+	color: #CC9933;
+	font-weight: bold;
+	height: 2ex;
+	z-index: 2;
+	position: absolute;
+	left: 320px;
+	top: .5ex;
+}
+
+#lodel-desk div.sites select{
+	width: 150px;
+	font-size: 11px;
+}
+
+#lodel-desk table.infos{
+	position: absolute;
+	right: 0;
+	top: 0;
+	/*width: 40%;*/
+	font-size: 90%;
+	border: 0;
+	border-collapse: collapse;
+}
+
+#lodel-desk table.infos td, #lodel-desk table.infos th{
+	border: 1px solid #2184c3;
+	border-left: 0;
+	background-color: #009dd1;
+	padding: .7ex .7em;
+	vertical-align: middle;
+	height: 15px;
+}
+
+#lodel-desk table.infos th{
+	border-right: 3px solid #2184c3;
+	text-align: left;
+}
+
+
+
+ul.entitiesPath, ul.entitiesPath li, #actionsOnEntitiesPath, #actionsOnEntitiesPath li{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	text-align: left;
+}
+
+ul.entitiesPath li.this{
+	color: #666;
+}
+
+#siteContext a{
+	color: #000;
+}
+
+#siteContext a:hover, #siteContext ul.entitiesPath.site a:hover{
+	color: #666;
+}
+
+#siteContext ul.entitiesPath.site a{
+	color: #0096b7;
+}
+
+
+
+.inactif, a.inactif{
+	color: #666;
+}
+
+ul.entitiesPath .queryText, #actionsOnEntitiesPath a, a.action, #move a{
+	color: #ed8400;
+}
+
+#move li em{
+	font-size: 90%;
+}
+
+ul.entitiesPath, #actionsOnEntitiesPath, #addEntity, ul.entitiesPath .queryText{
+	padding: .5ex 0 .5ex 1em;
+	min-height: 3.5ex;
+	font-size: 90%;
+	border-bottom: 1px solid #dadbdc;
+	background: #e5e8e3;
+}
+
+ul.entitiesPath li, #actionsOnEntitiesPath li, #addEntity li{
+	display: inline;
+	padding: 0;
+	margin: .3ex .4em 0 0;
+	color: #333;	
+}
+
+ul.entitiesPath .queryText{
+	padding: 1.5ex 0 0 4em;
+}
+
+ul.entitiesPath .queryText .searchInfos{
+	position: relative;
+	top: 1.5ex;
+	left: 70%;
+	width: 30%;
+}
+
+ul.entitiesPath{
+	/*margin-top: 1.5em;*/
+	padding-top: 1ex;
+}
+
+#siteContext ul.entitiesPath{
+	margin-top: 0;
+}
+
+
+#actionsOnEntitiesPath{
+	font-weight: bold;
+	position: relative;
+	background: #fff;
+	padding: 1.5em 1em 1.3em 1em;
+}
+
+#actionsOnEntitiesPath li.entitieTitle{
+	font-weight: bold;
+	color: #ed8400;
+	/*padding-left: 85px;*/
+}
+
+#actionsOnEntitiesPath li.entitieTitle em{
+	font-weight: normal;
+}
+
+#actionsOnEntitiesPath div.entityIcons{
+	width: 60px;
+	position: absolute;
+	top: 20%;
+/* 	background: red; */
+}
+
+#actionsOnEntitiesPath li.entitieTitle div.entityTitle{
+	display:inline;
+	margin-left:8em;
+}
+
+#actionsOnEntitiesPath div.entityIcons img.statusIcon{
+	display: block;
+	float: left;
+	margin-top: 1.6ex;
+}
+
+#actionsOnEntitiesPath div.entityIcons img.associatedIcon{
+	display: block;
+	float: right;
+	margin-top: 1ex;
+}
+
+#actionsOnEntitiesPath ul.actions{
+	position: absolute;
+	top: .8ex;
+	right: 1.3em;
+}
+
+#actionsOnEntitiesPath ul.actions li.isolated{
+	width: auto;
+	font-weight: bold;
+}
+
+#addEntity{
+	height: auto;
+	background: #fff;
+	padding: 1.5em 1em 1.5em 7.2em;
+	border: 0;
+}
+
+#addEntity li{
+	margin: .8ex 1em 0 0;
+	color: #8a8a8a;
+	float: none;
+	display: inline;
+}
+
+#addEntity li a{
+	color: #ff5b04;
+	font-weight: bold;
+}
+
+#addEntity li select.add{
+	/*background: #fff6e3;*/
+	font-style: italic;
+	width: 140px;
+	color: #0075ab;
+}
+
+#addEntity li select.add option{
+	background: #fff;
+	font-weight: normal;
+	font-style: normal;
+	color: #333;
+}
+
+#addEntity li select.add option.class{
+	/*background: #fff6e3;*/
+	font-style: italic;
+	color: #0075ab;
+}
+
+#addEntity li.actionTitle{
+	font-weight: bold;
+}
+
+#actionsOnEntitiesPath ul.actions li{
+	width: 70px;
+	display: block;
+	float: left;
+	margin: 2ex .5em 0 0;
+	text-align: left;
+	font-weight: normal;
+}
+
+/* moteur */
+
+#lightSearchForm, fieldset.bar{
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: right;
+}
+
+#lightSearchForm fieldset, fieldset.bar{
+	margin: 0;
+	padding: 3px 15px 4px 25px;
+	border: 0;
+	width: auto;
+	background: #828486;
+}
+
+fieldset.bar label{
+	display: inline;
+	color: #fff;
+	font-weight: bold;
+}
+
+fieldset.bar{
+	padding-top: 6px;
+}
+
+#lightSearchForm input.text, #lightSearchForm input.lightSearch, select.barInfo{
+	font: normal 90% verdana, sans-serif;
+	border: 1px solid #333;
+}
+
+
+select.barInfo{
+	border: 1px solid #aaa;
+}
+
+
+#lightSearchForm input.lightSearch{
+	border: 0;
+	font-weight: bold;
+	background: transparent;
+	color: #fff;
+	font-size: 12px;
+}
+
+/****************FIN DESK*************************/

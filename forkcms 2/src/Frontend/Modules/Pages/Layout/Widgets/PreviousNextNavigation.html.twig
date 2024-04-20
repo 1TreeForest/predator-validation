@@ -1,0 +1,39 @@
+<nav class="module-pages widget-pages-previous-next-navigation">
+  <ul class="pager">
+    {% if widgetPagesNavigation.previous %}
+      {% block widget_previous %}
+        <li class="previous">
+          <a href="{{ widgetPagesNavigation.previous.url }}" rel="prev" title="{{ widgetPagesNavigation.previous.title }}">
+            ←
+            <span class="sr-only">{{ 'lbl.PreviousPage'|trans|ucfirst }}: </span>
+            <span class="title">{{ widgetPagesNavigation.previous.title }}</span>
+          </a>
+        </li>
+      {% endblock %}
+    {% endif %}
+
+    {% if widgetPagesNavigation.parent %}
+      {% block widget_parent %}
+        <li class="parentLink">
+          <a href="{{ widgetPagesNavigation.parent.url }}" title="{{ widgetPagesNavigation.parent.title }}">
+            ↑
+            <span class="sr-only">{{ 'lbl.ParentPage'|trans|ucfirst }}: </span>
+            <span class="title">{{ widgetPagesNavigation.parent.title }}</span>
+          </a>
+        </li>
+      {% endblock %}
+    {% endif %}
+
+    {% if widgetPagesNavigation.next %}
+      {% block widget_next %}
+        <li class="next">
+          <a href="{{ widgetPagesNavigation.next.url }}" rel="next" title="{{ widgetPagesNavigation.next.title }}">
+            <span class="sr-only">{{ 'lbl.NextPage'|trans|ucfirst }}: </span>
+            <span class="title">{{ widgetPagesNavigation.next.title }}</span>
+            ➝
+          </a>
+        </li>
+      {% endblock %}
+    {% endif %}
+  </ul>
+</nav>

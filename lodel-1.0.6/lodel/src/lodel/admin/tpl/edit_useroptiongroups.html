@@ -1,0 +1,63 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_OPTIONS]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+
+<ul class="entitiesPath">
+	<li>
+	<strong>[@ADMIN.EDIT_OPTIONS] : </strong> 
+		<LET VAR="current_entry_type">[#TITLE]</LET>
+		<LOOP NAME="getGroups" TABLE="optiongroups" ORDER="rank" WHERE="logic != 'otxconf'">
+			<BEFORE><select onchange="select_url(this)" class="barInfo"></BEFORE>
+			<IF COND="[#TITLE] EQ [#CURRENT_ENTRY_TYPE]">
+				<option selected="selected">[#TITLE]</option>
+			<ELSE />
+				<option value="[#SITEROOT]lodel/admin/index.php?do=view&amp;lo=useroptiongroups&amp;id=[#ID]">[#TITLE]</option>
+			</IF>
+			<AFTER></select></AFTER>
+		</LOOP>
+	</li>
+</ul>
+
+
+<br />
+
+
+<form enctype="multipart/form-data" method="POST" action="<?php echo basename($_SERVER['PHP_SELF']); ?>" autocomplete="off">
+<input type="hidden" name="do" value="edit">
+<input type="hidden" name="lo" value="useroptiongroups">
+<input type="hidden" name="id" value="[#ID]" />
+	 <fieldset>
+      <legend>[#TITLE]</legend>
+  <LOOP NAME="optiongroups" TABLE="options" ORDER="rank,name" WHERE="status gt 0 AND idgroup='[#ID]'">
+		<DO>
+		<IF COND="[#TYPE]=='passwd'"><LET VAR="value"></LET></IF>
+		<!--[ print the group ]-->
+		<label for="[#NAME]">[#TITLE] :</label>
+		<FUNC NAME="PRINT_EDIT_FIELD" FULLVARNAME="data[[#NAME]]" VARNAME="[#NAME]" VALUE="[#VALUE|htmlspecialchars]" TYPE="[#TYPE]" EDITIONPARAMS="[#EDITIONPARAMS]" EDITION="[#EDITION]" />
+		<br />
+		</DO>
+    <ALTERNATIVE>
+      [@ADMIN.NO_OPTIONS_FOR_THIS_GROUP]
+    </ALTERNATIVE>
+	</LOOP>
+  </fieldset>
+	
+<fieldset>
+<legend>[@COMMON.VALIDATION]</legend>
+	<MACRO NAME="SUBMIT_CANCEL_BUTTON">
+</fieldset>
+</form>
+
+<MACRO NAME="CLOSE_HTML">

@@ -1,0 +1,35 @@
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<DEFMACRO NAME="root_element">
+<LOOP NAME="URL_SITE_XML" TABLE="sites" WHERE="name='[#SITE]'">
+	<[#CLASS] xmlns="[#URL]/schema-[#CLASS]" xmlns:xhtml="http://www.w3.org/1999/xhtml">  
+</LOOP>
+</DEFMACRO>
+
+<DEFMACRO NAME="SHOW_FIELD_VALUE">
+<IF COND="[#VALUE] and [#CONDITION]!='+'">
+	<IF COND="[#TYPE] eq 'boolean'">
+  	<[#NAME]><IF COND="[#VALUE]">true<ELSE/>false</IF></[#NAME]>
+  <ELSE/>
+ 	<IF COND="[#TYPE] eq 'mltext' OR [#TYPE] eq 'mllongtext'">
+		<LOOP NAME="mltext">
+			<[#NAME] lang="[#LANG]">[(#VALUE|namespace)]</[#NAME]>
+	  </LOOP>
+  <ELSE/>
+  <IF COND="[#TYPE] eq 'lang'">
+		<[#NAME]>[#VALUE]</[#NAME]>
+  <ELSE/>
+  <IF COND="[#TYPE] eq 'date'">
+    <[#NAME]>[#VALUE]</[#NAME]>
+  <ELSE/>
+   	<[#NAME]>[(#VALUE|namespace)]</[#NAME]>
+  </IF>
+  </IF>
+  </IF>
+  </IF>
+</IF>
+</DEFMACRO>

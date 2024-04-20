@@ -1,0 +1,389 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+
+{% endblock %}
+
+{% block content %}
+  {% form settingsIndex %}
+  {% if warnings %}
+    <div class="row fork-module-messages">
+      <div class="col-md-12">
+        <div class="alert alert-warning" role="alert">
+          <p><strong>{{ macro.icon('exclamation-triangle') }}{{ 'msg.ConfigurationError'|trans|ucfirst }}
+            </strong></p>
+          <ul>
+            {% for warning in warnings %}
+              <li>{{ warning.message|raw }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  {% endif %}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            {{ 'lbl.WebsiteTitle'|trans|ucfirst }}
+            {{ macro.required }}
+          </h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group last">
+            {% form_field site_title %} {% form_field_error site_title %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">
+            {{ 'lbl.GoogleTrackingOptions'|trans|ucfirst }}
+          </h2>
+        </div>
+        <div class="panel-body">
+          <p><small>{{ 'msg.HelpGoogleTrackingOptions'|trans }}</small></p>
+          <div class="form-group checkboxTextFieldCombo">
+            <label for="googleTrackingGoogleAnalyticsTrackingId" class="control-label">{{ 'lbl.GoogleAnalyticsTrackingId'|trans }}</label>
+            <div class="input-group">
+              <div class="input-group-addon">
+                {% form_field google_tracking_google_analytics_tracking_id_enabled %}
+              </div>
+              {% form_field google_tracking_google_analytics_tracking_id %}
+            </div>
+            {% form_field_error google_tracking_google_analytics_tracking_id %}
+            <span class="help-block">{{ 'msg.HelpGoogleTrackingGoogleAnalyticsTrackingId'|trans|raw }}</span>
+          </div>
+          <div class="form-group checkboxTextFieldCombo">
+            <label for="googleTrackingGoogleTagManagerContainerId" class="control-label">{{ 'lbl.GoogleTagManagerContainerId'|trans }}</label>
+            <div class="input-group">
+              <div class="input-group-addon">
+                {% form_field google_tracking_google_tag_manager_container_id_enabled %}
+              </div>
+              {% form_field google_tracking_google_tag_manager_container_id %}
+            </div>
+            {% form_field_error google_tracking_google_tag_manager_container_id %}
+            <span class="help-block">{{ 'msg.HelpGoogleTrackingGoogleTagManagerContainerId'|trans|raw }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.Scripts'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="siteHtmlHead" class="control-label">{{ 'msg.HelpScriptsHeadLabel'|trans|raw }}</label>
+            {% form_field site_html_head %} {% form_field_error site_html_head %}
+            <span class="help-block">{{ 'msg.HelpScriptsHead'|trans|raw }}</span>
+          </div>
+          <div class="form-group">
+            <label for="siteHtmlStartOfBody" class="control-label">{{ 'msg.HelpScriptsStartOfBodyLabel'|trans|raw }}</label>
+            {% form_field site_html_start_of_body %} {% form_field_error site_html_start_of_body %}
+            <span class="help-block">{{ 'msg.HelpScriptsStartOfBody'|trans|raw }}</span>
+          </div>
+          <div class="form-group last">
+            <label for="siteHtmlEndOfBody" class="control-label">{{ 'msg.HelpScriptsEndOfBodyLabel'|trans|raw }}</label>
+            {% form_field site_html_end_of_body %} {% form_field_error site_html_end_of_body %}
+            <span class="help-block">{{ 'msg.HelpScriptsEndOfBody'|trans|raw }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.Languages'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <p>{{ 'msg.HelpLanguages'|trans|ucfirst }}</p>
+            <ul id="activeLanguages" class="list-unstyled">
+              {% for activeLanguage in activeLanguages %}
+                <li class="checkbox">
+                  <label for="{{ activeLanguage.id }}">
+                    {{ activeLanguage.chkActiveLanguages|raw }} {{ activeLanguage.label }}{% if activeLanguage.default %} ({{ 'lbl.Default'|trans|ucfirst }}){% endif %}
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="form-group last">
+            <p>{{ 'msg.HelpRedirectLanguages'|trans|ucfirst }}</p>
+            <ul id="redirectLanguages" class="list-unstyled">
+              {% for redirectLanguage in redirectLanguages %}
+                <li class="checkbox">
+                  <label for="{{ redirectLanguage.id }}">
+                    {{ redirectLanguage.chkRedirectLanguages|raw }} {{ redirectLanguage.label }}{% if redirectLanguage.default %} ({{ 'lbl.Default'|trans|ucfirst }}){% endif %}
+                  </label>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.DateAndTime'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="timeFormat" class="control-label">{{ 'lbl.TimeFormat'|trans|ucfirst }}</label>
+            {% form_field time_format %} {% form_field_error time_format %}
+            <span class="help-block">{{ 'msg.HelpTimeFormat'|trans|ucfirst }}</span>
+          </div>
+          <div class="form-group">
+            <label for="dateFormatShort" class="control-label">{{ 'lbl.ShortDateFormat'|trans|ucfirst }}</label>
+            {% form_field date_format_short %} {% form_field_error date_format_short %}
+            <span class="help-block">{{ 'msg.HelpDateFormatShort'|trans|ucfirst }}</span>
+          </div>
+          <div class="form-group last">
+            <label for="dateFormatLong" class="control-label">{{ 'lbl.LongDateFormat'|trans|ucfirst }}</label>
+            {% form_field date_format_long %} {% form_field_error date_format_long %}
+            <span class="help-block">{{ 'msg.HelpDateFormatLong'|trans|ucfirst }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.Numbers'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group last">
+            <label for="numberFormat" class="control-label">{{ 'lbl.NumberFormat'|trans|ucfirst }}</label>
+            {% form_field number_format %} {% form_field_error number_format %}
+            <span class="help-block">{{ 'msg.HelpNumberFormat'|trans|ucfirst }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div id="settingsApiKeys" class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.APIKeys'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <p>{{ 'msg.HelpAPIKeys'|trans }}</p>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th class="title" style="width: 20%;"><span>{{ 'lbl.Name'|trans|ucfirst }}</span></th>
+                <th style="width: 40%;"><span>{{ 'lbl.APIKey'|trans|ucfirst }}</span></th>
+                <th style="width: 60%;"><span>{{ 'lbl.APIURL'|trans|ucfirst }}</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if needsGoogleMaps %}
+                <tr>
+                  <th>
+                    <label for="googleMapsKey" class="control-label">
+                      Google maps key{{ macro.required }}
+                    </label>
+                  </th>
+                  <td>{% form_field google_maps_key %} {% form_field_error google_maps_key %}</td>
+                  <td>
+                    <a href="https://developers.google.com/maps/documentation/javascript/get-api-key" target="_blank" rel="noopener noreferrer">https://developers.google.com/maps/documentation/javascript/get-api-key</a>
+                  </td>
+                </tr>
+              {% endif %}
+              {% if needsGoogleRecaptcha %}
+                <tr>
+                  <th>
+                    <label for="googleRecaptchaSiteKey" class="control-label">
+                      reCAPTCHA site key
+                    </label>
+                  </th>
+                  <td>{% form_field google_recaptcha_site_key %} {% form_field_error google_recaptcha_site_key %}</td>
+                  <td>
+                    <a href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener noreferrer">https://www.google.com/recaptcha/admin</a>
+                  </td>
+                </tr>
+                <tr>
+                  <th>
+                    <label for="googleRecaptchaSiteKey" class="control-label">
+                      reCAPTCHA secret key
+                    </label>
+                  </th>
+                  <td>{% form_field google_recaptcha_secret_key %} {% form_field_error google_recaptcha_secret_key %}</td>
+                  <td>
+                    <a href="https://www.google.com/recaptcha/admin" target="_blank" rel="noopener noreferrer">https://www.google.com/recaptcha/admin</a>
+                  </td>
+                </tr>
+              {% endif %}
+              {% if needsAkismet %}
+                <tr>
+                  <th><label for="akismetKey" class="control-label">Akismet key</label>
+                  </th>
+                  <td>{% form_field akismet_key %} {% form_field_error akismet_key %}</td>
+                  <td><a href="http://akismet.com/personal">http://akismet.com/personal</a></td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.CkFinder'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="ckfinderLicenseName" class="control-label">{{ 'lbl.LicenseName'|trans|ucfirst }}</label>
+            {% form_field ckfinder_license_name %} {% form_field_error ckfinder_license_name %}
+          </div>
+          <div class="form-group">
+            <label for="ckfinderLicenseKey" class="control-label">{{ 'lbl.LicenseKey'|trans|ucfirst }}</label>
+            {% form_field ckfinder_license_key %} {% form_field_error ckfinder_license_key %}
+          </div>
+          <div class="form-group">
+            <label for="ckfinderImageMaxWidth" class="control-label">{{ 'lbl.MaximumWidth'|trans|ucfirst }}</label>
+            {% form_field ckfinder_image_max_width %} {% form_field_error ckfinder_image_max_width %}
+            <span class="help-block">{{ 'msg.HelpCkfinderMaximumWidth'|trans|ucfirst }}</span>
+          </div>
+          <div class="form-group last">
+            <label for="ckfinderImageMaxHeight" class="control-label">{{ 'lbl.MaximumHeight'|trans|ucfirst }}</label>
+            {% form_field ckfinder_image_max_height %} {% form_field_error ckfinder_image_max_height %}
+            <span class="help-block">{{ 'msg.HelpCkfinderMaximumHeight'|trans|ucfirst }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.Facebook'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group">
+            <label for="facebookAdminIds" class="control-label">{{ 'lbl.AdminIds'|trans|ucfirst }}</label>
+            {% form_field facebook_admin_ids %} {% form_field_error facebook_admin_ids %}
+            <span class="help-block">{{ 'msg.HelpFacebookAdminIds'|trans|ucfirst }}</span>
+          </div>
+          <div class="form-group">
+            <label for="facebookApplicationId" class="control-label">{{ 'lbl.ApplicationId'|trans|ucfirst }}</label>
+            {% form_field facebook_application_id %} {% form_field_error facebook_application_id %}
+            <span class="help-block">{{ 'msg.HelpFacebookApplicationId'|trans|ucfirst }}</span>
+          </div>
+          <div class="form-group last">
+            <label for="facebookApplicationSecret" class="control-label">{{ 'lbl.ApplicationSecret'|trans|ucfirst }}</label>
+            {% form_field facebook_application_secret %} {% form_field_error facebook_application_secret %}
+            <span class="help-block">{{ 'msg.HelpFacebookApplicationSecret'|trans|ucfirst }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.Twitter'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group last">
+            <label for="twitterSiteName" class="control-label">{{ 'lbl.TwitterSiteName'|trans|ucfirst }}</label>
+            <div class="input-group">
+              <div class="input-group-addon">@</div>
+              {% form_field twitter_site_name %}
+            </div>
+            {% form_field_error twitter_site_name %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    <div class="row fork-module-content">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h2 class="panel-title">{{ 'lbl.GoogleRecaptcha'|trans|ucfirst }}</h2>
+          </div>
+          <div class="panel-body">
+            {% if rbtGoogleRecaptchaVersionError %}
+              <div class="alert alert-danger">{{ rbtGoogleRecaptchaVersionError }}</div>
+            {% endif %}
+            <ul class="list-unstyled radiobuttonFieldCombo">
+              {% for googleRecaptchaVersionElement in google_recaptcha_version %}
+                <li class="radio">
+                  <div class="form-group">
+                    <label for="{{ googleRecaptchaVersionElement.id }}">{{ googleRecaptchaVersionElement.rbtGoogleRecaptchaVersion|raw }} {{ googleRecaptchaVersionElement.label }}</label>
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.PrivacyConsents'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <div class="form-group last">
+            <ul class="list-unstyled">
+              <li class="checkbox">
+                <label for="showCookieBar" class="control-label">{% form_field show_cookie_bar %} {{ 'msg.ShowCookieBar'|trans|ucfirst }}</label>
+              </li>
+            </ul>
+          </div>
+          <div class="form-group last">
+            <ul class="list-unstyled">
+              <li class="checkbox">
+                <label for="showConsentDialog" class="control-label">{% form_field show_consent_dialog %} {{ 'msg.ShowConsentDialog'|trans|ucfirst }}</label>
+              </li>
+            </ul>
+            <p>{{ 'msg.HelpPrivacyConsents'|trans }}</p>
+            <div class="form-group">
+              <label for="privacyConsentLevels" class="control-label">{{ 'lbl.TechnicalName'|trans|ucfirst }}</label>
+              {% form_field privacy_consent_levels %} {% form_field_error privacy_consent_levels %}
+              <span class="help-block">{{ 'msg.HelpPrivacyConsentLevels'|trans|ucfirst }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row fork-module-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-right" role="group">
+          {{ macro.buttonIcon('', 'floppy-o', 'lbl.Save'|trans|ucfirst, 'btn-primary', { "id":"save", "type":"submit", "name":"save" }) }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endform %}
+{% endblock %}

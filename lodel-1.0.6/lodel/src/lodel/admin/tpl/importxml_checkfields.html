@@ -1,0 +1,84 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_IMPORTXML_CHECKFIELDS]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<IF COND="[#ERROR]">
+	<p class="error">[#ERROR]</p>
+</IF>
+
+<form method="POST">
+
+<LOOP NAME="foreach" ARRAY="[#MODIFIEDFIELDS]">
+	<LET VAR="table">[#KEY]</LET>
+	<LOOP NAME="foreach" ARRAY="[#VALUE]">
+		<div class="importME_<IF COND="'added' EQ [#KEY]">left<ELSE />right</IF>">
+		<table class="importXML">
+			<tr><td colspan="3"><strong>[@COMMON.CLASS] [#TABLE]</strong></td></tr>
+			<tr><td>&nbsp;</td><td><strong>[@COMMON.FIELD]</strong></td><td><strong>[@ADMIN.FIELD_TYPE]</strong></td></tr>
+			<IF COND="[#VALUE|is_array] AND ![#VALUE|empty]">
+				<LET VAR="act">[#KEY]</LET>
+				<LOOP NAME="foreach" ARRAY="[#VALUE]">
+					<LET VAR="kkey">[#KEY]</LET>
+					<LOOP NAME="foreach" ARRAY="[#VALUE]">
+						<IF COND="![#VALUE|is_array]">
+							<tr><td><input type="text" value="[#KKEY]" name="data[[#TABLE]][[#ACT]][[#KEY]]" size="3" class="input_formulaire"/></td>
+							<td>[#KEY]</td><td>[#VALUE]</td></tr>
+						<ELSE />
+							<IF COND="'value' == [#KEY]">
+								<tr>
+								<LET ARRAY="fieldname" GLOBAL="1">[#VALUE|array_keys]</LET>
+								<LET ARRAY="fieldtype" GLOBAL="1">[#VALUE|array_values]</LET>
+								<td><input type="text" value="" name="data[[#TABLE]][[#ACT]][[%FIELDNAME.0]]" size="3" class="input_formulaire" /></td>
+								<td>[%FIELDNAME.0]</td>
+								<td>[%FIELDTYPE.0]</td>
+								</tr>
+							<ELSEIF COND="'tablefieldgroups' == [#KEY]">
+								<tr>
+								<td colspan="3">
+								<strong>[@ADMIN.DATAFIELDGROUP]</strong>
+								</td>
+								</tr>
+								<tr><td colspan="3">
+								<LOOP NAME="foreach" ARRAY="[#VALUE]">
+									<IF COND="[#TABLE] == [#VALUE.2]">
+										<input type="radio" value="[#VALUE.0]" name="data[[#TABLE]][[#ACT]][tablefieldgroup][[%FIELDNAME.0]]" /> [#VALUE.3]
+									</IF>
+								</LOOP>
+								</td>
+								</tr>
+							</IF>
+						</IF>
+					</LOOP>
+				</LOOP>
+			<ELSE />
+				<tr><td>[@ADMIN.IMPORTXML_NO_ENTRY_FOUND]</td></tr>
+			</IF>
+		</table>
+	</div>
+	</LOOP>
+	<div id="spacer"></div>
+</LOOP>
+<div class="importMEXML_action">
+<input type="hidden" name="do" value="[#DO]" />
+<input type="hidden" name="lo" value="[#LO]" />
+<input type="hidden" name="file" value="[#FILE]" />
+<input type="hidden" name="checkfields" value="1" />
+<fieldset>
+	<input class="button" type="submit"/>&nbsp;&nbsp;
+	<input class="button" type="button" value="[@COMMON.CANCEL]" onclick="javascript:window.location='index.php';" />
+</fieldset>
+</div>
+</form>
+
+<MACRO NAME="CLOSE_HTML">

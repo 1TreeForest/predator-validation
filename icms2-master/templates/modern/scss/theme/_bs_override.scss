@@ -1,0 +1,351 @@
+.modal-header {
+  .modal-close > svg {
+      fill: currentColor;
+      width: $modal-header-padding-y * 5;
+  }
+}
+.modal-title {
+  color: $modal-title-color;
+}
+.modal-body {
+  background-color: $modal-content-bg;
+  background-clip: padding-box;
+}
+.modal-content {
+  background-color: transparent;
+}
+.fade-scale {
+    .modal-content {
+        transform: scale(0.2);
+        opacity: 0.2;
+        transition: transform .1s ease-out, opacity .2s ease-out;
+        will-change: transform, opacity;
+    }
+    &.in {
+        .modal-content {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+}
+.breadcrumb:after {
+    background: linear-gradient(270deg, $body-bg 40%, rgba(247, 247, 247, 0));
+    bottom: 0;
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: $spacer*3;
+}
+.media-body >*:last-child, .media:last-child {
+    margin-bottom: 0 !important;
+}
+#desktop_device_type {
+    .icms-menu-hovered .dropdown:hover>.dropdown-menu, .icms-user-menu:not(.show):hover>.dropdown-menu {
+        display: block;
+        -webkit-animation: slide-up .3s ease-in-out;
+        animation: slide-up .3s ease-in-out;
+        margin: 0;
+    }
+}
+.breadcrumb-item {
+    > a {
+        color: inherit;
+    }
+}
+.navbar {
+    .form-control {
+        box-shadow: inset 0 -1px 0 $gray-400;
+        transition: box-shadow .2s;
+        background-color: transparent;
+        border: none;
+        border-radius: 0;
+        &:focus {
+            box-shadow: inset 0 -2px 0 $primary;
+            ~.input-group-append {
+                .btn {
+                    color: $primary;
+                }
+            }
+        }
+    }
+    .input-group-append {
+        .btn {
+            color: $gray-400;
+        }
+    }
+    .bg-dark &,
+    .bg-primary & {
+        .form-control {
+            color: $white;
+            box-shadow: inset 0 -1px 0 rgba($white, .5);
+            &:focus {
+                box-shadow: inset 0 -2px 0 $white;
+                ~.input-group-append {
+                    .btn {
+                        color: $white;
+                    }
+                }
+            }
+            &::placeholder {
+                color: rgba($white, .5);
+            }
+        }
+    }
+}
+.navbar-nav {
+    &.icms-navbar-expanded:not(.flex-column) {
+        .nav-item {
+            &:not(:first-child) {
+                .nav-link {
+                    padding-left: $navbar-nav-link-padding-x*2;
+                }
+            }
+        }
+    }
+}
+.icms-navbar {
+    .dropdown-menu {
+        padding: 0;
+        border-radius: 0;
+    }
+    .nav-link {
+        &::before {
+            bottom: -1px !important;
+        }
+    }
+}
+@include media-breakpoint-down(lg) {
+    .icms-navbar {
+        .dropdown-menu {
+            border-top: none;
+            margin-top: 0;
+        }
+    }
+}
+@include media-breakpoint-up(lg) {
+    .icms-navbar {
+        .nav-link {
+            text-transform: uppercase;
+            padding-top: $nav-link-padding-y*3;
+            padding-bottom: $nav-link-padding-y*3;
+        }
+        .dropdown-menu {
+            border-bottom: none;
+            border-right: none;
+            border-left: none;
+            box-shadow: $box-shadow;
+            .dropdown-item {
+                padding: $spacer/2 $spacer;
+            }
+        }
+    }
+}
+.icms-navbar-brand__show_on_hide.navbar-brand {
+    padding: 1rem 0;
+}
+.nav-tabs, .icms-navbar {
+    .nav-link {
+        outline-color: $nav-tabs-border-color;
+        border: 0;
+        position: relative;
+        background-color: transparent;
+        &::before {
+            transition: all .5s;
+            position: absolute;
+            display: block;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 0%;
+            height: 3px;
+            background-color: transparent;
+            content: '';
+        }
+        &.active {
+            background-color: transparent;
+        }
+        &.active::before {
+            background-color: $primary;
+            width: 100%;
+        }
+        &:not(.active):hover {
+            &::before {
+                width: 100%;
+                background-color: $nav-tabs-border-color;
+            }
+        }
+    }
+}
+.nav-link {
+    > .counter.badge {
+        color: $white;
+        background-color: $primary;
+    }
+    &.active {
+        > .counter.badge {
+            background-color: $white;
+            color: $primary;
+        }
+    }
+}
+.navbar-dark {
+    .nav-link {
+        > .counter.badge {
+            background-color: $danger;
+        }
+    }
+}
+.dropdown-menu-arrow {
+    &:before {
+        position: absolute;
+        top: -$dropdown-menu-arrow-width;
+        left: 50%;
+        content: "";
+        width: 0;
+        border-width: 0 $dropdown-menu-arrow-width $dropdown-menu-arrow-width;
+        border-style: solid;
+        border-color: $dropdown-border-color transparent;
+        margin-left: -$dropdown-menu-arrow-width;
+    }
+    &:after {
+        position: absolute;
+        top: -($dropdown-menu-arrow-width - 1);
+        left: 50%;
+        content: '';
+        width: 0;
+        border-width: 0 ($dropdown-menu-arrow-width - 1) ($dropdown-menu-arrow-width - 1);
+        border-style: solid;
+        border-color: $dropdown-bg transparent;
+        margin-left: -($dropdown-menu-arrow-width - 1);
+    }
+    &[x-placement^="top"] {
+        &:after {
+            top: auto;
+            bottom: -($dropdown-menu-arrow-width - 1);
+            transform: rotate(180deg);
+        }
+        &:before {
+            top: auto;
+            bottom: -$dropdown-menu-arrow-width;
+            transform: rotate(180deg);
+        }
+    }
+}
+form {
+    .field_error {
+        .invalid-feedback {
+            display: block;
+        }
+        .chosen-container-single .chosen-single, select, textarea, .form-control {
+            border-color: $form-feedback-invalid-color;
+        }
+    }
+    .reguired_field {
+        > label {
+            &:after{
+                content: '*';
+                color: theme-color("danger");
+                padding-left: $spacer*0.5;
+            }
+        }
+    }
+    .child_field{
+        padding-left: $spacer;
+    }
+}
+.custom-checkbox {
+    &.align-items-center {
+        label {
+            &:after, &:before {
+                top: auto;
+            }
+        }
+    }
+}
+@include media-breakpoint-down(md) {
+    .navbar-dark .dropdown-menu {
+        border-color: transparent;
+        background-color: rgba(0,0,0,0.1);
+        .dropdown-item.border-bottom, .dropdown-divider {
+            border-color: rgba(255,255,255,0.12) !important;
+        }
+        .dropdown-item {
+            color: rgba(255,255,255,0.65);
+            &:hover, &:focus {
+                background-color: rgba(255, 255, 255, 0.25);
+            }
+        }
+    }
+}
+.list-group-item.active {
+    .text-muted {
+        color: lighten($text-muted, 30) !important;
+    }
+}
+.table-hover {
+  > tbody > tr,
+  > tbody > tr > th,
+  > tbody > tr > td {
+    transition: background-color .3s, color .3s;
+  }
+}
+// https://bugzilla.mozilla.org/show_bug.cgi?id=1108514
+// slick slider
+.row {
+    > [class*="col-"] {
+        min-width: 0;
+    }
+}
+.navbar-expand {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+        &#{$infix} {
+            @include media-breakpoint-up($next) {
+                .icms-navbar-brand__show_on_hide, .icms-navbar-form__show_on_hide {
+                    display: none !important;
+                }
+            }
+        }
+    }
+}
+.navbar-light {
+    .nav-link {
+        color: $navbar-light-color;
+        @include hover-focus() {
+            color: $navbar-light-hover-color;
+        }
+        &.disabled {
+            color: $navbar-light-disabled-color;
+        }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+        color: $navbar-light-active-color;
+    }
+}
+.navbar-dark {
+    .nav-link {
+        color: $navbar-dark-color;
+
+        @include hover-focus() {
+            color: $navbar-dark-hover-color;
+        }
+
+        &.disabled {
+            color: $navbar-dark-disabled-color;
+        }
+    }
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+        color: $navbar-dark-active-color;
+    }
+}

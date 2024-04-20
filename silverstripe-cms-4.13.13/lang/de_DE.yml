@@ -1,0 +1,61 @@
+de_DE:
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Archive:
+    RESULT: '%d Seite aus der Entwurfs- und Veröffentlichten Ansicht entfernt und archiviert'
+    TITLE: 'Veröffentlichung zurücknehmen und archivieren'
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Publish:
+    PUBLISHED_PAGES: '%d Seiten veröffentlicht, %d Fehlerhaft'
+    PUBLISH_PAGES: Veröffentlichen
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Restore:
+    RESTORE: Wiederherstellen
+    RESTORED_PAGES: '%d Seiten wiederhergestellt'
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Unpublish:
+    UNPUBLISHED_PAGES: '%d nicht veröffentlichte Seiten'
+    UNPUBLISH_PAGES: 'Veröffentlichung zurücknehmen'
+  SilverStripe\CMS\Controllers\CMSMain:
+    Cancel: Abbrechen
+    EMAIL: E-Mail
+    PAGES: Seitenstatus
+    PAGETYPEOPT: Seitentyp
+    SAVEDRAFT: Speichern
+    TreeFilteredClear: Löschen
+    UNPUBLISH_AND_ARCHIVE: 'Veröffentlichung zurücknehmen und archivieren'
+  SilverStripe\CMS\Controllers\CMSPageHistoryController:
+    UNKNOWN: Unbekannt
+    WHEN: Wann
+  SilverStripe\CMS\Controllers\CMSPagesController:
+    MENUTITLE: Seiten
+  SilverStripe\CMS\Controllers\CMSSiteTreeFilter_ChangedPages:
+    Title: 'Bearbeitete Seiten'
+  SilverStripe\CMS\Controllers\CMSSiteTreeFilter_DeletedPages:
+    Title: 'Alle Seiten, einschließlich der archivierten'
+  SilverStripe\CMS\Controllers\CMSSiteTreeFilter_StatusDeletedPages:
+    Title: 'Archivierten Seiten'
+  SilverStripe\CMS\Controllers\CMSSiteTreeFilter_StatusDraftPages:
+    Title: 'Entwurf Seiten'
+  SilverStripe\CMS\Controllers\ContentController:
+    Email: E-Mail
+    LOGOUT: Ausloggen
+    Password: Passwort
+  SilverStripe\CMS\Forms\SiteTreeURLSegmentField:
+    Cancel: Abbrechen
+    Edit: Bearbeiten
+  SilverStripe\CMS\Model\RedirectorPage:
+    PLURALNAME: 'Anpassbares Formular'
+  SilverStripe\CMS\Model\SiteTree:
+    BUTTONSAVEPUBLISH: Veröffentlichen
+    BUTTONUNPUBLISH: 'Veröffentlichung zurücknehmen'
+    DESCRIPTION: 'Fügt ein anpassbares Formular hinzu'
+    PAGETYPE: Seitentyp
+    PLURALNAME: Seiten
+    SHOWINSEARCH: 'In Suche anzeigen?'
+    SINGULARNAME: Seite
+    db_Title: Titel
+  SilverStripe\CMS\Model\SiteTreeFileExtension:
+    TITLE_TYPE: Typ
+  SilverStripe\CMS\Model\VirtualPage:
+    PLURALNAME: 'Anpassbares Formular'
+  SilverStripe\CMS\Search\SearchForm:
+    FILTERDATEFROM: Formular
+    FILTERLABELTEXT: Suche
+    SEARCH: Suche
+    SearchResults: Suchergebnisse

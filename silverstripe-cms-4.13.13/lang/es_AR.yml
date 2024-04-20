@@ -1,0 +1,152 @@
+es_AR:
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Publish:
+    PUBLISHED_PAGES: 'Se publicaron %d páginas, %d fallas'
+    PUBLISH_PAGES: Publicar
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Restore:
+    RESTORE: Restaurar
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Unpublish:
+    UNPUBLISH_PAGES: 'No Publicar'
+  SilverStripe\CMS\Controllers\CMSMain:
+    ACCESS_HELP: 'Permitir la visualización de la sección que contiene el árbol de páginas y el contenido. Ver y editar permisos que se pueden manejar mediante listas desplegables específicas de la página, así como el apartado "Permisos del contenido".'
+    EMAIL: 'Dirección Email'
+    PAGENOTEXISTS: 'Esta página no existe'
+    PAGETYPEANYOPT: Cualquiera
+    PAGETYPEOPT: 'Tipo de Página'
+    PLEASESAVE: 'Por favor Guarda la Página: No se puede actualizar esta página porque aún no se ha guardado.'
+    PUBALLCONFIRM: 'Por favor publica todas las páginas del sitio, copiando el contenido del boceto al sitio público'
+    PUBALLFUN: 'Funcionalidad "Publicar Todo"'
+    REMOVEDPAGEFROMDRAFT: 'Quitados ''{title}'' del borrador del sitio'
+    ROLLBACK: 'Restaurar a ésta versión'
+    SAVEDRAFT: Guardar
+    SEARCHRESULTS: 'Resultado de la búsqueda'
+    TabContent: Contenido
+  SilverStripe\CMS\Controllers\CMSPageEditController:
+    MENUTITLE: 'Editar Página'
+  SilverStripe\CMS\Controllers\CMSPageHistoryController:
+    AUTHOR: Autor
+  SilverStripe\CMS\Controllers\CMSPageSettingsController:
+    MENUTITLE: 'Editar Página'
+  SilverStripe\CMS\Controllers\ContentController:
+    DRAFTSITE: 'Sitio borrador'
+    Email: 'Dirección Email'
+    LOGGEDINAS: 'Conectado como'
+    LOGIN: 'Iniciar sesión'
+    LOGOUT: Desconectarse
+    NOTEWONTBESHOWN: 'Nota: este mensage no se mostrará a sus visitantes'
+    NOTLOGGEDIN: 'No conectado'
+    PUBLISHEDSITE: 'Sitio publicado'
+    Password: Contraseña
+    VIEWPAGEIN: 'Ver página en:'
+  SilverStripe\CMS\Forms\AnchorLinkFormFactory:
+    ANCHORVALUE: Anclar
+  SilverStripe\CMS\Forms\InternalLinkFormFactory:
+    LINKDESCR: 'Descripción del enlace'
+  SilverStripe\CMS\Model\RedirectorPage:
+    FILE: Archivo
+    HEADER: 'Esta página dirigirá al usuarios a otra página'
+    OTHERURL: 'Otro URL del sitio web'
+    REDIRECTTO: 'Redirigir a'
+    REDIRECTTOEXTERNAL: 'Otro sitio web'
+    REDIRECTTOPAGE: 'Una página en tu sitio web'
+    YOURPAGE: 'Página en tu sitio web'
+    has_one_LinkTo: 'Enlazar a'
+  SilverStripe\CMS\Model\RedirectorPageController:
+    HASBEENSETUP: 'Se ha instalado una página de redirección  sin algún lugar a donde redireccionar.'
+  SilverStripe\CMS\Model\SiteTree:
+    ACCESSANYONE: Cualquiera
+    ACCESSHEADER: '¿Quién puede ver ésta página?'
+    ACCESSLOGGEDIN: 'Usuarios registrados'
+    ACCESSONLYTHESE: 'Únicamente estas personas (selecciona de la lista)'
+    BUTTONCANCELDRAFT: 'Cancelar cambios al borrador'
+    BUTTONCANCELDRAFTDESC: 'Eliminar el borrador y regresar a la página actualmente publicada'
+    BUTTONSAVEPUBLISH: Publicar
+    BUTTONUNPUBLISH: 'No Publicar'
+    BUTTONUNPUBLISHDESC: 'Quitar ésta página del sitio público'
+    Comments: Comentarios
+    Content: Contenido
+    DEFAULTABOUTTITLE: 'de Nosotros'
+    DEFAULTCONTACTTITLE: Contactenos
+    DEFAULTHOMETITLE: Inicio
+    DEPENDENT_NOTE: 'Las siguientes páginas dependen de esta página. Esto incluye páginas virtuales, páginas de redireccionamiento y páginas con enlaces de contenido.'
+    DependtPageColumnLinkType: 'Tipo de enlace'
+    EDITHEADER: '¿Quién puede editar ésta página?'
+    EDIT_ALL_DESCRIPTION: 'Editar cualquier página'
+    EDIT_ALL_HELP: 'Capacidad para editar cualquier página en el sitio, independientemente de la configuración en la pestaña Acceso. Necesita del permiso "Acceder al contenido del sitio".'
+    Editors: 'Grupos de Editores'
+    HASBROKENLINKS: 'Esta página tiene enlaces rotos.'
+    HTMLEDITORTITLE: Contenido
+    INHERIT: 'heredar de página superior'
+    LINKCHANGENOTE: 'Cambiar este enlace de la página también afectará los enlaces de todas las páginas dependientes.'
+    MENUTITLE: 'Etiqueta de navegación'
+    METADESC: Descripción
+    METAEXTRA: 'Etiquetas Meta Personalizadas'
+    PAGELOCATION: 'Ubicación de la página'
+    PAGETITLE: 'Nombre de página'
+    PAGETYPE: 'Tipo de Página'
+    PARENTID: 'Página padre'
+    PARENTTYPE: 'Ubicación de la página'
+    PERMISSION_GRANTACCESS_DESCRIPTION: 'Administrar los derechos de acceso para el contenido'
+    PERMISSION_GRANTACCESS_HELP: 'Permitir el establecimiento de restricciones de acceso específicas de la página en la sección "Páginas".'
+    REORGANISE_DESCRIPTION: 'Cambiar la estructura del sitio'
+    REORGANISE_HELP: 'Reorganizar las páginas en el árbol del sitio mediante arrastrar y soltar.'
+    SHOWINMENUS: '¿Mostrar en menús?'
+    SHOWINSEARCH: '¿Mostrar en búsqueda?'
+    SINGULARNAME: Página
+    TABBEHAVIOUR: Compotamiento
+    TABDEPENDENT: 'Páginas dependientes'
+    TOPLEVEL: 'Contenido del Sitio (Nivel Superior)'
+    VIEW_ALL_DESCRIPTION: 'Ver cualquier página'
+    VIEW_DRAFT_CONTENT: 'Ver contenido borrador'
+    Viewers: 'Grupos de Observadores'
+    db_Content: Contenido
+    db_Title: Título
+    has_one_Parent: 'Página Superior'
+    many_many_BackLinkTracking: 'Seguimiento de Backlink'
+    many_many_ImageTracking: 'Seguimiento de Imágen'
+    many_many_LinkTracking: 'Seguimiento de Enlace'
+  SilverStripe\CMS\Model\VirtualPage:
+    HEADER: 'Esta es una página virtual'
+    SINGULARNAME: 'Página Virtual'
+  SilverStripe\CMS\Reports\BrokenFilesReport:
+    BROKENFILES: 'Páginas con archivos rotos'
+    BrokenLinksGroupTitle: 'Informes de enlaces rotos'
+    ParameterLiveCheckbox: 'Verificar el sitio en vivo'
+  SilverStripe\CMS\Reports\BrokenLinksReport:
+    Any: Cualquiera
+    BROKENLINKS: 'Informe de enlaces rotos'
+    CheckSite: 'Verificar el sitio'
+    CheckSiteDropdownDraft: 'Sitio borrador'
+    CheckSiteDropdownPublished: 'Sitio publicado'
+    ColumnDateLastModified: 'Fecha de última modificación'
+    ColumnDateLastPublished: 'Fecha de última publicación'
+    ColumnProblemType: 'Tipo de problema'
+    HasBrokenFile: 'tiene un archivo roto'
+    HasBrokenLink: 'tiene un enlace roto'
+    HasBrokenLinkAndFile: 'tiene enlace y archivo rotos'
+    HoverTitleEditPage: 'Editar página'
+    PageName: 'Nombre de página'
+    ReasonDropdown: 'Problema para verificar'
+    ReasonDropdownBROKENFILE: 'Archivo roto'
+    ReasonDropdownBROKENLINK: 'Enlace roto'
+    ReasonDropdownRPBROKENLINK: 'La página de redireccionamiento apunta a una página inexistente'
+    ReasonDropdownVPBROKENLINK: 'Página virtual apuntando a una página no existente'
+    RedirectorNonExistent: 'la página de redireccionamiento apunta a una página inexistente'
+    VirtualPageNonExistent: 'página virtual apuntando a una página no existente'
+  SilverStripe\CMS\Reports\BrokenRedirectorPagesReport:
+    BROKENREDIRECTORPAGES: 'RedirectorPages apunta a páginas eliminadas'
+    BrokenLinksGroupTitle: 'Informes de enlaces rotos'
+    ParameterLiveCheckbox: 'Verificar el sitio en vivo'
+  SilverStripe\CMS\Reports\BrokenVirtualPagesReport:
+    BROKENVIRTUALPAGES: 'VirtualPages apunta a páginas eliminadas'
+    BrokenLinksGroupTitle: 'Informes de enlaces rotos'
+    ParameterLiveCheckbox: 'Verificar el sitio en vivo'
+  SilverStripe\CMS\Reports\EmptyPagesReport:
+    ContentGroupTitle: 'Informes del contenido'
+  SilverStripe\CMS\Reports\RecentlyEditedReport:
+    ContentGroupTitle: 'Informes del contenido'
+    LAST2WEEKS: 'Páginas editadas en las últimas 2 semanas'
+  SilverStripe\CMS\Search\SearchForm:
+    FILTERLABELTEXT: Buscar
+    GO: Ir
+    SEARCH: Buscar
+    SearchResults: 'Resultados de la búsqueda'

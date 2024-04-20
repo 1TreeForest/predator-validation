@@ -1,0 +1,73 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_IMPORTXML_CHECKCONTENT]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<form method="POST">
+
+<IF COND="[#ERROR]">
+	<p class="error">[#ERROR]</p>
+</IF>
+<LET VAR="i">0</LET>
+<LOOP NAME="foreach" ARRAY="[#TYPESCLASS.OLD]">
+	<div class="importME_left">
+	<input type="hidden" name="changedtypeclass[[#I]][idtype]" value="[#VALUE.IDTYPE]"/>
+	<LET ARRAY="oldtypeclass">[#VALUE.FIELDS]</LET>
+	<LET VAR="table">[#VALUE.CLASS]</LET>
+	<table class="importXML">
+		<tr><td colspan="2"><strong>[@ADMIN.IMPORTXML_OLDTYPES] - [#TABLE]</strong></td></tr>
+		<LOOP NAME="foreach" ARRAY="[#OLDTYPECLASS]">
+			<tr>
+				<LET ARRAY="field">[#VALUE|array_keys]</LET>
+				<td>
+				<input type="text" size="3" value="[#KEY]" class="input_formulaire" name="changedtypeclass[[#I]][[#TABLE]][[#FIELD.0]]"/>
+				</td>
+				<LET ARRAY="field">[#VALUE|array_keys]</LET>
+				<td>[#FIELD.0]</td>
+			</tr>
+		</LOOP>
+	</table>
+	</div>
+	<div class="importME_right">
+	<LET ARRAY="newtypeclass">[#TYPESCLASS.NEW.#KEY.FIELDS]</LET>
+	<LET VAR="newclass">[#TYPESCLASS.NEW.#KEY.CLASS]</LET>
+	<table class="importXML">
+		<tr><td colspan="2"><strong>[@ADMIN.IMPORTXML_NEWTYPES] - [#TYPESCLASS.NEW.#KEY.CLASS]</strong></td></tr>
+		<LOOP NAME="foreach" ARRAY="[#NEWTYPECLASS]">
+			<tr>
+				<LET ARRAY="field">[#VALUE|array_keys]</LET>
+				<td>
+				<input class="input_formulaire" type="text" size="3" value="" name="changedtypeclass[[#I]][[#NEWCLASS]][[#FIELD.0]]"/>
+				</td>
+				<td>[#FIELD.0]</td>
+			</tr>
+		</LOOP>
+	</table>
+	</div>
+	<div class="spacer"></div>	
+	<LET VAR="i">[#I|lmath('+', 1)]</LET>
+</LOOP>
+
+<div class="importMEXML_action">
+<input type="hidden" name="do" value="[#DO]" />
+<input type="hidden" name="lo" value="[#LO]" />
+<input type="hidden" name="file" value="[#FILE]" />
+<input type="hidden" name="checktypesclass" value="1" />
+<fieldset>
+	<input class="button" type="submit" />&nbsp;&nbsp;
+	<input class="button" type="button" value="[@COMMON.CANCEL]" onClick="javascript:window.location='index.php';" />
+</fieldset>
+</div>
+</form>
+
+<MACRO NAME="CLOSE_HTML">

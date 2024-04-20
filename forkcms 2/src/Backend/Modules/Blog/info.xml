@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+  <name>Blog</name>
+  <version>1.0.0</version>
+  <requirements>
+    <minimum_version>2.0.0</minimum_version>
+  </requirements>
+  <description>
+    <![CDATA[
+      The Blog (you could also call it 'News') module features everything you need to easily post articles on your website. All you need to do is provide the content. Your visitors will be able to discuss your article and share it to friends via social networks.
+      Some of the more advanced features:
+      * scheduled publishing
+      * advanced seo tweaking per article
+      * filter articles on category, tag, year of publication or author
+      * comments with automatic spam detection
+      * visitors can subscribe to comments via e-mai
+      * Facebook like, Google+ and Tweet-button
+      * automatic recommendation of related articles
+    ]]>
+  </description>
+  <authors>
+    <author>
+      <name><![CDATA[Davy Hellemans]]></name>
+      <url><![CDATA[http://blog.bauffman.be]]></url>
+    </author>
+    <author>
+      <name><![CDATA[Dave Lens]]></name>
+      <url><![CDATA[http://www.davelens.be]]></url>
+    </author>
+    <author>
+      <name><![CDATA[Tijs Verkoyen]]></name>
+      <url><![CDATA[https://www.sumocoders.be]]></url>
+    </author>
+    <author>
+      <name><![CDATA[Matthias Mullie]]></name>
+      <url><![CDATA[http://www.mullie.eu]]></url>
+    </author>
+  </authors>
+</module>

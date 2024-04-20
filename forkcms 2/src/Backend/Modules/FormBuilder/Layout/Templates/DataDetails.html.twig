@@ -1,0 +1,83 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+  <div class="btn-toolbar pull-right">
+    <div class="btn-group" role="group">
+      {% if isAllowedAction('Data') %}
+        {{ macro.buttonIcon( geturl('data') ~ '&id=' ~ formId ~ '&start_date=' ~ filter.start_date ~ '&end_date=' ~ filter.end_date, 'list', 'lbl.BackToData'|trans|ucfirst) }}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <div class="row fork-module-content">
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.Content'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          {% if data %}
+            <table class="table">
+              {% for field in data %}
+                <tr>
+                  <th>{{ field.label|raw }}:</th>
+                  <td>{{ field.value }}</td>
+                </tr>
+              {% endfor %}
+            </table>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h2 class="panel-title">{{ 'lbl.SenderInformation'|trans|ucfirst }}</h2>
+        </div>
+        <div class="panel-body">
+          <table class="table">
+            <tr>
+              <th>{{ 'lbl.SentOn'|trans|ucfirst }}:</th>
+              <td>{{ sentOn|spoondate }}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-page-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-left" role="group">
+          {% if isAllowedAction('MassDataAction') %}
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmDelete">
+              {{ macro.icon('trash-o') }}
+              {{ 'lbl.Delete'|trans|ucfirst }}
+            </button>
+          {% endif %}
+        </div>
+      </div>
+      {% if isAllowedAction('MassDataAction') %}
+        <div class="modal fade" id="confirmDelete" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="confirmDeleteTitle">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title" id="confirmDeleteTitle">{{ 'lbl.Delete'|trans|ucfirst }}</h4>
+              </div>
+              <div class="modal-body">
+                <p>{{ 'msg.ConfirmDeleteData'|trans|ucfirst }}</p>
+              </div>
+              <div class="modal-footer">
+                {{ macro.buttonIcon('', 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default', { "data-dismiss":"modal", "type":"button" } ) }}
+                {{ macro.buttonIcon(geturl('mass_data_action') ~ '&action=delete&form_id=' ~ formId ~ '&id=' ~ id, 'trash', 'lbl.Delete'|trans|ucfirst, 'btn-danger' ) }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}

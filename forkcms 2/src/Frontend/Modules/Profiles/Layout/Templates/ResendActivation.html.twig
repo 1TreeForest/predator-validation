@@ -1,0 +1,37 @@
+{% import 'Core/Layout/Templates/Alerts.html.twig' as alerts %}
+{% import "Core/Layout/Templates/Macros.html.twig" as macro %}
+
+<section class="module-profiles block-profiles-resend-activation">
+  {% block block_heading %}{% endblock %}
+
+  {% block block_alerts %}
+    <div class="block-alerts">
+      {% if resendActivationSuccess %}
+        {{ alerts.alert('success', 'msg.ResendActivationIsSuccess'|trans) }}
+      {% endif %}
+      {% if resendActivationHasError %}
+        {{ alerts.alert('danger', 'err.FormError'|trans) }}
+      {% endif %}
+    </div>
+  {% endblock %}
+
+  {% block block_body %}
+    {% if not resendActivationHideForm %}
+      <div class="block-body">
+        {% form resendActivation %}
+        <label for="email">{{ 'lbl.Email'|trans|ucfirst }}
+          {{ macro.required }}</label>
+        <div class="input-group {% if txtEmailError %} has-error{% endif %}">
+          {% form_field email %}
+          <span class="input-group-btn">
+            <input class="btn btn-primary" type="submit" value="{{ 'lbl.Send'|trans|ucfirst }}" />
+          </span>
+        </div>
+        {% form_field_error email %}
+        {% endform %}
+      </div>
+    {% endif %}
+  {% endblock %}
+
+  {% block block_footer %}{% endblock %}
+</section>

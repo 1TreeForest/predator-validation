@@ -1,0 +1,30 @@
+{#
+  variables that are available:
+  - {{ widgetBlogCategories }}:
+#}
+{% if widgetBlogCategories %}
+  <aside class="module-blog widget-blog-categories">
+    {% block widget_heading %}
+      <header class="widget-heading" role="banner">
+        <h3>{{ 'lbl.Categories'|trans|ucfirst }}</h3>
+      </header>
+    {% endblock %}
+
+    {% block widget_body %}
+      <div class="widget-body">
+        <ul>
+          {% for category in widgetBlogCategories %}
+            <li>
+              <a href="{{ category.url }}">
+                {{ category.label }}
+                <span class="badge">{{ category.total }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endblock %}
+
+    {% block widget_footer %}{% endblock %}
+  </aside>
+{% endif %}

@@ -1,0 +1,98 @@
+---
+owner_name: ""
+owner_url: ""
+owner_year: ""
+show_top_btn: 1
+show_cookiealert: 1
+cookiealert_text: >
+  Посещая этот сайт, вы
+  соглашаетесь с тем,
+  что мы используем
+  файлы cookie.
+scss:
+  enable-rounded: 1
+  border-radius: .25rem
+  border-radius-lg: .3rem
+  border-radius-sm: .2rem
+  enable-shadows: null
+  enable-gradients: null
+  enable-responsive-font-sizes: 1
+  enable-modal-blur: 1
+  grid-gutter-width: 30px
+  font-size-base: 0.9375rem
+  spacer: 1rem
+  avatar-inlist-size: 64px
+  body-bg: $white
+  body-color: $gray-800
+  link-color: $blue
+  header-bg: $purple
+  header-color: $white
+  footer-bg: $gray-900
+  footer-color: $gray-600
+  primary: $blue
+  secondary: $gray-600
+  success: $green
+  info: $cyan
+  warning: $yellow
+  danger: $red
+  light: $gray-100
+  dark: $gray-900
+  white: '#ffffff'
+  gray-100: '#f8f9fa'
+  gray-200: '#eeeeee'
+  gray-300: '#dee2e6'
+  gray-400: '#cccccc'
+  gray-500: '#adb5bd'
+  gray-600: '#888888'
+  gray-700: '#495057'
+  gray-800: '#2d3436'
+  gray-900: '#1e2224'
+  black: '#1a1a1a'
+  blue: '#3867d6'
+  indigo: '#786fa6'
+  purple: '#596275'
+  pink: '#f78fb3'
+  red: '#e66767'
+  orange: '#f19066'
+  yellow: '#f5cd79'
+  green: '#33bd66'
+  teal: '#3bd4c2'
+  cyan: '#0abde3'
+body_classes: ""
+font_type: ""
+font_string: >
+  -apple-system, BlinkMacSystemFont,
+  "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, "Noto Sans", "Liberation Sans",
+  sans-serif, "Apple Color Emoji", "Segoe
+  UI Emoji", "Segoe UI Symbol", "Noto
+  Color Emoji"
+gfont: Roboto
+pagination_template: pagination
+js_print_head: null
+logo: null
+logo_svg: null
+logo_small: null
+logo_small_svg: null
+favicon: null
+favicon_head_html: ""
+custom_scss:
+  body-bg: ""
+  body-color: ""
+  link-color: ""
+  header-bg: ""
+  header-color: ""
+  footer-bg: ""
+  footer-color: ""
+  primary: ""
+  secondary: ""
+  success: ""
+  info: ""
+  warning: ""
+  danger: ""
+  light: ""
+  dark: ""
+vars:
+  - 
+    name: dropdown-item-padding-x
+    value: 1rem

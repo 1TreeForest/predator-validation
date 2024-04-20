@@ -1,0 +1,97 @@
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<DEFMACRO NAME="HEADER_HEAD_OPEN">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=[#CHARSET]" />
+</DEFMACRO>
+
+<DEFMACRO NAME="SITE_ROOT">
+<LOOP NAME="getRoot" TABLE="sites" WHERE="name = '[#SITE]' AND status GT 0">[#URL]</LOOP>
+</DEFMACRO>
+
+<!--[ Renvoie le chemin sur le serveur de la racine d'un site : URL du site sans le nom de domaine]-->
+<DEFMACRO NAME="RELATIF_SITE_ROOT">
+<LOOP NAME="getRoot2" TABLE="sites" WHERE="name = '[#SITE]' AND status GT 0">[#URL|url_path]</LOOP>
+</DEFMACRO>
+
+<DEFMACRO NAME="HEADER_HEAD_CLOSE">  
+    <link rel="stylesheet" href="[#SHAREURL]/css/styles_lodel.css" />
+    <IF COND="[#STYLECSS]">
+    <style type="text/css">          
+      [#STYLECSS]
+    </style>
+    </IF>
+  </head>
+</DEFMACRO>
+
+<DEFMACRO NAME="CLOSE_HTML">  
+  </body>
+</html>
+</DEFMACRO>
+
+<DEFMACRO NAME="HEADER_LOGO">
+<body> 
+</DEFMACRO>
+
+<DEFMACRO NAME="GIF_VISAGE_ADMINLODEL">	
+		<img src="images/KDE_users.gif" width="32" height="32" border="0" vspace="2" hspace="2">
+</DEFMACRO>
+
+<DEFMACRO NAME="OK_BACK_TO_PARENT">
+<LOOP NAME="class_type" TABLE="classes" WHERE="class='[#CLASS]'">
+<!--[<MACRO NAME="OK_BACK">]-->
+	<DO>
+		<fieldset class="formButtons">
+			<input type="button" class="button" value="    OK    " onclick="javascript:window.location='[#SITEROOT]lodel/admin/index.php?do=list&amp;lo=classes&amp;classtype=[#CLASSTYPE]'" />
+		</fieldset>
+	</DO>
+</LOOP>
+</DEFMACRO>
+
+<DEFMACRO NAME="OK_BACK">	
+	<fieldset class="formButtons">
+		<input type="button" class="button" value="  OK   " onclick="javascript:window.history.go(-1)" />
+	</fieldset>
+</DEFMACRO>
+
+<!--[ Macro utilisée pour afficher les résultats d'une boucle sur plusieurs pages
+	Doit être appelée dans la balise <AFTER>
+]-->
+<DEFMACRO NAME="PRINT_PAGE_SCALE">
+	<LOOP NAME="page_scale">
+		<BEFORE>
+			<div class="pagination">
+				<IF COND="[#PREVIOUSURL]">
+					<a href="[#PREVIOUSURL]" title="Page précédente">&lt;&lt;</a>
+				</IF>
+		</BEFORE>
+		<DO>
+			<IF COND="[#HOLE] EQ 1">
+				&nbsp;...&nbsp;
+			</IF>
+			<IF COND="[#URLPAGE] NE ''">
+				<a class="linkpage" href="[#URLPAGE]" title="Page numéro [#PAGENUMBER]">
+			<ELSE/>
+				<span class="currentpage">
+			</IF>
+			[#PAGENUMBER]
+			<IF COND="[#URLPAGE] NE ''">
+				</a>
+			<ELSE/>
+				</span>
+			</IF>
+		</DO>
+		<AFTER>
+			<IF COND="[#NEXTURL]">
+				<a href="[#NEXTURL]" title="Page suivante">&gt;&gt;</a>
+			</IF>
+			</div>
+		</AFTER>
+	</LOOP>
+</DEFMACRO>

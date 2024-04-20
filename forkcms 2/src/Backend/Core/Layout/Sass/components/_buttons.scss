@@ -1,0 +1,113 @@
+.btn {
+  border-radius: 3px;
+  padding: 9px 9px 10px;
+
+  .fa {
+    margin: 0 3px;
+  }
+
+  .btn-text {
+    display: block;
+    font-size: $font-size-extra-small;
+    margin: 0 3px;
+  }
+
+  @media screen and (min-width: $screen-sm) {
+    .btn-text {
+      display: inline-block;
+      font-size: $font-size-base;
+      margin: 0;
+    }
+  }
+
+  &.ui-sortable-handle {
+    cursor: move;
+  }
+
+  &.btn-xs {
+    padding: 2px 8px;
+  }
+
+  &.btn-md {
+    font-size: $font-size-small;
+    padding: 4px 15px 5px;
+  }
+}
+
+.btn-icon-only {
+  .fa {
+    padding-right: 0;
+    margin-right: 0;
+  }
+}
+
+.btn-group {
+  text-align: right;
+
+  .btn {
+    float: none;
+    margin: 1px 0;
+
+    + .btn {
+      margin-left: 2px;
+    }
+
+    + .btn.dropdown-toggle {
+      margin-left: -1px;
+    }
+  }
+
+  @media screen and (min-width: $screen-lg) {
+
+    .btn {
+      float: none;
+      margin: 6px 0;
+
+      + .btn {
+        margin-left: 6px;
+      }
+    }
+  }
+
+
+  .btn:first-child:not(:last-child):not(.dropdown-toggle),
+  .btn:last-child:not(:first-child),
+  .btn:not(:first-child):not(:last-child):not(.dropdown-toggle){
+    border-radius: 3px;
+  }
+}
+
+.btn-second {
+  color: $brand-primary-dark;
+
+  &:hover,
+  &:focus {
+    color: $brand-primary;
+  }
+}
+
+.input-group-addon {
+  color: $text-color;
+
+  &.btn {
+    color: $brand-primary;
+
+    &:hover {
+      color: $white;
+    }
+  }
+}
+
+a.btn {
+  text-decoration: none;
+}
+
+.btn-toolbar .btn-group {
+  .btn {
+    margin-bottom: 6px;
+  }
+
+  & + .btn-group {
+    margin-left: 1em;
+  }
+}

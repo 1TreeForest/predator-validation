@@ -1,0 +1,39 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@LODELADMIN.TITLE_GENERAL_ADMINISTRATION]</title>
+<MACRO NAME="JS_SELECT_URL">
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@COMMON.GENERAL_ADMINISTRATION]</span></li>
+</ul>
+
+	<div id="adminGroup">
+		<div class="conf">
+		<h4>[@ADMIN.CONFIGURATION]</h4>
+		<ul>
+			<li><a href="index.php?do=list&amp;lo=users">[@LODELADMIN.MANAGE_LODELADMIN]</a></li>
+			<li><a href="index.php?do=list&amp;lo=sites">[@LODELADMIN.MANAGE_SITES]</a></li>
+			<li><a href="index.php?do=list&amp;lo=translations">[@LODELADMIN.MANAGE_TRANSLATIONS]</a></li>
+			<IF COND="[#LODELUSER.TRANSLATIONMODE]=='interface'">
+				<li><a href="index.php?do=set&amp;lo=users&amp;translationmode=off">[@ADMIN.GET_OUT_TRANSLATION_MODE_FOR_INTERFACE]</a>
+			<ELSE/>
+				<li><a href="index.php?do=set&amp;lo=users&amp;translationmode=interface">[@ADMIN.ENTER_IN_TRANSLATION_MODE_FOR_INTERFACE]</a></li>
+			</IF>
+			<li><a href="index.php?do=globalbackup&amp;lo=data">[@LODELADMIN.GENERAL_BACKUP]</a></li>
+			<li><a href="index.php?do=list&amp;lo=mainplugins">[@ADMIN.PLUGINS]</a></li>
+		</ul>
+		</div>
+	</div>
+
+<MACRO NAME="CLOSE_HTML">

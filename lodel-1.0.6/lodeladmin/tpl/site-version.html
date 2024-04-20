@@ -1,0 +1,42 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros_old.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<TITLE>Installation d'un site</TITLE>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<table width="800" cellpadding="5" cellspacing="1" border="0" align="CENTER">
+<tr><td><div align="center">
+<br /><br /><b>Création de site</b></div></td></tr>
+</table>
+
+<div align="center">
+<form method="post" action="site.php">
+<table width="800" cellpadding="5" cellspacing="0" border="1" align="CENTER">
+<tr><td>
+
+<table><tr>
+<td>Choisissez une version:<br>
+Le répertoire est indiqué suivi entre paranthèse de la version trouvée dans le fichier siteconfig.php</td>
+<td width="60%"><select size="5" name="versionrep"><?php  $website->makeselectversion(); ?></select></td></tr></tr></td>
+</table>
+
+
+
+
+</td></tr></table><br/>
+
+
+<input type="hidden" name="id" value="[#ID]">
+<input type="hidden" name="task" value="version">
+<input type="submit" value="continuer">
+</form>
+
+
+<MACRO NAME="CLOSE_HTML">

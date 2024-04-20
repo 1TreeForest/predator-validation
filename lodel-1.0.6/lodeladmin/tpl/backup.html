@@ -1,0 +1,78 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@LODELADMIN.TITLE_BACKUP]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+
+<ul id="actionsOnEntitiesPath">
+	<li>[@LODELADMIN.TITLE_BACKUP]</li>
+</ul>
+<br />&nbsp;<br />
+<IF COND="[#OUTFILENAME]">
+	<IF COND="[#ERROR]">
+		[@LODELADMIN.SOME_ERRORS_OCCURS_DURING_THE_BACKUP_PROCESS] :<br />
+		<LOOP NAME="errors">
+			<BEFORE><ul></BEFORE>
+			<DO>
+			<li>[#ERROR]</li>
+			</DO>
+			<AFTER></ul></AFTER>
+		</LOOP>
+	</IF>
+	[@LODELADMIN.BACKUP_IS_DONE_ARCHIVE_AIVALABLE_HERE] : [#OUTFILENAME]<br />
+	<input class="form" type="button" value="[@COMMON.OK]" onClick="javascript:window.location='index.php'" />
+<ELSE/>
+	
+	<form method="POST" action="index.php">
+		<input type="hidden" name="do" value="globalbackup"  />
+		<input type="hidden" name="lo" value="data" />
+		<fieldset>
+		<legend>[@LODELADMIN.TITLE_BACKUP]</legend>
+		<IF COND="[#ERROR]">
+		<p class="error">
+			<!--[[@LODELADMIN.ERROR_COPY_FILES_VERIFY_SERVER_CAN_WRITE_OR_ENOUGH_SPACE_DIRECTORY|sprintf([#IMPORTDIR])].]-->
+			[@COMMON.ERROR_WHILE_TRYING_TO_ACCESS_DIRECTORY_PLEASE_VERIFY_WRITING_RIGHTS|sprintf([#IMPORTDIR])]
+		</p>
+	</IF>
+		<LOOP NAME="listsites" TABLE="sites">
+			<BEFORE>
+				<ul>
+			</BEFORE>
+			<DO>
+				<li>[#TITLE]</li>
+			</DO>
+			<AFTER></ul></AFTER>
+		</LOOP>
+		<input type="hidden" name="backup" value="1" />
+		<label for="sqlonly" class="boolean">[@LODELADMIN.SAVE_DATABASE_ONLY]</label> <input type="checkbox" name="sqlonly" id="sqlonly" /><br class="nobr" />
+		<label for="operation">[@LODELADMIN.GET_FILE_OPERATION]</label>
+		<select name="operation" id="operation">
+			<option value="download" onClick="document.getElementById('warning_cache').style.display = 'none';">[@LODELADMIN.DOWNLOAD]</option>
+			<IF COND="[#IMPORTDIR]">
+				<IF COND="[#IMPORTDIR|is_writable]">
+				<option value="importdir" onClick="document.getElementById('warning_cache').style.display = 'none';">[@LODELADMIN.SAVE_IN_DIR] [#IMPORTDIR]</option>
+				<ELSE/>
+				<option value="importdir" disabled="disabled" onClick="document.getElementById('warning_cache').style.display = 'none';">[@LODELADMIN.SAVE_IN_DIR] [#IMPORTDIR] ([@COMMON.NOT_WRITABLE])</option>
+				</IF>
+			</IF>
+			<option value="cache" onClick="document.getElementById('warning_cache').style.display = 'inline';">[@LODELADMIN.SAVE_IN_CACHE]</option>
+		</select>
+		<div id="warning_cache" style="color:red;display:none;">[@LODELADMIN.WARNING_SAVE_CACHE_DIRECTORY]</div>
+		</fieldset>
+		<fieldset>
+		<legend>[@COMMON.VALIDATION]</legend>
+		<input class="button" type="submit" value="[@COMMON.SAVE]" />
+		<input class="button" type="button" value="[@COMMON.CANCEL]" onClick="javascript:window.location='index.php'" />
+		</fieldset>
+	</form>
+</IF>
+</fieldset>
+<MACRO NAME="CLOSE_HTML">

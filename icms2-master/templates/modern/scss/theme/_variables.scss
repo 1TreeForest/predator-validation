@@ -1,0 +1,34 @@
+$enable-modal-blur: true !default;
+$avatar-inlist-size: 64px !default;
+$modal-title-color: $white !default;
+$dropdown-menu-arrow-width: 8px !default;
+$icms-loading-icon: url("data:image/svg+xml,<svg xmlns:svg='http://www.w3.org/2000/svg' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' version='1.0' width='16px' height='16px' viewBox='0 0 128 128' xml:space='preserve'><g><circle cx='16' cy='64' r='16' fill='#5c6873' fill-opacity='1'/><circle cx='16' cy='64' r='14.344' fill='#5c6873' fill-opacity='1' transform='rotate(45 64 64)'/><circle cx='16' cy='64' r='12.531' fill='#5c6873' fill-opacity='1' transform='rotate(90 64 64)'/><circle cx='16' cy='64' r='10.75' fill='#5c6873' fill-opacity='1' transform='rotate(135 64 64)'/><circle cx='16' cy='64' r='10.063' fill='#5c6873' fill-opacity='1' transform='rotate(180 64 64)'/><circle cx='16' cy='64' r='8.063' fill='#5c6873' fill-opacity='1' transform='rotate(225 64 64)'/><circle cx='16' cy='64' r='6.438' fill='#5c6873' fill-opacity='1' transform='rotate(270 64 64)'/><circle cx='16' cy='64' r='5.375' fill='#5c6873' fill-opacity='1' transform='rotate(315 64 64)'/><animateTransform attributeName='transform' type='rotate' values='0 64 64;315 64 64;270 64 64;225 64 64;180 64 64;135 64 64;90 64 64;45 64 64' calcMode='discrete' dur='720ms' repeatCount='indefinite'></animateTransform></g></svg>");
+$header-bg: $purple !default;
+$footer-bg: $gray-900 !default;
+$header-color: $white !default;
+$footer-color: $gray-600 !default;
+
+// Переменные BS
+$embed-responsive-aspect-ratios: ((36 9));
+$navbar-dark-color: rgba($white, .8);
+$zindex-dropdown: 1021;
+$enable-print-styles: false;
+$enable-validation-icons: false;
+$enable-deprecation-messages: false;
+$modal-content-border-width: 0;
+$modal-backdrop-opacity: .7;
+$modal-header-padding-y: .25rem;
+$modal-header-padding-x: 0;
+$carousel-control-width: 10%;
+$breadcrumb-item-padding: .5em;
+
+$navbar-light-color:                rgba($black, .8);
+$navbar-light-hover-color:          rgba($black, .9);
+$navbar-light-active-color:         $primary;
+$navbar-light-disabled-color:       rgba($black, .3);
+$navbar-light-toggler-icon-bg:      url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'><path stroke='#{$navbar-light-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>");
+$navbar-light-toggler-border-color: rgba($black, .2);
+
+$breadcrumb-font-size: $font-size-base*0.875;
+$breadcrumb-padding-x: 0;
+$breadcrumb-bg: transparent;

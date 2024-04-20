@@ -1,0 +1,54 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros_xml.html" />
+
+<MACRO NAME="root_element" />
+
+<!--[ affiche les champs ]-->
+<LOOP NAME="groupesdechamps" SELECT="name,id" TABLE="tablefieldgroups" WHERE="class='[#CLASS]'" ORDER="rank">
+<DO>
+	<[#NAME]>
+  <LOOP NAME="fields_values">
+	<DO>
+	<!--[ transforme some invalide entry ]-->
+	<IF COND="[#TYPE] eq 'persons'">
+     	<!--[ Show all defined persons for the entity]-->
+  	<LOOP NAME="relations_persons" TABLE="relations,persons,persontypes" WHERE="id1=[#IDENTITY] AND nature='G' AND relations.id2=persons.id AND persons.idtype=persontypes.id AND persontypes.type='[#NAME]'">
+ 			<[#NAME]>
+ 			<LOOP NAME="entry_or_persons_fields_values">
+ 				<MACRO NAME="SHOW_FIELD_VALUE" />
+ 			</LOOP>
+ 			<LOOP NAME="person_relations_fields">
+ 				<MACRO NAME="SHOW_FIELD_VALUE" />
+ 			</LOOP>
+ 			</[#NAME]>
+ 		</LOOP>
+  <ELSE/>
+	<IF COND="[#TYPE] eq 'entries'">
+	    	<!--[ Show all defined entry for the entity]-->
+	 	<LOOP NAME="relations_entries" TABLE="relations,entries,entrytypes" WHERE="id1=[#IDENTITY] AND nature='E' AND relations.id2=entries.id AND entries.idtype=entrytypes.id AND entrytypes.type='[#NAME]'">
+	 	<[#NAME]>
+	 		<LOOP NAME="entry_or_persons_fields_values">
+	 			<MACRO NAME="SHOW_FIELD_VALUE" />
+	 		</LOOP>
+	 		</[#NAME]>
+	 	</LOOP>
+	<ELSE/>
+	<IF COND="[#TYPE] eq 'date' and [#VALUE] eq '0000-00-00'"><LET VAR="value"></LET></IF>
+	<!--[ do we need the output this value ? ]-->
+	<MACRO NAME="SHOW_FIELD_VALUE" />
+  </IF>
+  </IF> <!--[ value n'est pas vide ]-->
+	</DO>
+  </LOOP>
+	</[#NAME]>
+</DO>
+</LOOP>
+<!--[ Type of the entity ]-->
+  <meta><typedoc>[#TYPE]</typedoc></meta>
+</[#CLASS]>

@@ -1,0 +1,90 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+
+{% endblock %}
+
+{% block content %}
+  {% form editCategory %}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div>
+        <ul class="nav nav-tabs nav-tabs-flex" role="tablist">
+          <li role="presentation" class="active mr-auto">
+            <a href="#tabContent" aria-controls="tabContent" role="tab" data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabSEO" aria-controls="tabSEO" role="tab" data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabContent">
+            <div class="content-block">
+              <div class="form-group last">
+                <label for="title" class="control-label">
+                  {{ 'lbl.Title'|trans|ucfirst }}
+                  {{ macro.required }}
+                </label>
+                {% form_field title %} {% form_field_error title %}
+                {% if detailURL %}
+                  <a href="{{ detailURL }}">
+                    <a class="site-url" href="{{ detailURL }}/{{ categorySlug }}">{{ detailURL }}/<span id="generatedUrl">{{ categorySlug }}</span></a>
+                  </a>
+                {% else %}
+                  <p class="alert alert-warning alert-xs">
+                    {{ macro.icon('exclamation-triangle') }}{{ 'err.NoModuleLinked'|trans|ucfirst }}
+                  </p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabSEO">
+            <div class="content-block">
+              {% seo %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-page-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group pull-left" role="group">
+          {% if isAllowedAction('DeleteCategory') and allowBlogDeleteCategory %}
+            {{ macro.buttonIcon('', 'trash-o', 'lbl.Delete'|trans|ucfirst, 'btn-danger', {"type":"button", "data-toggle":"modal", "data-target":"#confirmDelete"}) }}
+          {% endif %}
+          {{ macro.buttonIcon(geturl('Index'), 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default') }}
+        </div>
+        <div class="btn-group pull-right" role="group">
+          {{ macro.buttonIcon('', 'check', 'lbl.Publish'|trans|ucfirst, 'btn-primary', {"id":"editButton", "type":"submit", "name":"edit"}) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endform %}
+
+  {% if isAllowedAction('DeleteCategory') and allowBlogDeleteCategory %}
+    {{ form_start(deleteForm) }}
+    {{ form_row(deleteForm._token) }}
+    {{ form_row(deleteForm.id) }}
+    <div class="modal fade" id="confirmDelete" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="confirmDeleteTitle">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="confirmDeleteTitle">{{ 'lbl.Delete'|trans|ucfirst }}</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{ 'msg.ConfirmDeleteCategory'|trans|format(item.title|e)|raw }}</p>
+          </div>
+          <div class="modal-footer">
+            {{ macro.buttonIcon('', 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default', {"data-dismiss":"modal"}) }}
+            {{ macro.buttonIcon('', 'trash', 'lbl.Delete'|trans|ucfirst, 'btn-danger', {"type":"submit"}) }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {{ form_end(deleteForm) }}
+  {% endif %}
+{% endblock %}

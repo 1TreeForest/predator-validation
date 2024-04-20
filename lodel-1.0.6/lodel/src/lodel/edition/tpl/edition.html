@@ -1,0 +1,615 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<IF COND="[#ID]">
+<title>[@COMMON.EDITION]<LOOP NAME="nompourtitre" TABLE="entities" WHERE="id='[#ID]'"> : [#IDENTIFIER] - [(#G_TITLE|textebrut)]</LOOP></title>
+<ELSE/>
+<title>[(#SITE|strtoupper)] - [@COMMON.EDITION_INTERFACE]</title>
+</IF>
+
+<MACRO NAME="JS_FONCTIONS_ARBORESCENCE">
+<MACRO NAME="JS_AFFICHE_IMAGE">
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+<IF COND="[#LODELUSER.EDITOR]">
+<LET VAR="drag">true</LET>
+<script type="text/javascript">
+// iMouseDown represents the current mouse button state: up or down
+/*
+lMouseState represents the previous mouse button state so that we can
+check for button clicks and button releases:
+
+if(iMouseDown && !lMouseState) // button just clicked!
+if(!iMouseDown && lMouseState) // button just released!
+*/
+var mouseOffset = null;
+var iMouseDown  = false;
+var lMouseState = false;
+
+var DragDrops   = [];
+var curTarget   = null;
+var lastTarget  = null;
+var rootParent  = null;
+var rootSibling = null;
+var interval	= [];
+
+Number.prototype.NaN0=function(){return isNaN(this)?0:this;}
+
+function CreateDragContainer(){
+	/*
+	Create a new "Container Instance" so that items from one "Set" can not
+	be dragged into items from another "Set"
+	*/
+	var cDrag        = DragDrops.length;
+	DragDrops[cDrag] = [];
+
+	/*
+	Each item passed to this function should be a "container".  Store each
+	of these items in our current container
+	*/
+	for(var i=0; i<arguments.length; i++){
+		var cObj = arguments[i];
+		DragDrops[cDrag].push(cObj);
+		cObj.setAttribute('DropObj', cDrag);
+		/*
+		Every top level item in these containers should be draggable.  Do this
+		by setting the DragObj attribute on each item and then later checking
+		this attribute in the mouseMove function
+		*/
+		for(var j=0; j<cObj.childNodes.length; j++){
+			// Firefox puts in lots of #text nodes...skip these
+			if(cObj.childNodes[j].nodeName=='#text') continue;
+			cObj.childNodes[j].setAttribute('DragObj', cDrag);
+		}
+	}
+}
+function getPosition(e){
+	var left = 0;
+	var top  = 0;
+	while (e.offsetParent){
+		left += e.offsetLeft + (e.currentStyle?(parseInt(e.currentStyle.borderLeftWidth)).NaN0():0);
+		top  += e.offsetTop  + (e.currentStyle?(parseInt(e.currentStyle.borderTopWidth)).NaN0():0);
+		e     = e.offsetParent;
+	}
+	left += e.offsetLeft + (e.currentStyle?(parseInt(e.currentStyle.borderLeftWidth)).NaN0():0);
+	top  += e.offsetTop  + (e.currentStyle?(parseInt(e.currentStyle.borderTopWidth)).NaN0():0);
+	return {x:left, y:top};
+}
+function mouseCoords(ev){
+	if(ev.pageX || ev.pageY){
+		return {x:ev.pageX, y:ev.pageY};
+	}
+	return {
+		x:ev.clientX + (document.documentElement.scrollLeft || document.body.scrollLeft) - document.documentElement.clientLeft,
+		y:ev.clientY + (document.documentElement.scrollTop || document.body.scrollTop) - document.documentElement.clientTop
+	};
+}
+function getMouseOffset(target, ev){
+	var docPos    = getPosition(target);
+	var mousePos  = mouseCoords(ev);
+	return {x:mousePos.x - docPos.x, y:mousePos.y - docPos.y};
+}
+function mouseMove(ev){
+
+	ev = ev || window.event;
+	/*
+	We are setting target to whatever item the mouse is currently on
+
+	Firefox uses event.target here, MSIE uses event.srcElement
+	*/
+	var target   = ev.target || ev.srcElement;
+	
+	if(target.className == "dragger") {
+		target = target.parentNode.parentNode.parentNode;
+	}
+
+	// mouseOut event - fires if the item the mouse is on has changed
+	if(lastTarget && (target!==lastTarget)){
+		// reset the classname for the target element
+		var origClass;
+		if(lastTarget.getAttribute && (origClass = lastTarget.getAttribute('origClass'))!=null) 
+			lastTarget.className = origClass;
+	}
+	/*
+	dragObj is the grouping our item is in (set from the createDragContainer function).
+	if the item is not in a grouping we ignore it since it can't be dragged with this
+	script.
+	*/
+	var dragObj;
+	// if the mouse was moved over an element that is draggable
+	if(target.getAttribute && (dragObj = target.getAttribute('DragObj')) != null){
+		// mouseOver event - Change the item's class if necessary
+		if(target!=lastTarget){
+			var oClass;
+			if(target.getAttribute && (oClass = target.getAttribute('overClass'))!=null){
+				target.setAttribute('origClass', target.className);
+				target.className = oClass;
+			}
+		}
+		// if the user is just starting to drag the element
+		if(iMouseDown && !lMouseState){
+			// mouseDown target
+			curTarget     = target;
+			curTarget.style.background = '#EEE';
+			// Record the mouse x and y offset for the element
+			rootParent    = curTarget.parentNode;
+			rootSibling   = curTarget.nextSibling;
+			mouseOffset   = getMouseOffset(target, ev);
+			/*
+			Record the current position of all drag/drop targets related
+			to the element.  We do this here so that we do not have to do
+			it on the general mouse move event which fires when the mouse
+			moves even 1 pixel.  If we don't do this here the script
+			would run much slower.
+			*/
+			var dragConts = DragDrops[dragObj];
+			/*
+			first record the width/height of our drag item.  Then hide it since
+			it is going to (potentially) be moved out of its parent.
+			*/
+			curTarget.setAttribute('startWidth',  parseInt(curTarget.offsetWidth));
+			curTarget.setAttribute('startHeight', parseInt(curTarget.offsetHeight));
+			curTarget.style.display  = 'none';
+
+			// loop through each possible drop container
+			for(var i=0; i<dragConts.length; i++){
+				with(dragConts[i]){
+					var pos = getPosition(dragConts[i]);
+
+					setAttribute('startWidth',  parseInt(offsetWidth));
+					setAttribute('startHeight', parseInt(offsetHeight));
+					setAttribute('startLeft',   pos.x);
+					setAttribute('startTop',    pos.y);
+				}
+
+				// loop through each child element of each container
+				for(var j=0; j<dragConts[i].childNodes.length; j++){
+					with(dragConts[i].childNodes[j]){
+						if((nodeName=='#text') || (dragConts[i].childNodes[j]==curTarget)) continue;
+
+						var pos = getPosition(dragConts[i].childNodes[j]);
+
+						// save the width, height and position of each element
+						setAttribute('startWidth',  parseInt(offsetWidth));
+						setAttribute('startHeight', parseInt(offsetHeight));
+						setAttribute('startLeft',   pos.x);
+						setAttribute('startTop',    pos.y);
+					}
+				}
+			}
+		}
+	}
+
+	// If we get in here we are dragging something
+	if(curTarget){
+		autoScroll(ev);
+		var mousePos = mouseCoords(ev);
+		curTarget.style.display  = '';
+		var dragConts  = DragDrops[curTarget.getAttribute('DragObj')];
+		var activeCont = null;
+		var xPos = mousePos.x - mouseOffset.x + (parseInt(curTarget.getAttribute('startWidth')) /2);
+		var yPos = mousePos.y - mouseOffset.y + (parseInt(curTarget.getAttribute('startHeight'))/2);
+		// check each drop container to see if our target object is "inside" the container
+		for(var i=0; i<dragConts.length; i++){
+			with(dragConts[i]){
+				if((parseInt(getAttribute('startLeft')) < xPos) &&
+				(parseInt(getAttribute('startTop')) < yPos) &&
+				((parseInt(getAttribute('startLeft')) + parseInt(getAttribute('startWidth')))  > xPos) &&
+				((parseInt(getAttribute('startTop'))  + parseInt(getAttribute('startHeight'))) > yPos)){
+					/*
+					our target is inside of our container so save the container into
+					the activeCont variable and then exit the loop since we no longer
+					need to check the rest of the containers
+					*/
+					activeCont = dragConts[i];
+					break;
+				}
+			}
+		}
+		// Our target object is in one of our containers.  Check to see where our div belongs
+		if(activeCont){
+			// beforeNode will hold the first node AFTER where our div belongs
+			var beforeNode = null;
+			// loop through each child node (skipping text nodes).
+			for(var i=activeCont.childNodes.length-1; i>=0; i--){
+				with(activeCont.childNodes[i]){
+					if(nodeName=='#text') continue;
+					// if the current item is "After" the item being dragged
+					if(curTarget != activeCont.childNodes[i] &&
+					((parseInt(getAttribute('startLeft')) + parseInt(getAttribute('startWidth')))  > xPos) &&
+					((parseInt(getAttribute('startTop'))  + parseInt(getAttribute('startHeight'))) > yPos)){
+						beforeNode = activeCont.childNodes[i];
+					}
+				}
+			}
+			// the item being dragged belongs before another item
+			if(beforeNode){
+				if(beforeNode!=curTarget.nextSibling){
+					activeCont.insertBefore(curTarget, beforeNode);
+				}
+			// the item being dragged belongs at the end of the current container
+			} else {
+				if((curTarget.nextSibling) || (curTarget.parentNode!=activeCont)){
+					activeCont.appendChild(curTarget);
+				}
+			}
+			var contPos = getPosition(activeCont);
+			activeCont.setAttribute('startWidth',  parseInt(activeCont.offsetWidth));
+			activeCont.setAttribute('startHeight', parseInt(activeCont.offsetHeight));
+			activeCont.setAttribute('startLeft',   contPos.x);
+			activeCont.setAttribute('startTop',    contPos.y);
+		}
+	}
+	// mouseMove target
+	lastTarget  = target;
+	// track the current mouse state so we can compare against it next time
+	lMouseState = iMouseDown;
+	// this prevents items on the page from being highlighted while dragging
+	return false;
+}
+function mouseUp(ev){
+	iMouseDown = false;
+	document.documentElement.style.cursor = "default";
+	if(curTarget){
+		if(interval['up'] != null) {
+			clearInterval(interval['up']);
+			interval['up'] = null;	
+		}
+		if(interval['down'] != null) {
+			clearInterval(interval['down']);
+			interval['down'] = null;
+		}
+		if(curTarget.style.display == 'none'){
+			if(rootSibling){
+				rootParent.insertBefore(curTarget, rootSibling);
+			} else {
+				rootParent.appendChild(curTarget);
+			}
+		}
+		curTarget.style.display    = 'block';
+		curTarget.style.visibility = 'visible';
+		curTarget.style.background = "transparent";
+		curTarget  = null;
+		var tabDiffIds = [];
+		var j=0;
+		for(var i=0; i<rootParent.childNodes.length; i++){
+			with(rootParent.childNodes[i]) {
+				if(nodeName=='#text' || id == null) continue;
+				tabDiffIds[j] = id;
+				j++;
+			}
+		}
+		var xhr = getXMLHttpRequest();
+		if(xhr) {
+			xhr.open("POST", '[#SHAREURL]/ajax/dragndrop.php', true);
+			xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+			xhr.onreadystatechange = function() {
+				if(xhr.readyState == 4 && xhr.status == 200)
+				{
+					if (xhr.responseText == 'error') 
+					{
+						document.getElementById('warner').style.display = "none";
+						alert("[@ADMIN.ERROR_CHANGERANK_ENTITY]");
+						return false;
+					}
+					else 
+					{
+						if (xhr.responseText == 'auth') 
+						{
+							window.location = "login.php?error_timeout=1&url_retour=" + location.pathname + location.search;
+							return false;
+						}
+					}
+				}
+			}
+			xhr.send('tabids='+tabDiffIds+"&site=[#SITE]");
+		} else {
+			alert("[@ADMIN.NAVIGATOR_NOT_AJAX]");
+		}
+	}
+}
+function mouseDown(ev){
+	ev         = ev || window.event;
+	var target = ev.target || ev.srcElement;
+	
+	if(target.className == "dragger") {
+		target = target.parentNode.parentNode.parentNode;
+		if(target.getAttribute('DragObj') != null) {
+			var opened = false;
+			var ids = [];
+			var j=0;
+			for(var i=0;i<document.getElementsByTagName('div').length;i++) {
+				with(document.getElementsByTagName('div')[i]) {
+					if(id.indexOf('container') != -1 && style.display == 'block') {
+						ids[j++] = id.substr(9);
+						opened = true;
+					}
+				}
+			}
+			if(opened) {
+				if(confirm("[@ADMIN.PLEASE_FOLD_BEFORE_USE_DRAGNDROP]")) {
+					for(var i=0;i<ids.length;i++) changeIcon(ids[i], false);
+				}
+				target = null;
+				curTarget = null;
+				return true;
+			}
+			iMouseDown = true;
+			document.documentElement.style.cursor = "move";
+			return false;
+		}
+	} else {
+		target = null;
+		curTarget = null;
+		return true;
+	}
+	
+}
+function autoScroll(e){
+	var h = document.documentElement.innerHeight || document.documentElement.clientHeight;
+	var yPos = e.pageY || e.clientY + document.documentElement.scrollTop;
+	var yOffset = window.pageYOffset || document.documentElement.scrollTop;
+	if((yPos - yOffset) < 75) {
+			if(interval['up'] != null) return;
+			if(interval['down'] != null) {
+				clearInterval(interval['down']);
+				interval['down'] = null;
+			}
+			interval['up'] = window.setInterval(
+				function(){
+					window.scrollBy(0, -3);
+				},10);
+	} else {
+		if((yOffset + h - yPos) < 75) {
+			if(interval['down'] != null) return;
+			if(interval['up'] != null) {
+				clearInterval(interval['up']);
+				interval['up'] = null;
+			}
+			interval['down'] = window.setInterval(
+				function(){
+					window.scrollBy(0, 3);
+				},10);
+		} else {
+			if(interval['down'] != null) {
+				clearInterval(interval['down']);
+				interval['down'] = null;
+			}
+			if(interval['up'] != null) {
+				clearInterval(interval['up']);
+				interval['up'] = null;
+			}
+		}
+	}
+}
+</script>
+<ELSE/>
+<LET VAR="drag">false</LET>
+</IF>	
+<MACRO NAME="CURRENT_PATH">
+<MACRO NAME="ACTIONS_ON_CURRENT_PATH">
+
+<FUNC NAME="ADD_AN_ENTITY">
+<div id="warner" class="warner fullshadow"><img src="[#SHAREURL]/images/patienter.png" title="[@COMMON.PLEASE_WAIT_WHILE_LOADING]" alt="[@COMMON.PLEASE_WAIT_WHILE_LOADING]"/>&nbsp;[@COMMON.PLEASE_WAIT_WHILE_LOADING]</div>
+<div id="listEntities">
+<BLOCK ID="1">
+	<IF COND="![#FOLDER] AND [#DRAG] EQ 'true'"> 
+		<ul class="listEntities" id="DragContainer[#ID]">
+	<ELSE/>
+		<ul class="listEntities" id="ul_listEntities">
+	</IF>
+	<IF COND="![#DISPLAYWHERE]"><LET VAR="displaywhere">display!='advanced'</LET></IF>
+	<IF COND="[#ID]"><LET VAR="coupe">10000</LET><ELSE /><LET VAR="coupe">50</LET></IF>
+	<LOOP NAME="seriesEdit" TABLE="entities,types" WHERE="idparent='[#ID]' AND types.id=idtype AND [#DISPLAYWHERE]" ORDER="entities.rank" SPLIT="[#COUPE]">
+		<BEFORE>
+			<IF COND="[#FOLDER]"><div id="childContainer[#ID]"><li class="unfoldedentities"><ul></IF>
+			<IF COND="[#NBRESULTS] GT [#COUPE]"><MACRO NAME="BOTTOM_RESULTS_PAGES"></IF>
+		</BEFORE>
+		<DO>
+			<IF COND="[#COUNT] % 2">
+				<IF COND="![#FOLDER] AND [#DRAG] EQ 'true'">
+					<li class="line1_entity" id="<IF COND="[#TPLEDITION]">container_</IF>[#ID]"><div class="dragndrop"><a class="dragger"><img src="[#SHAREURL]/images/dragndrop.png" title="Drag'n'Drop" alt="Drag'n'Drop" class="dragger"/></a></div>
+				<ELSE/>
+					<li class="line1_entity" id="<IF COND="[#TPLEDITION]">container_</IF>[#ID]">
+				</IF>
+			<ELSE/>
+				<IF COND="![#FOLDER] AND [#DRAG] EQ 'true'">
+					<li class="line2_entity" id="<IF COND="[#TPLEDITION]">container_</IF>[#ID]"><div class="dragndrop"><a class="dragger"><img src="[#SHAREURL]/images/dragndrop.png" title="Drag'n'Drop" alt="Drag'n'Drop" class="dragger"/></a></div>
+				<ELSE/>
+					<li class="line2_entity" id="<IF COND="[#TPLEDITION]">container_</IF>[#ID]">
+				</IF>
+			</IF>
+			<IF COND="[#TPLEDITION]">
+				<div>
+				<IF COND="[#DISPLAY] eq 'unfolded'">
+					<img class="unfolder" id="img[#ID]" src="[#SHAREURL]/images/fleche_bas_gris.png" alt="[@ADMIN.GET_UNFOLDED] - [@ADMIN.GET_FOLDED]" title="[@ADMIN.GET_FOLDED]" onclick="javascript:loadTemplate([#ID], true, false);changeIcon([#ID], false);" />
+				<ELSE/>
+					<img class="unfolder" id="img[#ID]" src="[#SHAREURL]/images/fleche_droite_gris.png" alt="[@ADMIN.GET_UNFOLDED] - [@ADMIN.GET_FOLDED]" title="[@ADMIN.GET_UNFOLDED]" onclick="javascript:loadTemplate([#ID], true, false);changeIcon([#ID], true);" />
+				</IF>
+				</div>
+			</IF>
+			<div class="entityIconsEdition">
+				<FUNC NAME="STATUS_ICON" STATUS="[#STATUS]">
+				<FUNC NAME="GET_ASSOCIATED_ICON" IDTYPE="[#IDTYPE]" TABLE="types">
+			</div>
+
+			<MACRO NAME="TITRE_AUTEURS_TYPE_DOCUMENT">
+			<IF COND="[#DISPLAY] EQ 'unfolded'"><FUNC NAME="ADD_AN_ENTITY_SIMPLE"></IF>
+
+			<MACRO NAME="BOUTONS_ACTIONS_ENTITIES">
+			<div id="container[#ID]" style="display:<IF COND="[#DISPLAY] eq 'unfolded'">block<ELSE/>none</IF>;">
+				<IF COND="[#DISPLAY] eq 'unfolded'">
+					<LET VAR="oldfolder">[#FOLDER]</LET>
+					<LET VAR="folder">yes</LET>
+					<USE TEMPLATEFILE="edition" BLOCKID="1"/>
+					<LET VAR="folder">[#OLDFOLDER]</LET>
+				</IF>
+			</div>
+			</li>
+		</DO>
+		<AFTER>
+			<IF COND="[#FOLDER]"></ul></li></div></IF>
+		</AFTER>
+		<ALTERNATIVE>
+			<IF COND="![#FOLDER]"><MACRO NAME="AUCUNE_ENTITY_DISPONIBLE"></IF>
+		</ALTERNATIVE>
+	</LOOP>
+	</ul>
+	<IF COND="![#FOLDER] AND [#DRAG] EQ 'true'"> 
+		<script type="text/javascript">
+			CreateDragContainer(document.getElementById('DragContainer[#ID]'));
+		</script>
+	</IF>
+</BLOCK>
+	<FUNC NAME="GET_ALIASES" ID="[#ID]" />	
+</div>
+<script type="text/javascript">
+var xhrs = [];
+var ids = [];
+function loadTemplate(id, displayWarner, recursive)
+{
+	var container = document.getElementById('container'+id);
+	if(!container || container.innerHTML.length > 0) return true;
+	if(displayWarner) document.getElementById('warner').style.display = "block";
+	var l = xhrs.length;
+	xhrs[l] = getXMLHttpRequest();
+	if(xhrs[l]) {
+		xhrs[l].open("POST", '[#SHAREURL]/ajax/sitemap.php', true);
+		xhrs[l].setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+		xhrs[l].container = container;
+		xhrs[l].displayWarner = displayWarner;
+		xhrs[l].currentId = id;
+		xhrs[l].recursive = recursive;
+		xhrs[l].onreadystatechange = function() {
+			if(xhrs[l].readyState == 4 && xhrs[l].status == 200)
+			{
+				if (xhrs[l].responseText == 'error') 
+				{
+                    			document.getElementById('warner').style.display = "none";
+					alert("[@INSTALL.ERROR]");
+					return false;
+				}
+				else if (xhrs[l].responseText == 'auth') {
+					window.location = "login.php?error_timeout=1&url_retour=" + location.pathname + location.search;
+					return false;
+				}
+				else 
+				{
+					if(xhrs[l].responseText == '') {
+						xhrs[l].container.innerHTML = '&nbsp;';
+						finish(true);
+						return true;
+					}
+					xhrs[l].container.innerHTML = xhrs[l].responseText;
+					xhrs[l].container.style.display = 'block';
+					if (xhrs[l].displayWarner) document.getElementById('warner').style.display = "none";
+					if (xhrs[l].recursive) displayAll(document.getElementById('displayButton'), true, true, xhrs[l].currentId);
+					return true;
+				}
+			}
+		}
+		xhrs[l].send('site=[#SITE]&id='+id);
+	} else {
+		if(displayWarner) document.getElementById('warner').style.display = "none";
+		alert("[@ADMIN.NAVIGATOR_NOT_AJAX]");
+		return false;
+	}
+	return true;
+}
+function finish(statut)
+{
+	var finish = true;
+	for(var i=0;i<xhrs.length; i++)
+	{
+		if(xhrs[i].readyState != 4){
+			finish = false;
+			break;
+		}
+	}
+	if (finish) {
+		var obj = document.getElementById('displayButton');
+		if (statut) {
+			obj.onclick = function(){
+				displayAll(this, false, false, null);
+			};
+			obj.innerHTML = '[@COMMON.HIDE_ALL_SITEMAP]';
+		}
+		else {
+			obj.onclick = function(){
+				displayAll(this, true, false, null);
+			};
+			obj.innerHTML = '[@COMMON.DISPLAY_ALL_SITEMAP]';
+		}
+		document.getElementById('warner').style.display = "none";
+	}
+}
+
+function displayAll(obj, statut, recursive, id) 
+{
+	document.getElementById('warner').style.display = "block";
+	if (!recursive) {
+		ids = [];
+		obj.onclick = function(){
+			return false;
+		};
+	}
+
+	var tabIds = [];
+	var c=0;
+	var j = 0;
+	var id = 0;
+	var ret = false;
+	if(id != null) ids[id] = true;
+
+	lis = document.getElementsByTagName('li');
+	for (i = 0; i < lis.length; i++) {
+		if (lis[i].id.indexOf('container_') != -1) id = lis[i].id.substr(10);
+		if(ids[id] != true) { 
+			tabIds[c++] = id;
+			ids[id] = true;
+			if (statut && !loadTemplate(id, false, true, obj)) {
+				document.getElementById('warner').style.display = "none";
+				return false;
+			}
+			changeIcon(id, statut);
+		}
+	}
+	finish(statut);
+}
+
+function changeIcon(id, statut) 
+{
+	var img = document.getElementById('img'+id);
+	if(statut == true) { 
+		var childcontainer = document.getElementById('childContainer'+id);
+		if(childcontainer) childcontainer.style.display='block';
+		img.src='[#SHAREURL]/images/fleche_bas_gris.png';
+		img.title='[@ADMIN.GET_FOLDED]';
+		var container = document.getElementById('container'+id);
+		if(container) container.style.display='block';
+	} else {
+		var childcontainer = document.getElementById('childContainer'+id);
+		if(childcontainer) childcontainer.style.display='none';
+		img.src='[#SHAREURL]/images/fleche_droite_gris.png';
+		img.title='[@ADMIN.GET_UNFOLDED]';
+		var container = document.getElementById('container'+id);
+		if(container) container.style.display='none';
+	}
+	img.onclick = function(){loadTemplate(id, true, false);changeIcon(id, !statut);}
+}
+<IF COND="[#LODELUSER.EDITOR]">
+
+	document.onmousemove = mouseMove;
+	document.onmousedown = mouseDown;
+	document.onmouseup   = mouseUp;
+
+</IF>
+</script>
+<MACRO NAME="CLOSE_HTML">

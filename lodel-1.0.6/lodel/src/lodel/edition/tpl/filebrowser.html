@@ -1,0 +1,81 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@EDITION.FILEBROWSER]</title>
+<script type="text/javascript" src="[#SHAREURL]/js/interface.js"></script>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<script type="text/javascript">
+function sendValue(s){
+	obj=window.opener.document.getElementById('[#CALLER]localfilename');
+	if(obj){
+		obj.value=s;
+		obj.className="localChooseON";
+	}
+	obj=window.opener.document.getElementById('uploadType[#CALLER]');
+	obj.value = 'serverfile'; 
+	obj.disabled = ''; 
+	window.close();
+}
+</script>
+<body id="filebrowser">
+
+<form  method="post" action="index.php">
+<input type="hidden" name="caller" value="[#CALLER]" />
+<input type="hidden" name="lo" value="filebrowser" />
+<input type="hidden" name="do" value="submit" />
+<table class="fileInfo">
+<tr>
+<th>[@EDITION.FILENAME] <span class="info">([@EDITION.SELECT])</span></th>
+<th>[@EDITION.FILESIZE]</th>
+<th>[@EDITION.IMAGESIZE]</th>
+<td>&nbsp;</td>
+</tr>
+
+<LOOP NAME="filelist">
+<DO>
+<tr>
+<td class="filename"><a href="#" onclick="sendValue('[(#NAME|addslashes)]');" class="action">[#NAME]</a></td>
+<td class="filesize">[#SIZE]</td>
+<td class="imagesize">[#IMAGESIZE]</td>
+<td class="action">
+<input type="checkbox" name="file[[#NAME|htmlentities]]" [#CHECKED] />
+</td>
+</tr>
+</DO>
+
+</LOOP>
+</table>
+
+<div class="delete">
+<input type="submit" name="delete" value="[@EDITION.DELETE]" class="button" />
+</div>
+
+<div class="resize">
+<input type="text" name="newsize" value="500">
+<input type="submit" name="resize" value="[@EDITION.RESIZEIMAGES]" class="button" />
+</div>
+
+<?php if (function_exists("imap_open")) { ?>
+<div class="checkmail">
+<input type="submit" name="checkmail" value="[@EDITION.CHECKMAIL]" class="button" />
+<IF COND="[(#NBATTATTACHMENTS|isset)]">[@EDITION.NB_ATTACHED_FILES_ARE_UPLOADED|sprintf([#NBATTATTACHMENTS])]</IF>
+</div>
+<?php } ?>
+
+</form>
+
+
+
+<div class="close">
+<a href="#" onclick="window.close();" class="action">[@EDITION.CLOSE_THE_WINDOW]</a>
+</div>
+
+</body>
+</html>

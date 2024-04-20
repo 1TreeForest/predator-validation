@@ -1,0 +1,57 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_IMPORTXML_CHECKTYPES]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO">
+
+<IF COND="[#ERROR]">
+	<p class="error">[#ERROR]</p>
+</IF>
+<form method="POST">
+<div class="importME_left">
+<LOOP NAME="foreach" ARRAY="[#MODIFIEDOLDTYPES]">
+	[@ADMIN.IMPORTXML_OLDTYPES]<br />
+	<strong>[@COMMON.CLASS] [#KEY]</strong>
+	<ul class="importXML">
+		<LET VAR="act">[#KEY]</LET>
+		<LOOP NAME="foreach" ARRAY="[#VALUE]">
+			<LET ARRAY="fieldname">[#VALUE|array_values]</LET>
+			<LET ARRAY="fieldidtype">[#VALUE|array_keys]</LET>
+			<li><input type="text" value="" class="input_formulaire" name="data[[#ACT]][[#FIELDIDTYPE.0]]" size="3" />&nbsp;[#FIELDNAME.0]</li>
+		</LOOP>
+	</ul>
+</LOOP>
+</div>
+<div class="importME_right">
+<strong>[@ADMIN.IMPORTXML_TYPESAVAILABLE]</strong><br />
+<LOOP NAME="foreach" ARRAY="[#MODIFIEDNEWTYPES]">
+	<strong>[@COMMON.CLASS] [#KEY]</strong>
+	<ul class="importXML">
+		<LOOP NAME="foreach" ARRAY="[#VALUE]">
+			<li>[#VALUE.ID] => [#VALUE.TYPE]</li>
+		</LOOP>
+	</ul>
+</LOOP>
+</div>
+<div class="importMEXML_action">
+<input type="hidden" name="do" value="[#DO]" />
+<input type="hidden" name="lo" value="[#LO]" />
+<input type="hidden" name="file" value="[#FILE]" />
+<input type="hidden" name="checktypes" value="1" />
+<fieldset>
+<input class="button" type="submit" />&nbsp;&nbsp;
+<input class="button" type="button" value="[@COMMON.CANCEL]" onclick="javascript:window.location='index.php';" />
+</fieldset>
+</div>
+</form>
+
+<MACRO NAME="CLOSE_HTML">

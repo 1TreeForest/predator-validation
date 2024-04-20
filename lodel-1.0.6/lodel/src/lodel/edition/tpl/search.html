@@ -1,0 +1,75 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+
+
+
+<MACRO NAME="HEADER_HEAD_OPEN">
+
+<title>[(#SITE|strtoupper)].[@COMMON.SEARCH_PAGE]</title>
+
+<MACRO NAME="JS_FONCTIONS_ARBORESCENCE">
+<MACRO NAME="JS_AFFICHE_IMAGE">
+<!--[ Fin rajout intégration maquette ]-->
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+<!--[ ************************************** Rajout intégration maquette ************************************** ]-->
+	
+	<ul class="entitiesPath">
+		<li>
+		<IF COND="![#QUERY]">
+			[@WARNING_EMPTY_QUERY]
+		<ELSE />
+			<MACRO NAME="YOUR_SEARCH_BAR">
+		</IF>
+		</li>
+	</ul>
+	<FUNC NAME="SEARCH_ENGINE" QUERY="[#QUERY]" QTYPE="[#QTYPE]" QSTATUS="[#QSTATUS]" QFIELD="[#QFIELD]">
+	<IF COND="[#QUERY]">
+		<LOOP NAME="search" LIMIT="[#QNBRESULTS]">
+			<BEFORE>
+				
+				<ul class="listEntities">
+			</BEFORE>
+			<DO>
+				<IF COND="[#COUNT] % 2">
+					<li class="line2">
+				<ELSE/>
+					<li class="line1">
+				</IF>				
+				<div class="entityIcons">
+					<FUNC NAME="STATUS_ICON" STATUS="[#STATUS]">
+					<FUNC NAME="GET_ASSOCIATED_ICON" IDTYPE="[#IDTYPE]" TABLE="types">
+				</div>
+				<MACRO NAME="BOUTONS_ACTIONS_ENTITIES">
+				<MACRO NAME="TITRE_AUTEURS_TYPE_DOCUMENT">
+		
+				<span class="type_document">
+				<LOOP NAME="parentsentities">
+					<DO>&nbsp;>&nbsp;<a href="index.php?id=[#ID]">[#G_TITLE|nbsp]</a></DO>
+				</LOOP>
+				</span>
+		
+				</li>
+			</DO>
+			<AFTER>
+				</ul>
+				<MACRO NAME="BOTTOM_RESULTS_PAGES">
+			</AFTER>
+			<ALTERNATIVE>
+				<MACRO NAME="YOUR_SEARCH_BAR">
+				<p class="searchnoresults">
+				[@EDITION.SEARCH_MESSAGE_NO_RESULTS|sprintf([#QUERY])]
+				</p>
+			</ALTERNATIVE>
+		</LOOP>
+	</IF>
+
+<!--[ ************************************** Fin Rajout intégration maquette ************************************** ]-->
+<MACRO NAME="CLOSE_HTML">

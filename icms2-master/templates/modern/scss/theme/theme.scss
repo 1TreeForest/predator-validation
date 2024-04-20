@@ -1,0 +1,37 @@
+// Переменные шаблона
+@import "variables";
+// Кастомные переменные
+@import "custom_variables";
+
+// Функции Bootstrap
+// Bootstrap 4.6.0
+@import "../bootstrap/bootstrap";
+
+// Миксины
+@import "mixins";
+
+// Переопределяемые/дополняемые стили Bootstrap
+@import "bs_override";
+// Виджеты
+@import "widgets";
+// Типы контента
+@import "content";
+// Таблицы
+@import "tables";
+// Комментарии
+@import "comments";
+// Рейтинг
+@import "rating";
+// Спиннеры
+@import "spinners";
+// Формы
+@import "forms";
+// Меню
+@import "menu";
+// Юзеры
+@import "profile";
+// Общие стили
+@import "layout";
+
+// Кастомный SCSS
+@import "custom";

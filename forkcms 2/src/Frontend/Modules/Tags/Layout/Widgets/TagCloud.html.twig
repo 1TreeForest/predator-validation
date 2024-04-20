@@ -1,0 +1,29 @@
+{#
+  variables that are available:
+  - {{ widgetTagsTagCloud }}: contains an array with the most popular tags
+#}
+
+{% if widgetTagsTagCloud %}
+  <aside class="module-tags widget-tags-tag-cloud">
+    {% block widget_heading %}
+      <header class="widget-heading" role="banner">
+        <h3>{{ 'lbl.Tags'|trans|ucfirst }}</h3>
+      </header>
+    {% endblock %}
+
+    {% block widget_body %}
+      <div class="widget-body">
+        <p>
+          {% for tag in widgetTagsTagCloud %}
+            <a href="{{ tag.url }}" rel="tag">
+              {{ tag.name }}
+            </a>
+            <span class="badge hidden-phone">{{ tag.number }}</span>{% if not loop.last %},{% endif %}
+          {% endfor %}
+        </p>
+      </div>
+    {% endblock %}
+
+    {% block widget_footer %}{% endblock %}
+  </aside>
+{% endif %}

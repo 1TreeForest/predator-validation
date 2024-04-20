@@ -1,0 +1,83 @@
+imports:
+    - { resource: console.yml }
+    - { resource: form.yml }
+    - { resource: parameters_install.yml }
+    - { resource: doctrine.yml }
+
+framework:
+    secret: "%kernel.secret%"
+    router:
+        resource: "%kernel.project_dir%/app/config/routing_install.yml"
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    templating:
+        engines: ['twig']
+    session:
+        handler_id: ~
+    validation:
+        enable_annotations: true
+    cache:
+        app: cache.adapter.filesystem
+        pools:
+            cache.search:
+                adapter: cache.app
+                public: true
+                default_lifetime: 3600
+
+# Assetic Configuration
+#assetic:
+#    debug: "%kernel.debug%"
+#    use_controller: false
+#    bundles: [ 'ForkCMSInstallerBundle' ]
+#    filters:
+#        cssrewrite: ~
+
+monolog:
+    handlers:
+        main:
+            type: stream
+            path: "%site.path_www%/var/logs/%kernel.environment%/debug.log"
+            level: debug
+
+parameters:
+    doctrine.dbal.connection_factory.class: ForkCMS\Bundle\InstallerBundle\Service\InstallerConnectionFactory
+    fork.is_installed: false
+    fork.form.theme: "ForkCMSInstallerBundle:Installer:form_theme.html.twig"
+
+services:
+    templating:
+        alias: templating.engine.twig
+
+    fork.settings:
+        class: Common\ModulesSettings
+        public: true
+        arguments:
+            - "@database"
+            - "@cache.pool"
+            - "%fork.is_installed%"
+
+    # dummy service during the installation
+    mailer_configurator:
+        class: stdClass
+
+    cache.pool:
+        class: Symfony\Component\Cache\Adapter\ArrayAdapter
+
+    database:
+        class: SpoonDatabase
+        public: true
+        arguments:
+            - "%database.driver%"
+            - "%database.host%"
+            - "%database.user%"
+            - "%database.password%"
+            - "%database.name%"
+            - "%database.port%"
+        calls:
+            - [ setDebug, [ "%kernel.debug%" ]]
+
+    ForkCMS\Utility\Thumbnails:
+        public: true
+        arguments:
+            - "%site.path_www%"

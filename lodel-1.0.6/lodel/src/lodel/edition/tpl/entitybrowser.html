@@ -1,0 +1,129 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@EDITION.ENTITIESBROWSER]</title>
+<script type="text/javascript" src="[#SHAREURL]/js/interface.js"></script>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<script type="text/javascript">
+function sendValue(id,title)
+{
+	obj=window.opener.document.getElementById('[#CALLER]');
+	if (obj) obj.value=id;
+	obj=window.opener.document.getElementById('[#CALLER][title]');
+	if (obj) obj.value=title;
+	window.close();
+}
+
+function sendValues(){
+	obj=window.opener.document.getElementById('[#CALLER]');
+	objselect=window.opener.document.getElementById('[#CALLER]_select');
+	var pattern=/(\d+):(.*):(.*)/;
+	var pattern2 = /^(\d+)$/;
+	var chkbox = document.getElementsByName('entities');
+	var s='';
+	for(var i=0;objselect.options[i];i++) {
+		if(objselect.options[i].value.match(pattern2)) {
+			var values = obj.value.split(',');
+			obj.value = '';
+			for(var j=0;j<values.length;j++) {
+				if(values[j] && values[j] !== objselect.options[i].value)
+					obj.value += values[j]+',';
+			}
+			var n = objselect.options[i];
+			objselect.removeChild(n);
+			--i;
+		}
+	}
+
+	for(i=0; i<chkbox.length; i++){
+		if(chkbox[i].checked) {
+			var result = chkbox[i].value.match(pattern);
+			if(result[2].length > 50) {
+				result[2] = result[2].substr(0,50) + ' ... ';
+			}
+			var opt = window.opener.document.createElement('option');
+			opt.innerHTML = result[2] + ' (' + result[3] + ')';
+			opt.setAttribute('value', result[1]);
+			objselect.appendChild(opt);
+			obj.value += result[1]+',';
+		}
+	}
+	window.close();
+}
+</script>
+<body id="browser">
+<div class="close">
+<a href="#" onclick="window.close()" class="action">[@EDITION.CLOSE_THE_WINDOW]</a>
+</div>
+
+<form  method="post" action="entitybrowser.php">
+<fieldset>
+	<legend>[@EDITION.BROWSE_AND_CHOOSE_ONE_OR_MANY_ENTITIES]</legend>
+
+	<input type="hidden" name="caller" value="[#CALLER]" />
+	<LET VAR="iddocument">[#ID]</LET>
+	<LET VAR="id">0</LET>
+	<LOOP NAME="entities" TABLE="entities,types" WHERE="idparent='[#ID]' AND idtype=types.id" ORDER="entities.rank">
+		<BEFORE><ul class="listentities" style="list-style-type:none;" id="entities_[#ID]"></BEFORE>
+		<DO>
+			<li>
+			<IF COND="[#TPLEDITION]">
+			&nbsp;<img src="[#SHAREURL]/images/fleche_droite_gris.png" alt="[@ADMIN.GET_UNFOLDED]" title="[@ADMIN.GET_UNFOLDED]" onclick="if(document.getElementById('childContainer[#ID]').style.display == 'none') { document.getElementById('childContainer[#ID]').style.display='block';this.src='[#SHAREURL]/images/fleche_bas_gris.png';this.title='[@ADMIN.GET_FOLDED]';  } else { document.getElementById('childContainer[#ID]').style.display='none';this.src='[#SHAREURL]/images/fleche_droite_gris.png' }" />
+			<IF COND="[#SINGLE]">
+				<a href="#" id="entities[#ID]" onClick="sendValue('[#ID]','[#G_TITLE|addslashes|htmlspecialchars]');">[#G_TITLE|strip_tags] ([#TYPE])</a>
+			<ELSE/>
+				<input type="checkbox" id="entities[#ID]" name="entities" value="[#ID]:[#G_TITLE|htmlspecialchars]:[#TYPE]">[#G_TITLE|strip_tags] ([#TYPE])
+			</IF>
+			<div style="display:none" id="childContainer[#ID]">
+				<LOOP NAME="entities"></LOOP>
+			</div>
+			<ELSE/>
+			<IF COND="[#SINGLE]">
+				<a href="#" id="entities[#ID]" onClick="sendValue('[#ID]','[#G_TITLE|addslashes|htmlspecialchars]');">[#G_TITLE|strip_tags] ([#TYPE])</a>
+			<ELSE/>
+				<input type="checkbox" id="entities[#ID]" name="entities" value="[#ID]:[#G_TITLE|htmlspecialchars]:[#TYPE]" />[#G_TITLE|strip_tags] ([#TYPE])
+			</IF>
+			</IF>
+			</li>
+		</DO>
+		<AFTER></ul></AFTER>
+	</LOOP>
+	<IF COND="![#SINGLE]">
+		<input type="button" class="button" value="[@COMMON.SELECT]" onClick="javascript:sendValues();" />
+	</IF>
+</fieldset>
+<div class="close">
+<a href="#" onclick="window.close()" class="action">[@EDITION.CLOSE_THE_WINDOW]</a>
+</div>
+<script type="text/javascript">
+	obj=window.opener.document.getElementById('[#CALLER]_select');
+<IF COND="[#SINGLE]">
+	o=document.getElementById('entities'+obj.value);
+	if (o) o.style.backgroundColor='orange';
+<ELSE/>
+	for(i=0; i<obj.length; i++) {
+		o=document.getElementById('entities'+obj.options[i].value);
+		if(o) {
+                    o.checked=true;
+                    var p = false;
+                    do {
+                        p = p ? p.parentNode : o.parentNode;
+//                         console.log(p);
+                        if(-1 !== p.id.indexOf('childContainer')) {
+                            p.style.display = 'block';
+                        }
+                    } while(p.id != 'entities_0');
+                }
+	}
+</IF>
+</script>
+</form>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{#
+  variables that are available:
+  - {{ questions }}: contains all questions inside this category
+#}
+{% import 'Core/Layout/Templates/Alerts.html.twig' as alerts %}
+
+<section class="module-faq block-faq-category" itemscope itemtype="http://schema.org/Question">
+  {% block block_heading %}
+    <header class="page-header">
+      <h1 itemprop="genre">{{ category.title }}</h1>
+    </header>
+  {% endblock %}
+
+  {% if questions is empty %}
+    {% block block_alerts %}
+      <div class="block-alerts">
+        {{ alerts.alert('info', 'msg.NoQuestionsInCategory'|trans) }}
+      </div>
+    {% endblock %}
+  {% else %}
+    {% block block_body %}
+      <div class="block-body">
+        <ul>
+          {% for question in questions %}
+            <li itemprop="about"><a href="{{ question.full_url }}">{{ question.question }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endblock %}
+  {% endif %}
+
+  {% block block_footer %}
+    <nav class="block-footer">
+      <ul class="pager">
+        <li class="previous">
+          <a href="{{ geturlforblock('Faq') }}" title="{{ 'lbl.ToFaqOverview'|trans|ucfirst }}">
+            ←
+            {{ 'lbl.ToFaqOverview'|trans|ucfirst }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  {% endblock %}
+</section>

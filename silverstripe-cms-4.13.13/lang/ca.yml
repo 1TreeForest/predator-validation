@@ -1,0 +1,90 @@
+ca:
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Restore:
+    RESTORE: Restaura
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Unpublish:
+    UNPUBLISH_PAGES: Despublica
+  SilverStripe\CMS\Controllers\CMSMain:
+    EMAIL: 'Correu electrònic'
+    PAGENOTEXISTS: 'Aquesta pàgina no existeix'
+    PAGETYPEOPT: 'Tipus de pàgina'
+    PLEASESAVE: 'Si us plau, deseu la pàgina: aquesta pàgina no s''ha pogut actualitzar perquè encara no s''ha desat.'
+    PUBALLCONFIRM: 'Publica cada pàgina del lloc web, copiant el contingut cap a la versió publicada'
+    PUBALLFUN: 'Funcionalitat de "Publica-ho tot"'
+    REMOVEDPAGEFROMDRAFT: 'S''ha suprimit  ''{title}'' del lloc esborrany'
+    ROLLBACK: 'Torna a aquesta versió'
+    SAVEDRAFT: Desa
+    SEARCHRESULTS: 'Resultats de la cerca'
+    TabContent: Contingut
+  SilverStripe\CMS\Controllers\CMSPageEditController:
+    MENUTITLE: 'Edita la pàgina'
+  SilverStripe\CMS\Controllers\CMSPageHistoryController:
+    AUTHOR: Autor
+  SilverStripe\CMS\Controllers\CMSPageSettingsController:
+    MENUTITLE: 'Edita la pàgina'
+  SilverStripe\CMS\Controllers\ContentController:
+    Email: 'Correu electrònic'
+    LOGIN: Entrar
+    Password: Contrasenya
+  SilverStripe\CMS\Forms\AnchorLinkFormFactory:
+    ANCHORVALUE: Ancla
+  SilverStripe\CMS\Forms\InternalLinkFormFactory:
+    LINKDESCR: 'Descripció de l''enllaç'
+  SilverStripe\CMS\Model\RedirectorPage:
+    FILE: Fitxer
+    HEADER: 'Aquesta pàgina redirigirà usuaris a una altra pàgina'
+    OTHERURL: 'URL del lloc web'
+    REDIRECTTO: 'Redirigeix a'
+    REDIRECTTOEXTERNAL: 'Un altre lloc web'
+    REDIRECTTOPAGE: 'Una pàgina del vostre lloc web'
+    YOURPAGE: 'Pàgina del vostre lloc web'
+    has_one_LinkTo: 'Enllaça a'
+  SilverStripe\CMS\Model\RedirectorPageController:
+    HASBEENSETUP: 'S''ha definit una pàgina redirectora sense cap lloc on redirigir.'
+  SilverStripe\CMS\Model\SiteTree:
+    ACCESSANYONE: Qualsevol
+    ACCESSHEADER: 'Qui pot veure aquesta pàgina al meu lloc web?'
+    ACCESSLOGGEDIN: 'Usuaris connectats'
+    ACCESSONLYTHESE: 'Només aquesta gent (trieu de la llista)'
+    BUTTONCANCELDRAFT: 'Cancel·la els canvis de l''esborrany'
+    BUTTONCANCELDRAFTDESC: 'Suprimeix el vostre esborrany i reverteix a la pàgina actualment publicada'
+    BUTTONUNPUBLISH: Despublica
+    BUTTONUNPUBLISHDESC: 'Suprimeix aquesta pàgina del lloc publicat'
+    Comments: Comentaris
+    Content: Contingut
+    DEFAULTABOUTTITLE: 'Sobre nosaltres'
+    DEFAULTCONTACTTITLE: 'Contacteu amb nosaltres'
+    DEFAULTHOMETITLE: Portada
+    EDITHEADER: 'Qui pot editar-la des del SGC?'
+    Editors: 'Grups d''editors'
+    HASBROKENLINKS: 'Aquesta pàgina té enllaços trencats'
+    HTMLEDITORTITLE: Contingut
+    INHERIT: 'Hereda de la pàgina pare'
+    MENUTITLE: 'Etiqueta de navegació'
+    METADESC: Descripció
+    METAEXTRA: 'Etiquetes Meta personalitzades'
+    PAGETITLE: 'Nom de la pàgina'
+    PAGETYPE: 'Tipus de pàgina'
+    PERMISSION_GRANTACCESS_DESCRIPTION: 'Controla quins grups poden accedir o editar certes pàgines'
+    SHOWINMENUS: 'Mostra als menús?'
+    SHOWINSEARCH: 'Mostra en cerques?'
+    SINGULARNAME: Pàgina
+    TABBEHAVIOUR: Comportament
+    TOPLEVEL: 'Contingut del lloc (Nivell principal)'
+    Viewers: 'Grups de visitadors'
+    db_Content: Contingut
+    db_Title: Títol
+    has_one_Parent: 'Pàgina pare'
+    many_many_BackLinkTracking: 'Seguiment d''enllaços retroactius'
+    many_many_ImageTracking: 'Seguiment d''imatges'
+    many_many_LinkTracking: 'Seguiment d''enllaços'
+  SilverStripe\CMS\Model\VirtualPage:
+    HEADER: 'Aquesta és una pàgina virtual'
+    SINGULARNAME: 'Pàgina virtual'
+  SilverStripe\CMS\Reports\BrokenLinksReport:
+    PageName: 'Nom de la pàgina'
+  SilverStripe\CMS\Reports\RecentlyEditedReport:
+    LAST2WEEKS: 'Pàgines editades les dues darreres setmanes'
+  SilverStripe\CMS\Search\SearchForm:
+    FILTERLABELTEXT: Cerca
+    GO: Vés
+    SEARCH: Cerca

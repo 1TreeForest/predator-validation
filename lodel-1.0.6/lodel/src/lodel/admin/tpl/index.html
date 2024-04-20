@@ -1,0 +1,121 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[(#SITE|strtoupper)]. [@COMMON.ADMINISTRATION]</title>
+<MACRO NAME="JS_SELECT_URL">
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@COMMON.ADMINISTRATION]</span></li>
+</ul>
+
+	<div id="adminGroup">
+	<div class="conf">
+		<h4>[@ADMIN.CONFIGURATION]</h4>
+		<ul>
+			<li><a href="index.php?do=list&amp;lo=users">[@ADMIN.ADMIN_USER_AND_RIGHTS]</a></li>
+			<li><a href="index.php?do=list&amp;lo=restricted_users">[@ADMIN.RESTRICTED_USERS]</a></li>
+			<li>[@ADMIN.OPTIONS] : <select onchange="select_url(this)" class="barInfo"><option>--</option>
+				<LET VAR="ID">0</LET>
+				<LOOP NAME="options" TABLE="optiongroups" WHERE="idparent='[#ID]' AND status gt 0" ORDER="rank">
+					<IF COND="[#LOGIC]">
+						<option value="index.php?do=view&amp;lo=[#LOGIC]&amp;id=[#ID]">[#BARRE][#TITLE]</option>
+					<ELSE/>
+						<option value="index.php?do=view&amp;lo=useroptiongroups&amp;id=[#ID]">[#BARRE][#TITLE]</option>
+					</IF>
+					<LET VAR="BARRE">[#BARRE]&nbsp;&nbsp;|&nbsp;</LET>
+					<LOOP NAME="options"></LOOP>
+				</LOOP>
+				</select>
+			</li>
+			<li><a href="index.php?do=rebuildIndex&amp;lo=entities_index&amp;clean=1">[@ADMIN.INDEX_REBUILD]</a></li>
+			<li><a href="index.php?do=list&amp;lo=translations">[@ADMIN.ADMINISTRATE_TRANSLATIONS]</a></li>
+			<li>
+				<IF COND="[#LODELUSER.TRANSLATIONMODE]=='site'">
+					<a href="index.php?do=set&amp;lo=users&amp;translationmode=off"><span class="texte_orange">[@ADMIN.GET_OUT_TRANSLATION_MODE_FOR_SITE]</span></a>
+				<ELSE/>
+					<a href="index.php?do=set&amp;lo=users&amp;translationmode=site"><span class="texte_orange">[@ADMIN.ENTER_IN_TRANSLATION_MODE_FOR_SITE]</span></a>
+				</IF>
+			</li>
+		</ul>
+	</div>
+
+	<div class="tools">
+		<h4>[@ADMIN.TOOLS]</h4>
+		<ul>
+			<IF COND="[#LODELUSER.ADMINLODEL]">
+				<li><a href="index.php?do=backup&amp;lo=data">[@ADMIN.BACKUP_DATA]</a></li>
+				<li><a href="index.php?do=import&amp;lo=data">[@ADMIN.IMPORT_DATA]</a></li>
+			</IF>
+			<li>[@ADMIN.DOWNLOAD_XML_SCHEMA] : 
+				<select onchange="select_url(this)" class="barInfo">
+					<option>--</option>
+				<LOOP NAME="listentitiesclasses" TABLE="classes" WHERE="classtype='entities' AND status GT 0">
+					<option value="index.php?lo=xml&amp;do=generateXSD&amp;class=[#CLASS]"><MACRO NAME="DISPLAY_ALTERTITLE"></option>
+				</LOOP>
+				</select>
+			</li>
+			<li>[@COMMON.LANG_INTERFACE] : 
+				<select onchange="change_language(this)" class="barInfo">
+				<LOOP NAME="translations_interface" DATABASE="lodelmain" TABLE="translations" WHERE="textgroups='interface'" ORDER="rank">
+					<IF COND="[#LODELUSER.LANG] eq [#LANG]">
+						<option value="[#LANG]" selected="selected">
+					<ELSE/>
+						<option value="[#LANG]">
+					</IF>
+                    <LET VAR="lang">[#LANG|strtoupper]</LET>
+                    <IF COND="[#DEFAULTLANG.#LANG]">[#DEFAULTLANG.#LANG]<ELSE/>[#TITLE]</IF>
+                </option>
+				</LOOP>
+				</select>
+			</li>
+			<IF COND="[#LODELUSER.ADMINLODEL]">
+				<li>
+				<?php $context['lodeladminpath']=C::get('home', 'cfg')."../../lodeladmin"; // this is not wonderfull.....
+				?>
+				<a href="[#LODELADMINPATH]/index.php">[@ADMIN.GO_TO_THE_GENERAL_ADMINISTRATION_PAGE]</a>
+				</li>
+				<IF COND="[#LODELUSER.TRANSLATIONMODE]=='interface'">
+					<li><a href="index.php?do=set&amp;lo=users&amp;translationmode=off">[@ADMIN.GET_OUT_TRANSLATION_MODE_FOR_INTERFACE]</a>
+				<ELSE/>
+					<li><a href="index.php?do=set&amp;lo=users&amp;translationmode=interface">[@ADMIN.ENTER_IN_TRANSLATION_MODE_FOR_INTERFACE]</a></li>
+				</IF>
+				<li>
+					<a href="index.php?lo=plugins&amp;do=list">[@ADMIN.PLUGINS]</a>
+				</li>
+			</IF>
+		</ul>
+	</div>
+
+	<div class="ME">
+		<h4>[@ADMIN.ADMIN_EM]</h4>
+		<ul>
+			<li><a href="index.php?do=list&amp;lo=classes&amp;classtype=entities">[@ADMIN.CLASSES_FOR_ENTITIES]</a></li>
+			<li><a href="index.php?do=list&amp;lo=classes&amp;classtype=entries">[@ADMIN.CLASSES_FOR_ENTRIES]</a></li>
+			<li><a href="index.php?do=list&amp;lo=classes&amp;classtype=persons">[@ADMIN.CLASSES_FOR_PERSONS]</a></li>
+			<li><a href="index.php?do=list&amp;lo=optiongroups">[@ADMIN.MANAGE_OPTIONS]</a></li>
+			<li><a href="index.php?do=list&amp;lo=internalstyles">[@ADMIN.INTERNALSTYLES]</a></li>
+			<li><a href="index.php?do=list&amp;lo=characterstyles">[@ADMIN.CHARACTERSTYLES]</a></li>
+			<IF COND="[#LODELUSER.ADMINLODEL]">
+				<li><a href="index.php?do=importmodel&amp;lo=data">[@ADMIN.IMPORT_EM]</a></li>
+			</IF>
+			<li><a href="index.php?do=backupmodel&amp;lo=data">[@ADMIN.BACKUP_EM]</a></li>
+			<IF COND="[#LODELUSER.ADMINLODEL]">
+				<li><a href="index.php?do=importxmlmodel&amp;lo=data">[@ADMIN.IMPORT_EM_XML]</a></li>
+			</IF>
+			<li><a href="index.php?do=backupxmlmodel&amp;lo=data">[@ADMIN.BACKUP_EM_XML]</a></li>
+		</ul>
+	</div>
+	</div>
+
+
+<MACRO NAME="CLOSE_HTML">

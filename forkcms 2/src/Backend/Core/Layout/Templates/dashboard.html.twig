@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="{{ INTERFACE_LANGUAGE }}">
+
+{% include "Layout/Templates/head.html.twig" %}
+
+<body id="{{ bodyID }}" class="{{ bodyClass }}">
+
+{% include "Layout/Templates/header.html.twig" %}
+
+<div class="main-wrapper main-wrapper-dashboard {% if attribute(cookies, 'navigation-collapse') == 'true' %} navigation-collapsed{% endif %}">
+  <div class="sidebar">
+    {% include "Layout/Templates/navigation.html.twig" %}
+  </div>
+
+  <div id="root">
+    <div id="content" class="content-wrapper">
+      <div class="content-main content-main-dashboard{% if attribute(cookies, 'navigation-collapse') == 'true' %} navigation-collapsed{% endif %}">
+        <div class="container-fluid container-fluid-large">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+      <div id="root-footer"></div>
+    </div>
+  </div>
+  <div class="footer-dashboard">
+    {% include "Layout/Templates/footer.html.twig" %}
+  </div>
+</div>
+
+<div class="hidden">
+  <div class="modal fade jsConfirmation" role="dialog" tabindex="-1" aria-hidden="true" aria-labelledby="jsConfirmationDeleteDialogTitle">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="jsConfirmationDeleteDialogTitle" class="modal-title">{{ 'lbl.Delete'|trans|ucfirst }}</h4>
+        </div>
+        <div class="modal-body">
+          <p class="jsConfirmationMessage">{{ 'msg.Confirmation'|trans }}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ 'lbl.Cancel'|trans|ucfirst }}</button>
+          <a href="#" class="btn btn-primary jsConfirmationSubmit">
+            {{ 'lbl.OK'|trans|ucfirst }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {# Scripts should be placed here #}
+  <script src="/js/vendors/bootstrap-accessibility.min.js"></script>
+</div>
+</body>
+</html>

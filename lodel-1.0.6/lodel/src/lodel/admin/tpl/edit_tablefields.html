@@ -1,0 +1,341 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_DATAFIELD]</title>
+	<script type="text/javascript"><!--
+	
+		function confirm_change_type()
+		{
+			<IF COND="[#ID]">
+				return confirm("[@ADMIN.CONFIRM_CHANGE_FIELDTYPE]");
+			</IF>
+			
+		}
+	//
+		
+	--></script>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul id="actionsOnEntitiesPath">
+	<li>[@ADMIN.TITLE_DATAFIELD]</li>
+</ul>
+<br />&nbsp;<br />
+
+<form method="post" action="<?php echo basename($_SERVER['PHP_SELF']); ?>" >
+<!--[ begin{form} Beginning of the form.  Automatic generated. Don't edit ]-->
+<input type="hidden" name="do" value="edit">
+<input type="hidden" name="lo" value="tablefields">
+<input type="hidden" name="id" value="[#ID]">
+<LOOP NAME="fielderror" FIELD="id">
+  <a id="id"></a><span class="error">
+    <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE=""></FUNC>
+  </span>
+</LOOP>
+<fieldset>
+  <legend>[@ADMIN.IDENTIFICATION]</legend>
+  <label for="name">[@ADMIN.UNIQUE_IDENTIFIER]<span class="optional">(*)</span> : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="name" id="name" class="text" value="[#NAME]" />
+  <LOOP NAME="fielderror" FIELD="name">
+    <a id="name"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.UNIQUE_IDENTIFIER]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <input type="hidden" name="class" value="[#CLASS]">
+  <LOOP NAME="fielderror" FIELD="class">
+    <a id="class"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE=""></FUNC>
+    </span>
+  </LOOP>
+  <label for="title">[@ADMIN.INTERFACENAME]<span class="optional">(*)</span> : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="title" id="title" class="text" value="[#TITLE]" />
+  <LOOP NAME="fielderror" FIELD="title">
+    <a id="title"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.INTERFACENAME]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="altertitle">[@ADMIN.MULTILINGUAL_NAME] : 
+		</label>
+  <br class="nobr" />
+  <FUNC NAME="PRINT_EDIT_FIELD_XSLT" VARNAME="altertitle" TYPE="mltext" VALUE="[#ALTERTITLE]" FULLVARNAME="altertitle"></FUNC>
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.FIELDSET_PROTECTED]</legend>
+  <label for="protected">[@ADMIN.PROTECTED_DATAFIELD] : 
+		</label>
+  <br class="nobr" />
+  <IF COND="abs([#STATUS]) ge 32">
+    <input type="checkbox" name="protected" id="protected" checked>
+    <ELSE/>
+    <input type="checkbox" name="protected" id="protected">
+  </IF>
+  <LOOP NAME="fielderror" FIELD="protected">
+    <a id="protected"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.PROTECTED_DATAFIELD]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.DISPLAY_IN_INTERFACE]</legend>
+  <label for="gui_user_complexity">[@ADMIN.ASSOCIATED_GUI_USER_COMPLEXITY] : 
+		</label>
+  <br class="nobr" />
+  <select name="gui_user_complexity" id="gui_user_complexity">
+    <?php 
+						makeSelect($context,"gui_user_complexity","tablefields","select");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="gui_user_complexity">
+    <a id="gui_user_complexity"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.ASSOCIATED_GUI_USER_COMPLEXITY]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.FIELDSET_DEFINITION]</legend>
+  <IF COND="[#CLASSTYPE]=='entities'">
+    <label for="idgroup">[@ADMIN.DATAFIELDGROUP] : 
+		</label>
+    <br class="nobr" />
+    <select name="idgroup" id="idgroup">
+      <?php 
+						makeSelect($context,"idgroup","tablefields","select");
+					?>
+    </select>
+    <LOOP NAME="fielderror" FIELD="idgroup">
+      <a id="idgroup"></a><span class="error">
+        <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.DATAFIELDGROUP]"></FUNC>
+      </span>
+    </LOOP>
+    <br />
+  </IF>
+  <label for="type">[@ADMIN.FIELD_TYPE] : 
+		</label>
+  <br class="nobr" />
+  <select name="type" id="type" onChange="confirm_change_type();displayMask();">
+    <?php 
+						makeSelect($context,"type","tablefields","select");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="type">
+    <a id="type"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.FIELD_TYPE]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="g_name">[@ADMIN.DUBLIN_CORE_EQUIVALENT] : 
+		</label>
+  <br class="nobr" />
+  <select name="g_name" id="g_name">
+    <?php 
+						makeSelect($context,"g_name","tablefields","select");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="g_name">
+    <a id="g_name"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.DUBLIN_CORE_EQUIVALENT]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.FIELDSET_CREATION]</legend>
+  <label for="style">[@ADMIN.IMPORT_STYLE] : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="style" id="style" class="text" value="[#STYLE]" />
+  <LOOP NAME="fielderror" FIELD="style">
+    <a id="style"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.IMPORT_STYLE]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="style">[@ADMIN.XPATH_OTX] : 
+		</label>
+  <br class="nobr">
+  <input type="text" size="30" name="otx" id="otx" class="text" value="[#OTX]"> <a href="javascript:;" onclick="window.open('./?page=dtd&amp;otx=[#OTX|urlencode]', '','width=800,height=600,top=0,left=0,resizable=yes,scrollbars=yes');return false;">[@ADMIN.REGENERATE]</a>
+  <LOOP NAME="fielderror" FIELD="otx">
+    <a id="style"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.XPATH_OTX]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="cond">[@ADMIN.CONDITION] : 
+		</label>
+  <br class="nobr" />
+  <select name="cond" id="cond">
+    <?php 
+						makeSelect($context,"cond","tablefields","select");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="cond">
+    <a id="cond"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.CONDITION]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="defaultvalue">[@ADMIN.DEFAULT_VALUE] : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="defaultvalue" id="defaultvalue" class="text" value="[#DEFAULTVALUE]" />
+  <LOOP NAME="fielderror" FIELD="defaultvalue">
+    <a id="defaultvalue"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.DEFAULT_VALUE]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="processing">[@ADMIN.PROCESSING_IMPORT] : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="processing" id="processing" class="text" value="[#PROCESSING]" />
+  <LOOP NAME="fielderror" FIELD="processing">
+    <a id="processing"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.PROCESSING_IMPORT]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+<IF COND="[#CLASSTYPE] EQ 'entities'">
+  <div id="mask" style="display:none">
+  <label for="mask">[@ADMIN.MASK_IMPORT] : </label>
+  <br class="nobr" />
+    <input type="text" size="30" name="mask[user]" id="mask[user]" class="text" value="[#MASK.USER]" />&nbsp;
+    [@ADMIN.MASK_REASONNABLE] : <input name="mask_reasonable" value="1" type="checkbox" <IF COND="[#MASK.MODEL] EQ 'reasonable'">checked</IF>/>&nbsp;
+    [@ADMIN.MASK_REGEXP] : <input type="checkbox" name="mask_regexp" value="1" <IF COND="[#MASK.MODEL] EQ 'regexp'">checked</IF>/>
+    <LOOP NAME="fielderror" FIELD="mask"><a id="mask"></a><span class="error"><FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.MASK_ERROR]"></FUNC></span></LOOP>
+  </div>
+<script type="text/javascript">
+function displayMask() {
+	var typeText = document.getElementById('type');
+	if(typeText.value == 'text' || typeText.value == 'tinytext' || typeText.value == 'longtext') {
+		document.getElementById('mask').style.display = 'block';
+	} else {
+		document.getElementById('mask').style.display = 'none';
+	}
+}
+displayMask();
+</script>
+  <br />
+  </IF>
+  <label for="allowedtags">[@ADMIN.ALLOWED_TAGS] : 
+		</label>
+  <br class="nobr" />
+  <select multiple name="allowedtags[]" id="allowedtags">
+    <?php 
+						makeSelect($context,"allowedtags","tablefields","multipleselect");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="allowedtags">
+    <a id="allowedtags"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.ALLOWED_TAGS]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.FIELDSET_EDITION]</legend>
+  <label for="edition">[@ADMIN.INTERFACE_VIEW] : 
+		</label>
+  <br class="nobr" />
+  <select name="edition" id="edition">
+    <?php 
+						makeSelect($context,"edition","tablefields","select");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="edition">
+    <a id="edition"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.INTERFACE_VIEW]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="editionparams">[@ADMIN.PARAMETER_FOR_EDITION] : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="editionparams" id="editionparams" class="text" value="[#EDITIONPARAMS]" />
+  <LOOP NAME="fielderror" FIELD="editionparams">
+    <a id="editionparams"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.PARAMETER_FOR_EDITION]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+  <label for="editionhooks">[@ADMIN.HOOKS_FOR_EDITION] :</label>
+  <br class="nobr" />
+  <input type="text" name="editionhooks" id="editionhooks" class="text" value="[#EDITIONHOOKS]" />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.FIELDSET_INDEXATION]</legend>
+  <label for="weight">[@ADMIN.WEIGHT_FOR_SEARCH_ENGINE] : 
+		</label>
+  <br class="nobr" />
+  <select name="weight" id="weight">
+    <?php 
+						makeSelect($context,"weight","tablefields","select");
+					?>
+  </select>
+  <LOOP NAME="fielderror" FIELD="weight">
+    <a id="weight"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.WEIGHT_FOR_SEARCH_ENGINE]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.VIEW_IN_SITE]</legend>
+  <label for="filtering">[@ADMIN.AUTOMATIC_FILTERING] : 
+		</label>
+  <br class="nobr" />
+  <input type="text" size="30" name="filtering" id="filtering" class="text" value="[#FILTERING]" />
+  <LOOP NAME="fielderror" FIELD="filtering">
+    <a id="filtering"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.AUTOMATIC_FILTERING]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+<fieldset>
+  <legend>[@ADMIN.COMMENT]</legend>
+  <label for="comment">[@ADMIN.COMMENT] : 
+		</label>
+  <br class="nobr" />
+  <textarea size="30" name="comment" id="comment" class="text" row="10" cols="60">[#COMMENT]</textarea>
+  <LOOP NAME="fielderror" FIELD="comment">
+    <a id="comment"></a><span class="error">
+      <FUNC NAME="PRINT_ERROR_MESSAGE" TITLE="[@ADMIN.COMMENT]"></FUNC>
+    </span>
+  </LOOP>
+  <br />
+</fieldset>
+
+<!--[ end{form} Automatic generated. Don't edit ]-->
+	</table>
+
+	<MACRO NAME="EDIT_SUBMIT_BAR">
+</form>
+
+
+
+<table class="statistics users">
+<caption>
+[@ADMIN.GROUP_ELEMENTS_CORRESPONDANCE]
+</caption>
+<LOOP NAME="allowedtags_documentation">
+<tr><th class="type">[#GROUPNAME]</th><td>[#ALLOWEDTAGS]</td></tr>
+</LOOP>
+</table>
+</div>
+<MACRO NAME="CLOSE_HTML">

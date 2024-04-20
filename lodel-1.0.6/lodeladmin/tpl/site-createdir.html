@@ -1,0 +1,94 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<TITLE>[@LODELADMIN.TITLE_INSTALLATION_WEBSITE]</TITLE>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@LODELADMIN.CREATION_WEBSITE]</span></li>
+</ul>
+<br />&nbsp;<br />
+
+<fieldset>
+<form method="post" action="site.php">
+<input type="hidden" name="id" value="[#ID]">
+<input type="hidden" name="versiondir" value="[#VERSIONDIR]">
+<input type="hidden" name="task" value="createdir">
+
+
+<IF COND="[#ERROR_TPLACCESS]">
+<p><strong>[@LODELADMIN.LODEL_CANT_WRITE_IN_TPL_DIRECTORY].</strong></p>
+<p>[@LODELADMIN.GIVE_WRITING_RIGHTS_TO_SERVER_ON_THIS_DIRECTORY].</strong></p>
+<input type="submit" class="button" value="[@COMMON.CONTINUE]">
+<ELSE/>
+
+<IF COND="[#INSTALLOPTION]=='1'">
+<IF COND="[#ERROR_MKDIR]">  <!--[ probleme de creation ]-->
+<p><strong>[@LODELADMIN.LODEL_FAILS_DIRECTORY_CREATION] "[#ERROR_MKDIR]".</strong></p>
+[@LODELADMIN.ACESS_PROBLEM_SO_YOU_CAN] :
+<ul>
+<li>[@LODELADMIN.GIVE_WRITING_RIGHTS_ROOT_DIRECTORY]</li>
+<li>[@LODELADMIN.CREATE_DIRECTORY_AND_GIVE_WRITING_RIGHTS_FOR_THIS_DIRECTORY|sprintf($path)]</li>
+</ul>
+<ELSE/> <!--[ probleme d'acces uniquement ]-->
+<p><strong>[@LODELADMIN.LODEL_DONT_ACCESS_TO_DIRECTORY] "[#PATH]".</strong></p>
+<p>[@LODELADMIN.YOU_MUST_GIVE_WRITING_RIGHTS_TO_SERVER_ON_THIS_DIRECTORY].</p>
+<p>[@LODELADMIN.WARNING_SECURITY_PROBLEM].</p>
+</IF>
+<input type="submit" class="button" value="continuer">
+<ELSE/>
+<IF COND="[#ERROR_MKDIR]">
+<p><strong>[@LODELADMIN.LODEL_FAILS_DIRECTORY_CREATION] "[#ERROR_MKDIR]".</strong></p>
+</IF>
+<IF COND="[#ERROR_NONEXISTS]">
+<p><strong>[@LODELADMIN.DIRECTORY_DONT_EXIST|sprintf([#PATH])].</strong></p>
+<ELSE/>
+<IF COND="[#ERROR_NONACCESS]">
+<p><strong>[@LODELADMIN.DIRECTORY_NOT_AVAILABLE|sprintf([#ERROR_NONACCESS])].</strong></p>
+</IF>
+</IF>
+
+<IF COND="[#PATH]=='/'">
+[@LODELADMIN.GIVE_WRITING_RIGHTS_ROOT_DIRECTORY].
+<ELSE/>
+[@LODELADMIN.CREATE_DIRECTORY_ADJUST_RIGHTS_COPY_FILES].
+</IF>
+
+[@LODELADMIN.MANY_POSSIBILITIES] :
+<ul>
+
+<IF COND="[#PATH]=='/'"> <!--[ a la racine ]-->
+<!--[ rien ]-->
+<ELSE/>
+<li>
+<p>[@LODELADMIN.CREATE_DIRECTORY_TO_LODEL_ROOT_GIVE_WRITING_RIGHTS_ON_DIRECTORY_TO_WEBSERVER_AND_LET_IT_LODEL_WARNING_SECURITY|sprintf([#PATH])].</p>
+<input type="submit" class="button" name="lodeldo" value="[@LODELADMIN.INSTALL_FILES]">
+</li>
+
+</IF>
+<li><p>[@LODELADMIN.GIVE_WRITING_RIGHTS_ON_LODEL_ROOT_TO_WEBSERVER_AND_LET_IT_LODEL_WARNING_SECURITY].</p>
+<IF COND="[#PATH]=='/'"> <!--[ a la racine ]-->
+<input type="submit" class="button" name="lodeldo" value="[@LODELADMIN.INSTALL_FILES]">
+<ELSE/>
+<input type="submit" class="button" name="lodeldo" value="[@LODELADMIN.CREATE_DIRECTORY_INSTALL_FILES]">
+</IF>
+</li>
+</ul>
+
+</IF>
+</IF> <!--[ TPL_ACCESS ]-->
+
+</fieldset>
+
+
+
+
+<MACRO NAME="CLOSE_HTML">

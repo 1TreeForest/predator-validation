@@ -1,0 +1,52 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_BACKUP]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO">
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@ADMIN.TITLE_BACKUP]</span></li>
+</ul>
+<br />&nbsp;<br />
+<IF COND="[#ERROR.FILES]">
+<p><span class="error">[@ADMIN.MISSING_DIRECTORIES_NOT_INCLUDED_IN_BACKUP] : [#ERROR.FILES]</span></p>
+</IF>
+<IF COND="[#SUCCESS]">
+	<p>
+	[@ADMIN.SAVED_IN]  : <strong>[#OUTFILENAME]</strong>
+	</p>
+	<input class="button" type="button" value="[@COMMON.OK]" onclick="javascript:window.location='index.php'" />
+<ELSE/>
+<!--<form method="post" action="<?php echo basename($_SERVER['PHP_SELF']); ?>">-->
+<form method="post" action="index.php">
+	<input type="hidden" name="do" value="backup" />
+	<input type="hidden" name="lo" value="data" />
+<fieldset>
+	<legend>[@ADMIN.TITLE_BACKUP]</legend>
+	<input type="hidden" name="backup" value="1">
+	<label for="sqlonly" class="boolean">[@ADMIN.SAVE_DATABASE_ONLY]</label><input class="notxt" type="checkbox" id="sqlonly" name="sqlonly" />
+	<label for="operation">[@ADMIN.GET_FILE_OPERATION] :</label><br class="nobr" />
+	<select name="operation" id="operation" class="barInfo">
+	<option value="download" onClick="document.getElementById('warning_cache').style.display = 'none';">[@COMMON.DOWNLOAD]</option>
+	<IF COND="[#IMPORTDIR]"><option value="importdir" onClick="document.getElementById('warning_cache').style.display = 'none';">[@COMMON.SAVE_IN_DIR] [#IMPORTDIR]</option></IF>
+	<option value="cache" onClick="document.getElementById('warning_cache').style.display = 'inline';">[@COMMON.SAVE_IN_DIR] ./CACHE</option>
+	</select>
+	<div id="warning_cache" style="color:red;display:none;">[@LODELADMIN.WARNING_SAVE_CACHE_DIRECTORY]</div>
+</fieldset>
+
+<fieldset>
+	<legend>[@COMMON.VALIDATION]</legend>
+	<input class="button" type="submit" value="[@COMMON.SAVE]" />
+	<input class="button" type="button" value="[@COMMON.BACK]" onclick="javascript:window.location='index.php'" />
+</fieldset>
+</form>
+</IF>
+<MACRO NAME="CLOSE_HTML">

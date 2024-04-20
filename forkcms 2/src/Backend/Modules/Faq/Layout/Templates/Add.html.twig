@@ -1,0 +1,110 @@
+{% extends 'Layout/Templates/base.html.twig' %}
+{% import "Layout/Templates/macros.html.twig" as macro %}
+
+{% block actionbar %}
+
+{% endblock %}
+
+{% block content %}
+  {% form add %}
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="title" class="control-label">{{ 'lbl.Question'|trans|ucfirst }} {{ macro.required }}</label>
+        {% form_field title %} {% form_field_error title %}
+        {% if detailURL %}
+          <a class="site-url" href="{{ detailURL }}">{{ detailURL }}/<span id="generatedUrl"></span></a>{% endif %}
+        {% if not detailURL %}
+          <p class="text-warning">{{ macro.icon('warning') }} {{ 'err.NoModuleLinked'|trans|ucfirst }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-content">
+    <div class="col-md-12">
+      <div>
+        <ul class="nav nav-tabs nav-tabs-flex" role="tablist">
+          <li role="presentation" class="active mr-auto">
+            <a href="#tabContent" aria-controls="tabContent" role="tab" data-toggle="tab">{{ 'lbl.Content'|trans|ucfirst }}</a>
+          </li>
+          <li role="presentation">
+            <a href="#tabSEO" aria-controls="tabSEO" role="tab" data-toggle="tab">{{ 'lbl.SEO'|trans|ucfirst }}</a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="tabContent">
+            <div class="row">
+              <div class="col-md-8">
+                <div class="panel panel-default panel-editor optionsRTE">
+                  <div class="panel-heading">
+                    <label for="answer" class="control-label">{{ 'lbl.Answer'|trans|ucfirst }}
+                      {{ macro.required }}<br>
+                    </label>
+                  </div>
+                  <div class="panel-body">
+                    {% form_field answer %}
+                  </div>
+                  {% if txtAnswerError %}
+                    <div class="panel-footer">
+                      {% form_field_error answer %}
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h2 class="panel-title">{{ 'lbl.Status'|trans|ucfirst }}</h2>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group last">
+                      <ul class="list-unstyled">
+                        {% for _itr_9 in hidden %}
+                          <li class="radio">
+                            <label for="{{ _itr_9.id }}">{{ _itr_9.rbtHidden|raw }} {{ _itr_9.label }}</label>
+                          </li>
+                        {% endfor %}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-default last">
+                  <div class="panel-heading">
+                    <h2 class="panel-title">{{ 'lbl.MetaData'|trans|ucfirst }}</h2>
+                  </div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                      <label for="categoryId" class="control-label">{{ 'lbl.Category'|trans|ucfirst }}</label>
+                      {% form_field category_id %} {% form_field_error category_id %}
+                    </div>
+                    <div class="form-group last">
+                      <label for="tags" class="control-label">{{ 'lbl.Tags'|trans|ucfirst }}</label>
+                      {% form_field tags %} {% form_field_error tags %}
+                      <div class="help-block">{{ 'msg.HelpTextTags'|trans }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane" id="tabSEO">
+            {% seo %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row fork-module-actions">
+    <div class="col-md-12">
+      <div class="btn-toolbar">
+        <div class="btn-group" role="group">
+          {{ macro.buttonIcon(geturl('Index'), 'times', 'lbl.Cancel'|trans|ucfirst, 'btn-default') }}
+        </div>
+        <div class="btn-group pull-right" role="group">
+          {{ macro.buttonIcon('', 'plus-square', 'lbl.Add'|trans|ucfirst, 'btn-primary', { "id":"addButton", "type":"submit", "name":"add" }) }}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endform %}
+{% endblock %}

@@ -1,0 +1,60 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_CHARACTERSTYLES]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+
+<ul id="actionsOnEntitiesPath">
+	<li><span class="intit">[@ADMIN.TITLE_CHARACTERSTYLES]</span></li>
+	<li>
+		<ul class="actions">
+			<li class="isolated">
+			<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+				<a href="index.php?do=view&amp;lo=characterstyles">[@ADMIN.ADD_CHARACTERSTYLES]</a>
+			<ELSE />
+				<span class="inactif">[@ADMIN.ADD_CHARACTERSTYLES]</span>
+			</IF>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+<br />&nbsp;<br />
+<table class="statistics users">
+	<tr>
+		<th class="status">[@ADMIN.STYLE]</th>
+		<th class="status">[@ADMIN.CONVERSION]</th>
+		<th class="status">[@ADMIN.TEI_EQUIVALENT]</th>
+		<td class="empty">&nbsp;</td>
+	</tr>
+	<LOOP NAME="characterstyles" TABLE="characterstyles" ORDER="rank" WHERE="status gt 0">
+		<DO>
+			<MACRO NAME="TR_LIST">
+			<th class="type">[#STYLE|nbsp]</th>
+			<td>[#CONVERSION|htmlspecialchars|nbsp]</td>
+			<td>[#OTX|nbsp]</td>
+			<td class="actions">
+       			 <FUNC NAME="CHANGE_RANK_BUTTON" LO="[#LO]">
+			 <FUNC NAME="MODIFY_DELETE_BUTTON" LO="[#LO]">
+			</td>
+			</tr>
+		</DO>
+		<ALTERNATIVE>
+			<tr><td colspan="3"><span class="texte_info">[@ADMIN.NO_CHARACTERSTYLES]</span></td></tr>
+		</ALTERNATIVE>
+	</LOOP>
+</table>
+
+
+<MACRO NAME="OK_TOINDEX_ADMIN">
+
+<MACRO NAME="CLOSE_HTML">

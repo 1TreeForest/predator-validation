@@ -1,0 +1,19 @@
+---
+Name: cmsextensions
+---
+SilverStripe\Admin\LeftAndMain:
+  extensions:
+    - SilverStripe\CMS\Controllers\LeftAndMainPageIconsExtension
+    - SilverStripe\CMS\Controllers\LeftAndMainBatchActionsExtension
+---
+Name: cmsmodals
+---
+SilverStripe\Admin\ModalController:
+  extensions:
+    - SilverStripe\CMS\Forms\InternalLinkModalExtension
+---
+Name: cmshierarchy
+---
+SilverStripe\ORM\Hierarchy\Hierarchy:
+  node_threshold_total: 50
+  node_threshold_leaf: 250

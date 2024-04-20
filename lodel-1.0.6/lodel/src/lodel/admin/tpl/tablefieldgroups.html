@@ -1,0 +1,149 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_admin.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@ADMIN.TITLE_DATAFIELDS]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO">
+
+<LOOP NAME="class_name" TABLE="classes" WHERE="class='[#CLASS]'">
+
+	<ul id="actionsOnEntitiesPath">
+		<li><span class="intit">[@ADMIN.DEFINITION_DATAFIELDS_IN] :</span> <em>[#TITLE]</em></li>
+		<li>
+			<ul class="actions">
+				<IF COND="[#CLASSTYPE]=='entities'">
+				<li class="isolated">
+					<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+						<a href="index.php?do=view&amp;lo=tablefieldgroups&amp;class=[#CLASS]">[@ADMIN.ADD_DATAFIELD_GROUP] <em>[#TITLE]</em></a>
+					<ELSE />
+						<span class="inactif">[@ADMIN.ADD_DATAFIELD_GROUP]</span>
+					</IF>
+				</li>
+				<ELSE/>
+				<li class="isolated">
+					<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+						<a href="index.php?do=view&amp;lo=tablefields&amp;class=[#CLASS]">[@ADMIN.ADD_FIELD]</a>
+					<ELSE />
+						<span class="inactif">[@ADMIN.ADD_FIELD]</span>
+					</IF>
+				</li>
+				</IF>
+			</ul>
+		</li>
+	</ul>
+	<br />&nbsp;<br />
+	<IF COND="[#CLASSTYPE] EQ 'persons' OR [#CLASSTYPE] EQ 'entries'">
+	<table class="statistics fields">
+		<tr>
+			<th class="status">[@COMMON.TITLE]</th>
+			<th class="status">[@COMMON.NAME]</th>
+			<th class="status">[@COMMON.TYPE]</th>
+			<th class="status">[@COMMON.STYLE]</th>
+			<th class="status">[@ADMIN.TEI_EQUIVALENT]</th>
+			<th class="status">[@COMMON.ACTIONS]</th>
+		</tr>
+		<FUNC NAME="AFFICHER_CHAMPS_DU_GROUPE" WHERE="idgroup=0 AND class='[#CLASS]'">
+	</table>
+
+	<!--[ Affichage des champs de la table liée à l'index de personnes : entities_nom_Index_de_personnes ]-->
+
+		<ul id="actionsOnEntitiesPath">
+			<li><span class="intit">[@ADMIN.DEFINITION_DATAFIELDS_RELATION_BETWEEN_ENTITIES_AND_PERSONS]</span></li>
+			<li>
+				<ul class="actions">
+					<li class="isolated">
+						<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+							<a href="index.php?do=view&amp;lo=tablefields&amp;class=entities_[#CLASS]">[@ADMIN.ADD_FIELD]</a>
+						<ELSE />
+							<span class="inactif">[@ADMIN.ADD_FIELD]</span>
+						</IF>
+					</li>
+				</ul>
+			</li>
+		</ul>
+		<br />&nbsp;<br />
+		
+	<table class="statistics fields">
+		<tr>
+			<th class="status">[@COMMON.TITLE]</th>
+			<th class="status">[@COMMON.NAME]</th>
+			<th class="status">[@COMMON.TYPE]</th>
+			<th class="status">[@COMMON.STYLE]</th>
+			<th class="status">[@ADMIN.TEI_EQUIVALENT]</th>
+			<th class="status">[@COMMON.ACTIONS]</th>
+		</tr>
+		<FUNC NAME="AFFICHER_CHAMPS_DU_GROUPE" WHERE="idgroup=0 AND class='entities_[#CLASS]'">
+	</table>
+	</IF>
+	<LOOP NAME="fieldgroups" TABLE="tablefieldgroups" ORDER="rank,title" WHERE="status gt 0" WHERE="class='[#CLASS]'">
+
+		<DO>
+		<table class="statistics fields">
+		<tr>
+			<th class="status group">
+				<LET VAR="INTERTITLE">[#ALTERTITLE|multilingue([#LODELUSER.LANG])]</LET>
+				<IF COND="[#INTERTITLE] EQ ''">[#TITLE]<ELSE/>[#INTERTITLE]</IF>
+			</th>
+			<td class="actions" colspan="4">
+				<FUNC NAME="CHANGE_RANK_BUTTON" LO="[#LO]">
+		                <FUNC NAME="MODIFY_DELETE_BUTTON" LO="[#LO]" TITLE="[#TITLE]">
+			</td>
+		</tr>
+	        <tr>
+        	<td colspan="5" class="actions">
+			    <MACRO NAME="PNG_PLUS">
+				<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+				<a href="index.php?do=view&amp;lo=tablefields&amp;idgroup=[#ID]&amp;class=[#CLASS]">[@ADMIN.ADD_FIELD_TO_THE_GROUP]</a>
+				<ELSE />
+				<span class="inactif">[@ADMIN.ADD_FIELD_TO_THE_GROUP]</span>
+				</IF>
+				&nbsp;&nbsp;&nbsp;
+			  <MACRO NAME="PNG_PLUS">
+				<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+				<a href="index.php?do=view&amp;lo=indextablefields&amp;idgroup=[#ID]&amp;class=[#CLASS]&amp;type=entries">[@ADMIN.ADD_ENTRY_TO_THE_GROUP]</a>
+				<ELSE />
+				<span class="inactif">[@ADMIN.ADD_ENTRY_TO_THE_GROUP]</span>
+				</IF>
+				&nbsp;&nbsp;&nbsp;
+			    <MACRO NAME="PNG_PLUS">
+				<IF COND="([#LODELUSER.RIGHTS] ge [#LO|rights('protect')]) or ([#LODELUSER.RIGHTS] ge [#LO|rights('write')] and [#STATUS] lt 32)">
+				<a href="index.php?do=view&amp;lo=indextablefields&amp;idgroup=[#ID]&amp;class=[#CLASS]&amp;type=persons">[@ADMIN.ADD_PERSON_TO_THE_GROUP]</a>
+				<ELSE />
+				<span class="inactif">[@ADMIN.ADD_PERSON_TO_THE_GROUP]</span>
+				</IF>
+               </td>
+		</tr>
+		<tr>
+			<th class="status">[@COMMON.TITLE]</th>
+			<th class="status">[@COMMON.NAME]</th>
+			<th class="status">[@COMMON.TYPE]</th>
+			<th class="status">[@COMMON.STYLE]</th>
+			<th class="status">[@ADMIN.TEI_EQUIVALENT]</th>
+			<th class="status">[@COMMON.ACTIONS]</th>
+		</tr>
+
+		<FUNC NAME="AFFICHER_CHAMPS_DU_GROUPE" WHERE="idgroup='[#ID]'">
+
+		</DO>
+	</LOOP>
+</table>
+</LOOP>
+
+<MACRO NAME="OK_BACK_TO_PARENT">
+<!--[
+<LOOP NAME="class_type" TABLE="classes" WHERE="class='[#CLASS]'">
+	<DO>
+		<fieldset class="formButtons">
+			<input type="button" class="button" value="    OK    " onclick="javascript:window.location='[#SITEROOT]lodel/admin/index.php?do=list&amp;lo=classes&amp;classtype=[#CLASSTYPE]'" />
+		</fieldset>
+	</DO>
+</LOOP>]-->
+<MACRO NAME="CLOSE_HTML">

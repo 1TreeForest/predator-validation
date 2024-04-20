@@ -1,0 +1,81 @@
+<CONTENT VERSION="1.0" LANG="fr" CHARSET="utf-8"/>
+<!--[
+ LODEL - Logiciel d'Édition ÉLectronique.
+ @license GPL 2 (http://www.gnu.org/licenses/gpl.html) See COPYING file
+ @authors See COPYRIGHT file
+]-->
+
+<USE MACROFILE="macros.html">
+<USE MACROFILE="macros_interface.html">
+<MACRO NAME="HEADER_HEAD_OPEN">
+<title>[@EDITION.TITLE_MOVE_DOCUMENT]</title>
+<MACRO NAME="HEADER_HEAD_CLOSE">
+<MACRO NAME="HEADER_LOGO"> 
+<MACRO NAME="CURRENT_PATH">
+<ul id="actionsOnEntitiesPath">
+	<li>[@EDITION.TITLE_MOVE_DOCUMENT] : [@EDITION.HOWTO_MOVE]</li>
+</ul>
+			<div id="move">
+				<LET VAR="iddocument">[#ID]</LET>
+				<LET ARRAY="idparents" GLOBAL="1"></LET>
+				<IF COND="[#UNFOLD|isset] SEQ NULL"><LET VAR="unfold">[#IDDOCUMENT]</LET></IF>
+				<LOOP NAME="get_idparents" SELECT="id1" TABLE="relations" WHERE="id2=[#UNFOLD] AND nature='p'" ORDER="degree">
+					<IF COND="[#COUNT] LT [#NBRESULTS]"><LET ARRAY="idparents[]" GLOBAL="1">[#ID1]</LET></IF><!--[on exclut le niveau 0]-->
+				</LOOP>
+				<LET VAR="id">0</LET>
+				<LOOP NAME="move_right">
+				<DO>
+					<a href="index.php?do=move&amp;id=[#IDDOCUMENT]&amp;idparent=[#ID]" onclick="return confirmation('[@COMMON.CONFIRMATION]');">
+						<strong><em>[@EDITION.BASE]</em></strong>
+					</a><br />
+				</DO>
+				<ALTERNATIVE>
+					<strong><em>[@EDITION.BASE]</em></strong><br />
+				</ALTERNATIVE>
+				</LOOP>
+				<LOOP NAME="Deplace_document" TABLE="entities,types" WHERE="idparent='[#ID]' AND idtype=types.id" ORDER="entities.rank">
+				<BEFORE><ul></BEFORE>
+				<DO>
+					[#BARRE]
+					<LOOP NAME="move_right">
+					<DO>
+					<!--[ on a le droit de la deplacer ici ]-->
+					<li>
+						<LOOP NAME="have_children" SELECT="upd" TABLE="entities" WHERE="idparent = [#ID]" LIMIT="1"><!--[Si l'entité a des enfants]-->
+							<IF COND="[%IDPARENTS|lin_array([#ID])] OR [#ID] EQ [#UNFOLD]">
+								<a href="index.php?do=preparemove&amp;id=[#IDDOCUMENT]&amp;unfold=[#IDPARENT]">
+									<img class="move_fold" src="[#SHAREURL]/images/fleche_bas_gris.png" alt="[@ADMIN.GET_UNFOLDED] - [@ADMIN.GET_FOLDED]" title="[@ADMIN.GET_FOLDED]" />
+								</a>
+							<ELSE/>
+								<a href="index.php?do=preparemove&amp;id=[#IDDOCUMENT]&amp;unfold=[#ID]">
+									<img class="move_fold" src="[#SHAREURL]/images/fleche_droite_gris.png" alt="[@ADMIN.GET_UNFOLDED] - [@ADMIN.GET_FOLDED]" title="[@ADMIN.GET_UNFOLDED]" />
+								</a>
+							</IF>
+						</LOOP>
+						<IF COND="[#ID] NE [#IDDOCUMENT]">
+						<a href="index.php?do=move&amp;id=[#IDDOCUMENT]&amp;idparent=[#ID]" onclick="return confirmation('[@COMMON.CONFIRMATION]');">
+							[#G_TITLE|textebrut|nbsp|couper(50)]<IF COND="[#G_TITLE|hasbeencut]">...</IF>
+						</a>
+						<ELSE/>
+							[#G_TITLE|textebrut|nbsp|couper(50)]<IF COND="[#G_TITLE|hasbeencut]">...</IF>
+						</IF>
+						<em>&nbsp;([#TYPE])</em>
+					</DO>
+					<ALTERNATIVE>
+					<!--[ on n'a pas le droit de la deplacer ici ]-->
+					<li>
+						<LOOP NAME="have_children"></LOOP>
+						[#G_TITLE|textebrut|nbsp|couper(50)]<IF COND="[#G_TITLE|hasbeencut]">...</IF><em>&nbsp;([#TYPE])</em>
+					</ALTERNATIVE>
+					</LOOP>
+					<IF COND="[%IDPARENTS|lin_array([#ID])] OR [#ID] EQ [#UNFOLD]">
+						<LOOP NAME="Deplace_document"></LOOP>
+					</IF>
+					</li>
+				</DO>
+				<AFTER></ul></AFTER>
+				</LOOP>
+			</div>
+	<MACRO NAME="OK_TOINDEX">
+
+<MACRO NAME="CLOSE_HTML">

@@ -1,0 +1,48 @@
+vi_VN:
+  SilverStripe\CMS\BatchActions\CMSBatchAction_Unpublish:
+    UNPUBLISH_PAGES: Ẩn
+  SilverStripe\CMS\Controllers\CMSMain:
+    Create: T
+    PAGENOTEXISTS: 'Không tìm thấy trang này.'
+    PAGETYPEOPT: Loại
+    SAVEDRAFT: Lưu
+    TabContent: 'Nội dung'
+  SilverStripe\CMS\Model\RedirectorPage:
+    HEADER: 'Trang này sẽ di chuyển người dùng đến một trang khác'
+    OTHERURL: 'Đường dẩn website khác'
+    REDIRECTTO: 'Di chuyển đến'
+    REDIRECTTOEXTERNAL: 'Website khác'
+    REDIRECTTOPAGE: 'Một trang trên website'
+    YOURPAGE: Trang
+  SilverStripe\CMS\Model\RedirectorPageController:
+    HASBEENSETUP: 'Một trang di chuyển chưa cấu hình đích di chuyển đến.'
+  SilverStripe\CMS\Model\SiteTree:
+    ACCESSANYONE: 'Bất cứ ai'
+    ACCESSHEADER: 'Ai có thể xem trang này ?'
+    ACCESSLOGGEDIN: 'Người dùng đã đăng nhập'
+    ACCESSONLYTHESE: 'Chỉ những người sau đây (chọn từ danh sách)'
+    BUTTONCANCELDRAFT: 'Hủy thay đổi nháp'
+    BUTTONCANCELDRAFTDESC: 'Xóa khỏi mục nháp và khôi phục lại trang gốc'
+    BUTTONUNPUBLISH: Ẩn
+    BUTTONUNPUBLISHDESC: 'Xóa trang này khỏi trang hoạt động'
+    Content: 'Nội dung'
+    DEFAULTABOUTTITLE: 'Giới thiệu'
+    DEFAULTCONTACTTITLE: 'Liên hệ'
+    DEFAULTHOMETITLE: 'Trang chủ'
+    EDITHEADER: 'Ai có thể thay đổi trang này ?'
+    HASBROKENLINKS: 'Trang này có liên kết hỏng.'
+    HTMLEDITORTITLE: 'Nội dung'
+    MENUTITLE: Nhãn
+    METADESC: 'Mô tả'
+    METAEXTRA: 'Thẻ thông tin bổ sung'
+    PAGETITLE: 'Tên trang'
+    PAGETYPE: Loại
+    SHOWINMENUS: 'Hiển thị trên menu?'
+    SHOWINSEARCH: 'Hiển thị khi tìm kiếm?'
+    TABBEHAVIOUR: 'Hoạt động'
+    TABCONTENT: 'Thông tin'
+    db_Content: 'Nội dung'
+  SilverStripe\CMS\Reports\BrokenLinksReport:
+    PageName: 'Tên trang'
+  SilverStripe\CMS\Search\SearchForm:
+    GO: Đi
