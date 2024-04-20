@@ -1,0 +1,25 @@
+
+.popup-box.add-product {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+}
+.popup-box.add-product .pop-up-content,
+.popup-box.add-product .edeit-order-add-products,
+.popup-box.add-product form,
+.popup-box.add-product .products-container {
+    height: 100%;
+}
+.popup-box.add-product form {
+    display: flex;
+    flex-direction: column;
+}
+.popup-box.add-product .products-content {
+    flex-grow: 1;
+    height: 100px;
+}
+.btn-add-selected {
+    width: auto !important;
+}
